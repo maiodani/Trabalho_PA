@@ -7,9 +7,9 @@ public class Aluno {
     private SiglaCurso siglaCurso;
     private SiglaRamo siglaRamo;
     private double classificacao;
-    private boolean podeAceder;
+    private Boolean podeAceder;
 
-    public Aluno(long numEstudante, String nome, String email, SiglaCurso siglaCurso, SiglaRamo siglaRamo, double classificacao, boolean podeAceder) {
+    public Aluno(long numEstudante, String nome, String email, SiglaCurso siglaCurso, SiglaRamo siglaRamo, double classificacao, Boolean podeAceder) {
         this.numEstudante = numEstudante;
         this.nome = nome;
         this.email = email;
@@ -67,11 +67,11 @@ public class Aluno {
         this.classificacao = classificacao;
     }
 
-    public boolean isPodeAceder() {
+    public Boolean getPodeAceder() {
         return podeAceder;
     }
 
-    public void setPodeAceder(boolean podeAceder) {
+    public void setPodeAceder(Boolean podeAceder) {
         this.podeAceder = podeAceder;
     }
 

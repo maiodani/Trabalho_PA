@@ -35,7 +35,11 @@ public class CsvManager {
         }else{
             System.out.println("ERRO AO LER O FICHEIRO");
         }
-        sc.close();
+        try {
+            sc.close();
+        }catch (NullPointerException e){
+            System.out.println("FICHEIRO NÃO ENCONTRADO");
+        }
         return null;
     }
 }
