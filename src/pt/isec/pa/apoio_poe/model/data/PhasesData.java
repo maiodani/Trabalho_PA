@@ -26,4 +26,27 @@ public class PhasesData {
         this.fechado=fechado;
     }
 
+    public List getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List alunos) {
+        this.alunos = alunos;
+    }
+
+    public List getDocentes() {
+        return docentes;
+    }
+
+    public void setDocentes(List docentes) {
+        this.docentes = docentes;
+    }
+
+    public List getPropostas() {
+        return propostas;
+    }
+
+    public void setPropostas(List propostas) {
+        this.propostas = propostas;
+    }
 }

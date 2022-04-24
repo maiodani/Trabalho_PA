@@ -30,6 +30,7 @@ public class UI {
             case 1 -> fsm.iniciar(1);
             case 2 -> fsm.iniciar(2);
             case 3 -> fsm.iniciar(3);
+            case 4 -> System.exit(1);
         }
     }
     private void gestAlunoUI(){
