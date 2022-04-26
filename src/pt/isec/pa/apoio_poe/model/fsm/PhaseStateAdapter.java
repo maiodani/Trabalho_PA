@@ -21,6 +21,14 @@ public abstract class PhaseStateAdapter implements IPhaseState {
     }
 
     @Override
+    public void insert() {}
+
+    @Override
+    public String query() {
+        return null;
+    }
+
+    @Override
     public boolean fecharFase() {
         return false;
     }
@@ -34,4 +42,6 @@ public abstract class PhaseStateAdapter implements IPhaseState {
     public boolean voltar(){
         return false;
     }
+
+
 }

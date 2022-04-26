@@ -26,9 +26,7 @@ public class PhasesData {
         this.fechado=fechado;
     }
 
-    public List getAlunos() {
-        return alunos;
-    }
+    public List getAlunos() {return alunos;}
 
     public void setAlunos(List alunos) {
         this.alunos = alunos;
