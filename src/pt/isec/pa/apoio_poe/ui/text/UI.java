@@ -47,8 +47,8 @@ public class UI {
     private void gestProfessorUI(){
         System.out.println("Gestao Professor");
         switch (PAInput.chooseOption("Opcoes:", "Insercao", "Consulta","Editar", "Eliminar", "Voltar")) {
-            //case 1 -> fsm.addAluno();
-            //case 2 -> ;
+            case 1 -> fsm.insert();
+            case 2 -> System.out.println(fsm.query());
             //case 3 -> ;
             //case 4 -> ;
             case 5 -> fsm.voltar();
