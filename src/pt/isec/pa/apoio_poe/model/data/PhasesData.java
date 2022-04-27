@@ -1,7 +1,5 @@
 package pt.isec.pa.apoio_poe.model.data;
 
-import pt.isec.pa.apoio_poe.model.data.phase1.Estagio;
-
 import java.util.ArrayList;
 import java.util.List;
 
