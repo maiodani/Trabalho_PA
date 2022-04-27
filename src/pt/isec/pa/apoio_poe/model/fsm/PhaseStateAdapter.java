@@ -27,7 +27,10 @@ public abstract class PhaseStateAdapter implements IPhaseState {
     public String query() {
         return null;
     }
-
+    @Override
+    public String query(int n) {
+        return null;
+    }
     @Override
     public boolean fecharFase() {
         return false;

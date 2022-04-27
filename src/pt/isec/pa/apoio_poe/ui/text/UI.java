@@ -39,11 +39,19 @@ public class UI {
 
     private void configUI() {
         System.out.println("Fase de Configuracao");
-        switch (PAInput.chooseOption("Opcoes:", "Gestao Aluno", "Gestao Professor", "Gestao Propostas", "Quit")) {
-            case 1 -> fsm.iniciar(1);
-            case 2 -> fsm.iniciar(2);
-            case 3 -> fsm.iniciar(3);
-            case 4 -> System.exit(1);
+        switch (PAInput.chooseOption("Opcoes:", "Gestao Aluno", "Gestao Professor", "Gestao Propostas","Avançar","Fechar Fase", "Quit")) {
+            case 1 : fsm.iniciar(1);break;
+            case 2 : fsm.iniciar(2);break;
+            case 3 : fsm.iniciar(3);break;
+            case 4 : fsm.avancar();break;
+            case 5 :
+                if(fsm.fecharFase()){
+                    fsm.avancar();
+                }else{
+                    System.out.println("NÃO HÁ PROJETOS SUFICIENTES PARA OS ALUNOS DISPONIVEIS");
+                }
+                break;
+            case 6 : System.exit(1);break;
         }
     }
 

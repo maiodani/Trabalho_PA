@@ -11,9 +11,8 @@ public class Projeto extends Propostas {
 
     private Docente orientador;
 
-
-    public Projeto(Aluno aluno, Docente orientador, SiglaRamo ramo, String titulo, String codigoId) {
-        super(aluno, ramo, titulo, codigoId);
+    public Projeto(Aluno aluno, Docente orientador, List<SiglaRamo> ramo, String titulo, String codigoId) {
+        super(aluno, titulo, codigoId);
         this.orientador = orientador;
         this.ramo = ramo;
     }

@@ -1,13 +1,18 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
+import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
+
+import java.util.List;
+
 public abstract class Propostas {
-    protected SiglaRamo ramo;
+    protected List<SiglaRamo> ramo;
+
     protected Aluno aluno;
     protected String titulo;
     protected String codigoId;
 
 
-    public Propostas(Aluno aluno,SiglaRamo ramo,String titulo, String codigoId) {
+    public Propostas(Aluno aluno,String titulo, String codigoId) {
         this.aluno=aluno;
         this.titulo = titulo;
         this.codigoId=codigoId;

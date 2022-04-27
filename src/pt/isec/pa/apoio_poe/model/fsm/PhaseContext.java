@@ -1,15 +1,7 @@
 package pt.isec.pa.apoio_poe.model.fsm;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
-import pt.isec.pa.apoio_poe.model.CsvManager;
-import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
-import pt.isec.pa.apoio_poe.model.data.phase1.SiglaCurso;
-import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
-import pt.isec.pa.apoio_poe.model.fsm.states.ConfigState;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class PhaseContext {
@@ -60,6 +52,5 @@ public class PhaseContext {
     public String insert() {
         return state.insert();
     }
-
 
 }

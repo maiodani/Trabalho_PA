@@ -1,19 +1,26 @@
 package pt.isec.pa.apoio_poe.model.data;
 
+import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
+import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
+import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
+import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PhasesData {
     private int fechado; //Nº A IDENTIFICAR ATE QUE FASE ESTÁ FECHADO
-    private List alunos;
-    private List docentes;
-    private List propostas;
+    private List<Aluno> alunos;
+    private List<Docente> docentes;
+    private List<Propostas> propostas;
+    private List<Candidatura> candidaturas;
 
     public PhasesData(int n){
         fechado=n;
         alunos = new ArrayList();
         docentes = new ArrayList();
         propostas = new ArrayList();
+        candidaturas = new ArrayList();
     }
 
     public int getFechado(){
@@ -44,5 +51,9 @@ public class PhasesData {
 
     public void setPropostas(List propostas) {
         this.propostas = propostas;
+    }
+
+    public List getCandidaturas(){
+        return candidaturas;
     }
 }

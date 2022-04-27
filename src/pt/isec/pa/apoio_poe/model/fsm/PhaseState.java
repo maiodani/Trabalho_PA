@@ -2,6 +2,10 @@ package pt.isec.pa.apoio_poe.model.fsm;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.fsm.states.*;
+import pt.isec.pa.apoio_poe.model.fsm.states.phase1.ConfigState;
+import pt.isec.pa.apoio_poe.model.fsm.states.phase1.GestAlunoState;
+import pt.isec.pa.apoio_poe.model.fsm.states.phase1.GestProfState;
+import pt.isec.pa.apoio_poe.model.fsm.states.phase1.GestPropostaState;
 
 public enum PhaseState {
     CONFIG,
