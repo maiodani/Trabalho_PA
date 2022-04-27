@@ -9,8 +9,23 @@ public abstract class Propostas {
 
     public Propostas(Aluno aluno,SiglaRamo ramo,String titulo, String codigoId) {
         this.aluno=aluno;
-        this.ramo = ramo;
         this.titulo = titulo;
         this.codigoId=codigoId;
+    }
+
+    public List<SiglaRamo> getRamo() {
+        return ramo;
+    }
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getCodigoId() {
+        return codigoId;
     }
 }

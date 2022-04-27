@@ -1,14 +1,16 @@
-package pt.isec.pa.apoio_poe.model.fsm.states;
+package pt.isec.pa.apoio_poe.model.fsm.states.phase1;
 
 import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
+import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaCurso;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 
+import javax.print.Doc;
 import java.util.List;
 
 public class GestAlunoState extends PhaseStateAdapter {
@@ -16,32 +18,30 @@ public class GestAlunoState extends PhaseStateAdapter {
         super(phasesData, context);
     }
     @Override
-    public void insert(){
-        List<String> data = CsvManager.readFile("alunos_v2.csv");
+    public String insert(){
+        String data[][] = CsvManager.readFile("alunos_v2.csv");
+        StringBuilder str = new StringBuilder();
         List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
-            if((data.size())%7==0){ //CADA LINHA TEM 7 VALORES
-                for(int i=0;i<data.size();i+=7){
-                    Aluno a = new Aluno(
-                            Long.parseLong(data.get(i)),
-                            data.get(i+1),
-                            data.get(i+2),
-                            SiglaCurso.parse(data.get(i+3)),
-                            SiglaRamo.parse(data.get(i+4)),
-                            Double.parseDouble(data.get(i+5)),
-                            parseBoolean(data.get(i+6).replaceAll("\\s+",""))
-                    );
-                    System.out.println(a);
-                    if(canBeAdded(a, alunos)){
-                        alunos.add(a);
-                    }else{
-                        System.out.println("ALUNO COM DADOS INVALIDOS");
-                    }
+            for(int i=0;i<data.length; i++){
+                Aluno a = new Aluno(
+                        Long.parseLong(data[i][0]),
+                        data[i][1],
+                        data[i][2],
+                        SiglaCurso.parse(data[i][3]),
+                        SiglaRamo.parse(data[i][4]),
+                        Double.parseDouble(data[i][5]),
+                        parseBoolean(data[i][6].replaceAll("\\s+",""))
+                );
+                if(canBeAdded(a, alunos, str)){
+                    alunos.add(a);
                 }
             }
         }else{
-            System.out.println("NULL");
+            str.append("\nFicheiro não possui informação");
         }
+        str.append("\n");
+        return str.toString();
     }
     private Boolean parseBoolean(String s){
         s = s.toLowerCase();
@@ -67,31 +67,42 @@ public class GestAlunoState extends PhaseStateAdapter {
         return str.toString();
     }
 
-    private boolean canBeAdded(Aluno a, List<Aluno> alunos) {
+    private boolean canBeAdded(Aluno a, List<Aluno> alunos, StringBuilder str) {
         for(Aluno aux:alunos){//CHECK SE JA EXISTE
             if(aux.getNumEstudante()==a.getNumEstudante()){
-                System.out.println("ALUNO COM O MESMO NUMERO JÁ REGISTADO");
+                str.append("\nAluno ").append(a.getNumEstudante()).append(" ja se encontra registrado");
+                return false;
+            }
+            if (aux.getEmail().equals(a.getEmail())){
+                str.append("\nO email do Aluno ").append(a.getNumEstudante()).append(" já existe");
+                return false;
+            }
+        }
+        List<Docente> docentes= phasesData.getDocentes();
+        for (Docente docente : docentes){
+            if (docente.getEmail().equals(a.getEmail())){
+                str.append("\nO email do Aluno ").append(a.getNumEstudante()).append(" já existe");
                 return false;
             }
         }
 
         if(a.getSiglaCurso()==null){//SIGLA ESTA ERRADA
-            System.out.println("SIGLA DE CURSO NÃO RECONHECIDA");
+            str.append("\nSigla de curso do aluno ").append(a.getNumEstudante()).append(" não reconhecida");
             return false;
         }
 
         if(a.getSiglaRamo()==null){//SIGLA ESTA ERRADA
-            System.out.println("SIGLA DE RAMO NÃO RECONHECIDA");
+            str.append("\nSigla do ramo do aluno ") .append(a.getNumEstudante()).append(" não reconhecida");
             return false;
         }
 
         if(a.getClassificacao()<0.0 || a.getClassificacao()>1.0){//VERIRICAR QUAL É O LIMITE
-            System.out.println("CLASSIFICAÇÃO INVALIDA");
+            str.append("\nClassificação do aluno ").append(a.getNumEstudante()).append(" inválida");
             return false;
         }
 
         if(a.getPodeAceder()==null){//VERIFICAR SE O CAMPO PODE ACEDER ESTA CORRETO
-            System.out.println("PODE ACEDER INVALIDO");
+            str.append("\nPermissões do aluno ").append(a.getNumEstudante()).append(" inválidas");
             return false;
         }
         return true;

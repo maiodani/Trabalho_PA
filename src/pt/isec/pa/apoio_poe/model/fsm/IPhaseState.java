@@ -3,7 +3,7 @@ package pt.isec.pa.apoio_poe.model.fsm;
 public interface IPhaseState {
 
     PhaseState getState();
-    void insert();
+    String insert();
     String query();
     boolean fecharFase();
     boolean iniciar(int op);

@@ -1,4 +1,4 @@
-package pt.isec.pa.apoio_poe.model.fsm.states;
+package pt.isec.pa.apoio_poe.model.fsm.states.phase1;
 
 import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
@@ -22,36 +22,41 @@ public class GestProfState extends PhaseStateAdapter{
     }
 
     @Override
-    public void insert() {
-        List<String> data = CsvManager.readFile("docentes_v2.csv");
-        for (String s:data) System.out.println(s);
+    public String insert() {
+        String[][] data = CsvManager.readFile("docentes_v2.csv");
+        StringBuilder str = new StringBuilder();
         List<Docente> docentes = phasesData.getDocentes();
         if(data!=null){
-            for(int i=0;i<data.size();i+=2){
+            for(int i=0;i<data.length;i++){
                 Docente d = new Docente(
-                        data.get(i),
-                        data.get(i+1)
+                        data[i][0],
+                        data[i][1]
                 );
 
-                if(canBeAdded(d, docentes)){
+                if(canBeAdded(d, docentes, str)){
                     docentes.add(d);
-                }else{
-                    System.out.println("ALUNO COM DADOS INVALIDOS");
                 }
             }
-
         }else{
-            System.out.println("NULL");
+            str.append("\nFicheiro não possui informação");
         }
+        str.append("\n");
+        return str.toString();
     }
-    private boolean canBeAdded(Docente d, List<Docente> docentes) {
+    private boolean canBeAdded(Docente d, List<Docente> docentes, StringBuilder str) {
         for(Docente a:docentes){
-            System.out.println(a.getEmail());
-            if(a.getEmail()==d.getEmail()) {
+            if(a.getEmail().equals(d.getEmail())) {
+                str.append("\nEmail do docente ").append(d.getEmail()).append(" ja existe");
                 return false;
             }
         }
-        System.out.println("\n\n");
+        List<Aluno> alunos = phasesData.getAlunos();
+        for (Aluno aluno :alunos){
+            if (aluno.getEmail().equals(d.getEmail())){
+                str.append("\nEmail do docente ").append(d.getEmail()).append(" ja existe");
+                return false;
+            }
+        }
         return true;
     }
     @Override

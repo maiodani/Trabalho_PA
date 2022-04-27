@@ -7,6 +7,7 @@ public enum SiglaRamo {
 
     public static SiglaRamo parse(String s){
         s.replaceAll("\\s+","");
+        System.out.println(s);
         switch (s){
             case "DA": return DA;
             case "RAS":return RAS;
