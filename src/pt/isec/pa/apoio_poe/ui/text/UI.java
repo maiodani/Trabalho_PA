@@ -57,7 +57,7 @@ public class UI {
     private void gestPropostasUI(){
         System.out.println("Gestao Propostas");
         switch (PAInput.chooseOption("Opcoes:", "Insercao", "Consulta","Editar", "Eliminar", "Voltar")) {
-            //case 1 -> fsm.addAluno();
+            case 1 -> fsm.insert();
             //case 2 -> ;
             //case 3 -> ;
             //case 4 -> ;

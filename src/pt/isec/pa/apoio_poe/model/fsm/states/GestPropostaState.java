@@ -6,6 +6,7 @@ import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
+import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
@@ -26,47 +27,48 @@ public class GestPropostaState extends PhaseStateAdapter {
 
     @Override
     public void insert() {
-        List<String> data = CsvManager.readFile("proposta_v2.csv");
+        List<String> data = CsvManager.readFile("propostas_v2.csv");
         List<Propostas> propostas = phasesData.getPropostas();
+        Propostas p = null;
         if(data!=null){
-            if((data.size())%7==0){ //CADA LINHA TEM 7 VALORES
-                for(int i=0;i<data.size();i+=7){
-                    if (data.get(i).equals("T1")){
-                        Propostas p = new Estagio(
-                                temAluno(data.get(i+3)),
-                                SiglaRamo.parse(data.get(i+1)),
-                                data.get(i+2),
-                                data.get(i)
-                        );
-                    } else if (data.get(i).equals("T2")) {
-                        Propostas p = new Projeto(
-                                temAluno(data.get(i+4)),
-                                temProfessor(data.get(i+3)),
-                                SiglaRamo.parse(data.get(i+1)),
-                                data.get(i+2),
-                                data.get(i)
-                        );
-
-                    } else if (data.get(i).equals("T3")) {
-                        //TODO ACABAR ISTO
-                    }
-                    /*
-                    Propostas p = new Propostas(
-                            data.get(i),
-                            data.get(i + 1)
-                    ) {
-                    };*/
-                    System.out.println(d);
-                    //TODO buscar o docente para enviar
-                    propostas.add(d);
-                    /*
-                    if(canBeAdded(a, alunos)){
-                        alunos.add(a);
-                    }else{
-                        System.out.println("ALUNO COM DADOS INVALIDOS");
-                    }*/
+            for(int i=0;i<data.size();){
+                System.out.println(data.get(i));
+                if (data.get(i).equals("T1")){
+                    p = new Estagio(
+                            temAluno(data.get(i+3)),
+                            SiglaRamo.parse(data.get(i+1)),
+                            data.get(i+2),
+                            data.get(i)
+                    );
+                    i=i+4;
+                } else if (data.get(i).equals("T2")) {
+                    p = new Projeto(
+                            temAluno(data.get(i+4)),
+                            temProfessor(data.get(i+3)),
+                            SiglaRamo.parse(data.get(i+1)),
+                            data.get(i+2),
+                            data.get(i)
+                    );
+                    i=i+5;
+                } else if (data.get(i).equals("T3")) {
+                    p = new EstProjAutoproposto(
+                            temAluno(data.get(i+4)),
+                            SiglaRamo.parse(data.get(i+1)),
+                            data.get(i+2),
+                            data.get(i)
+                    );
+                    i=i+5;
                 }
+                //TODO buscar o docente para enviar
+                propostas.add(p);
+                /*
+                if(canBeAdded(a, alunos)){
+                    alunos.add(a);
+                }else{
+                    System.out.println("ALUNO COM DADOS INVALIDOS");
+                }*/
             }
+
         }else{
             System.out.println("NULL");
         }

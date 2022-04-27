@@ -25,23 +25,19 @@ public class GestProfState extends PhaseStateAdapter{
         List<String> data = CsvManager.readFile("docentes_v2.csv");
         List<Docente> docentes = phasesData.getDocentes();
         if(data!=null){
-            if((data.size())%7==0){ //CADA LINHA TEM 7 VALORES
-                for(int i=0;i<data.size();i+=7){
-                    Docente d = new Docente(
-                            data.get(i),
-                            data.get(i+1)
-                    );
-                    System.out.println(d);
-                    //TODO COLOCAR AS VERIFICAÇÕES PARA OS PROFESSORES
+            for(int i=0;i<data.size();i+=2){
+                Docente d = new Docente(
+                        data.get(i),
+                        data.get(i+1)
+                );
+
+                if(canBeAdded(d, docentes)){
                     docentes.add(d);
-                    /*
-                    if(canBeAdded(a, alunos)){
-                        alunos.add(a);
-                    }else{
-                        System.out.println("ALUNO COM DADOS INVALIDOS");
-                    }*/
+                }else{
+                    System.out.println("ALUNO COM DADOS INVALIDOS");
                 }
             }
+
         }else{
             System.out.println("NULL");
         }
