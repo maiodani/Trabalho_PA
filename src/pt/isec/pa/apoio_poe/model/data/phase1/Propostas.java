@@ -1,9 +1,5 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
-import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
-import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
-import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
-
 import java.util.List;
 
 public abstract class Propostas {

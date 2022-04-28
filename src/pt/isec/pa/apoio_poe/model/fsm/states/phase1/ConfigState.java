@@ -1,6 +1,5 @@
 package pt.isec.pa.apoio_poe.model.fsm.states.phase1;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;

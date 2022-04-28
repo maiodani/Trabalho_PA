@@ -21,16 +21,55 @@ public class UI {
                 case CONFIG -> configUI();
                 case GEST_ALUNO, GEST_PROFESSOR, GEST_PROPOSTA -> GestUI();
                 case CANDIDATURA -> cadidaturaUI();
+                case PROPOSTAS -> propostaUI();
                 default -> System.out.println("State inválido");
             }
         }
     }
 
+    private void propostaUI() {
+        System.out.println("Fase de Propostas");
+        switch (PAInput.chooseOption("Opcoes:",
+                "Atribuição automática autopropostas/propostas de docentes com aluno",
+                "Atribuição automática aos alunos sem atribuições",
+                "Atribuição manual",
+                "Remoção manual",
+                "Lista",
+                "Voltar",
+                "Quit")) {
+            case 1:
+                System.out.println(fsm.insert());//atribuição automatica 1
+                break;
+            case 2:
+                System.out.println(fsm.query());//atribuição automatica 2
+                break;
+            case 3: //atribuição manual
+                break;
+            case 4:
+                System.out.println(listasPropostasUI());
+                break;
+            case 5:
+                fsm.voltar();
+                break;
+            case 6:
+                System.exit(1);
+                break;
+
+        }
+    }
+
+
+
+
     private void cadidaturaUI() {
+        //TODO fechar fase
         System.out.println("Fase de Candidatura");
-        switch (PAInput.chooseOption("Opcoes:","Inserção","Consulta","Listas de Alunos","Listas de Propostas","Voltar", "Quit")) {
+        switch (PAInput.chooseOption("Opcoes:","Inserção","Consulta","Listas de Alunos","Listas de Propostas","Avançar","Voltar","Fechar Fase", "Quit")) {
             case 1 :
-                System.out.println(fsm.insert());break;
+                if (fsm.getFechado()<2){
+                    System.out.println(fsm.insert());
+                }
+                break;
             case 2 :
                 System.out.println(fsm.query());
                 break;
@@ -39,17 +78,28 @@ public class UI {
                     case 1:System.out.println(fsm.query(1)); break;
                     case 2:System.out.println(fsm.query(2));break;
                     case 3:System.out.println(fsm.query(3));break;
-                    case 4:break;
                     default:break;
                 }
                 break;
             case 4:
                 System.out.println(listasPropostasUI());
                 break;
-            case 5 :
+            case 5:
+                fsm.avancar();
+                break;
+            case 6:
                 fsm.voltar();
                 break;
-            case 6 : System.exit(1);break;
+            case 7 :
+                if (fsm.getFechado()<2){
+                    if(fsm.fecharFase()){
+                        fsm.avancar();
+                    }else{
+                        System.out.println("Fase anterior não pode avançar");
+                    }
+                }
+                break;
+            case 8 : System.exit(1);break;
         }
     }
 

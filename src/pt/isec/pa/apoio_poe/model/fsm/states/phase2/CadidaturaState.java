@@ -4,7 +4,6 @@ import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
-import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
 import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
@@ -27,8 +26,14 @@ public class CadidaturaState extends PhaseStateAdapter {
 
     @Override
     public boolean fecharFase() {
+
+        if(phasesData.getFechado()==1){
+            phasesData.setFechado(2);
+            return true;
+        }
+
         changeState(PhaseState.CANDIDATURA);
-        return true;
+        return false;
     }
 
     @Override

@@ -10,7 +10,6 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 
-import javax.print.Doc;
 import java.util.List;
 
 public class GestAlunoState extends PhaseStateAdapter {
