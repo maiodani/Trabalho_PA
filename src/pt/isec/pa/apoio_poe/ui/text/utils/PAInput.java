@@ -1,5 +1,6 @@
 package pt.isec.pa.apoio_poe.ui.text.utils;
 
+import java.util.List;
 import java.util.Scanner;
 
 public final class PAInput {
@@ -75,6 +76,22 @@ public final class PAInput {
                 option = sc.nextInt();
             sc.nextLine();
         } while (option < 1 || option > options.length);
+        return option;
+    }
+    public static int chooseOption(String title, List<String> options) {
+        int option = -1;
+        do {
+            if (title != null)
+                System.out.println(System.lineSeparator()+title);
+            System.out.println();
+            for(int i = 0; i < options.size(); i++) {
+                System.out.printf("%3d - %s\n",i+1,options.get(i));
+            }
+            System.out.print("\nOption: ");
+            if (sc.hasNextInt())
+                option = sc.nextInt();
+            sc.nextLine();
+        } while (option < 1 || option > options.size());
         return option;
     }
 

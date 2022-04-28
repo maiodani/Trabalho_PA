@@ -61,14 +61,12 @@ public class Aluno {
     }
     @Override
     public String toString() {
-        return "Aluno{" +
-                "numEstudante=" + numEstudante +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", siglaCurso=" + siglaCurso +
-                ", siglaRamo=" + siglaRamo +
-                ", classificacao=" + classificacao +
-                ", podeAceder=" + podeAceder +
-                '}';
+        return "\nN: " + getNumEstudante() +
+                "\nNome: " + getNome() +
+                "\nEmail: " + getEmail() +
+                "\nCurso: " + getSiglaCurso() +
+                "\nRamo: " + getSiglaRamo() +
+                "\nClassificacao: " + getClassificacao() +
+                "\n";
     }
 }

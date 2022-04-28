@@ -58,13 +58,7 @@ public class GestAlunoState extends PhaseStateAdapter {
         List<Aluno> alunos = phasesData.getAlunos();
         StringBuilder str = new StringBuilder();
         for (Aluno al : alunos) {
-            str.append("N: "+al.getNumEstudante()+
-                    "\nNome: "+al.getNome()+
-                    "\nEmail: "+al.getEmail()+
-                    "\nCurso: "+al.getSiglaCurso()+
-                    "\nRamo: "+al.getSiglaRamo()+
-                    "\nClassificacao: "+al.getClassificacao()+
-                    "\n\n");
+            str.append(al.toString());
         }
         return str.toString();
     }
