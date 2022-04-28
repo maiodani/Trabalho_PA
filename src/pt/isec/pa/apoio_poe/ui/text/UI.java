@@ -98,8 +98,10 @@ public class UI {
                     }
                     break;
                 case 5:
-                    if(listagem==""){
-                        fsm.query(8);
+                    if(listagem.equals("")){
+                        System.out.println("SEM FILTROS");
+                        listagem+=fsm.query(8);
+                        return listagem;
                     }else {
                         return listagem;
                     }

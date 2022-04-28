@@ -48,7 +48,7 @@ public class CadidaturaState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
         List<Candidatura> c;
         List<Propostas> propostas;
-        List<Propostas> p;
+        List<Propostas> pa;
         switch (n){
             case 1:
                 propostas = phasesData.getPropostas();
@@ -113,45 +113,50 @@ public class CadidaturaState extends PhaseStateAdapter {
             case 6:
                 c = phasesData.getCandidaturas();
                 propostas = phasesData.getPropostas();
-                p= new ArrayList<>();
+                pa= new ArrayList<>();
                 for(Candidatura ca:c){
                     for(String s:ca.getCodigos()){
                         for(Propostas pro:propostas){
                             if(pro.getCodigoId().equals(s)){
-                                if(!p.contains(pro)){
-                                    p.add(pro);
+                                if(!pa.contains(pro)){
+                                    pa.add(pro);
                                 }
                             }
                         }
                     }
                 }
 
-                for(Propostas aux:p){
+                for(Propostas aux:pa){
                     str.append(aux);
                 }
                 break;
             case 7:
                 c = phasesData.getCandidaturas();
                 propostas = phasesData.getPropostas();
-                p= new ArrayList<>();
+                pa= new ArrayList<>();
                 for(Candidatura ca:c){
                     for(String s:ca.getCodigos()){
                         for(Propostas pro:propostas){
                             if(pro.getCodigoId().equals(s)){
-                                if(!p.contains(pro)){
-                                    p.add(pro);
+                                if(!pa.contains(pro)){
+                                    pa.add(pro);
                                 }
                             }
                         }
                     }
                 }
 
-                for(Propostas aux:propostas)
-                    
+                for(Propostas aux:propostas){
+                    if(!pa.contains(aux)){
+                        str.append(aux.toString());
+                    }
                 }
-
                 break;
             case 8:
+                propostas = phasesData.getPropostas();
+                for(Propostas p:propostas){
+                    str.append(p.toString());
+                }
                 break;
             default:
                 break;
