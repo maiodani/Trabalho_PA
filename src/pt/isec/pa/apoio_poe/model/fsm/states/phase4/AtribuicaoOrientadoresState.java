@@ -16,6 +16,11 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
     }
 
     @Override
+    public String export() {
+        return null;
+    }
+
+    @Override
     public boolean fecharFase() {
         changeState(PhaseState.CONSULTA);
         return true;

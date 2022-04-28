@@ -184,6 +184,7 @@ public class CadidaturaState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
 
         if(data!=null){
+            str.append("ERROS:");
             for(int i=0;i<data.length;i++){
                 Candidatura c = new Candidatura(
                         temAluno(data[i][0]),
@@ -198,7 +199,13 @@ public class CadidaturaState extends PhaseStateAdapter {
         return str.toString();
     }
 
-    private boolean canAdd(Candidatura c, List<Candidatura> candidaturas,StringBuilder str) {
+    @Override
+    public String export() {
+        return null;
+    }
+
+    private boolean canAdd(Candidatura c, List<Candidatura> candidaturas, StringBuilder str) {
+
         if(c.getAluno()==null) {
             str.append("\nAluno não foi encontrado.");
             return false;
