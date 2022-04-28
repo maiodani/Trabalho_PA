@@ -11,6 +11,11 @@ public class ConsultaState extends PhaseStateAdapter {
     }
 
     @Override
+    public String export() {
+        return null;
+    }
+
+    @Override
     public PhaseState getState() {
         return PhaseState.CONSULTA;
     }

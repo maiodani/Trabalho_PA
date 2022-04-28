@@ -99,4 +99,9 @@ public class ConfigState extends PhaseStateAdapter {
         changeState(PhaseState.CONFIG);
         return false;
     }
+
+    @Override
+    public String export() {
+        return null;
+    }
 }

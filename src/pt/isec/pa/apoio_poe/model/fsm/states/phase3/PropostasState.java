@@ -11,6 +11,11 @@ public class PropostasState extends PhaseStateAdapter {
     }
 
     @Override
+    public String export() {
+        return null;
+    }
+
+    @Override
     public PhaseState getState() {
         return PhaseState.PROPOSTAS;
     }
