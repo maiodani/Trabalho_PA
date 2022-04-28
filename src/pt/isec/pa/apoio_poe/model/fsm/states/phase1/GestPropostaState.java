@@ -2,10 +2,7 @@ package pt.isec.pa.apoio_poe.model.fsm.states.phase1;
 
 import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
-import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
-import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
-import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
-import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
+import pt.isec.pa.apoio_poe.model.data.phase1.*;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
@@ -33,6 +30,7 @@ public class GestPropostaState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
         Propostas p = null;
         if(data!=null){
+            str.append("ERROS:");
             for(int i=0; i<data.length; i++) {
                 if (data[i][0].equals("T1")) {
                     p = new Estagio(
@@ -51,16 +49,13 @@ public class GestPropostaState extends PhaseStateAdapter {
                             data[i][1]
                     );
                 } else if (data[i][0].equals("T3")) {
-                    Aluno objeto = null;
-                    if (data.length == 3){
-                        List<Aluno> alunos = phasesData.getAlunos();
-                        for(Aluno aluno : alunos){
-                            if (Integer.parseInt(data[i][3]) == (aluno.getNumEstudante())) objeto = aluno;
-                        }
+                    Aluno al = null;
+                    List<Aluno> alunos = phasesData.getAlunos();
+                    for(Aluno aluno : alunos){
+                        if (Integer.parseInt(data[i][3]) == (aluno.getNumEstudante())) al = aluno;
                     }
-
                     p = new EstProjAutoproposto(
-                            objeto,
+                            al,
                             data[i][2],
                             data[i][1]
                     );
@@ -81,6 +76,12 @@ public class GestPropostaState extends PhaseStateAdapter {
                 str.append("\nCódigo da proposta ").append(p.getCodigoId()).append(" ja existe");
                 return false;
             }
+            if (p.getAluno() != null && proposta.getAluno() != null){
+                if(p.getAluno().getNumEstudante() == proposta.getAluno().getNumEstudante()){
+                    str.append("\nAluno ja possui a proposta ").append(p.getCodigoId());
+                    return false;
+                }
+            }
         }
         if (p instanceof Estagio){
             if(p.getRamo()==null){
@@ -90,6 +91,10 @@ public class GestPropostaState extends PhaseStateAdapter {
         } else if (p instanceof Projeto) {
             if(p.getRamo()==null){
                 str.append("\nRamo inválido na proposta ").append(p.getCodigoId());
+                return false;
+            }
+            if (((Projeto) p).getOrientador() == null){
+                str.append("\nProfessor inválido para a proposta").append(p.getCodigoId());
                 return false;
             }
         } else if (p instanceof EstProjAutoproposto) {
@@ -105,33 +110,13 @@ public class GestPropostaState extends PhaseStateAdapter {
         List<Propostas> propostas = phasesData.getPropostas();
         StringBuilder str = new StringBuilder();
         for (Propostas proposta : propostas) {
-            str.append("Codigo: "+proposta.getCodigoId()+
-                    "\nTitulo: "+proposta.getTitulo());
-            if(proposta instanceof Estagio){
-                str.append("\nEmpresa: "+((Estagio) proposta).getEmpresa());
-            } else if (proposta instanceof Projeto) {
-                if(((Projeto) proposta).getOrientador() != null){
-                    str.append("\nDocente: ");
-                    str.append("\n  Nome: "+((Projeto) proposta).getOrientador().getNome()+
-                            "\n  Email: "+((Projeto) proposta).getOrientador().getEmail());
-                }
-            }
-            if (proposta.getAluno() != null){
-                str.append("\nAluno: ");
-                str.append("\n  N: "+proposta.getAluno().getNumEstudante()+
-                        "\n  Nome: "+proposta.getAluno().getNome()+
-                        "\n  Email: "+proposta.getAluno().getEmail());
-            }
-            if (proposta.getRamo()!= null){
-                str.append("\nRamo: "+proposta.getRamo());
-            }
-            str.append("\n\n");
+            str.append(proposta.toString());
         }
         return str.toString();
     }
 
     private Docente adicionarProfessor(String email) {
-        List<Docente> docentes = new ArrayList<>();
+        List<Docente> docentes = phasesData.getDocentes();
         for (Docente docente : docentes){
             if (docente.getEmail().equals(email)){
                 return docente;
@@ -167,6 +152,16 @@ public class GestPropostaState extends PhaseStateAdapter {
         return siglas;
     }
 
+    @Override
+    public String export() {
+        List<Propostas> propostas = phasesData.getPropostas();
+        StringBuilder str = new StringBuilder();
+        for (Propostas proposta : propostas){
+            str.append(proposta.exportar());
+        }
+        str.deleteCharAt(str.length()-1);
+        return CsvManager.writeFile("propostas_export.csv", str);
+    }
 
     @Override
     public boolean fecharFase() {

@@ -45,7 +45,10 @@ public class PhaseContext {
 
     public String query(){
         return state.query();
-    };
+    }
+    public String export(){
+        return state.export();
+    }
     public String query(int n){
         return state.query(n);
     };

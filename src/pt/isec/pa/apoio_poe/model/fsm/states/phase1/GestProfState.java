@@ -4,6 +4,7 @@ import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
+import pt.isec.pa.apoio_poe.model.data.phase1.SiglaCurso;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
@@ -27,12 +28,12 @@ public class GestProfState extends PhaseStateAdapter{
         StringBuilder str = new StringBuilder();
         List<Docente> docentes = phasesData.getDocentes();
         if(data!=null){
+            str.append("ERROS:");
             for(int i=0;i<data.length;i++){
                 Docente d = new Docente(
                         data[i][0],
                         data[i][1]
                 );
-
                 if(canBeAdded(d, docentes, str)){
                     docentes.add(d);
                 }
@@ -46,14 +47,14 @@ public class GestProfState extends PhaseStateAdapter{
     private boolean canBeAdded(Docente d, List<Docente> docentes, StringBuilder str) {
         for(Docente a:docentes){
             if(a.getEmail().equals(d.getEmail())) {
-                str.append("\nEmail do docente ").append(d.getEmail()).append(" ja existe");
+                str.append("\nEmail do docente ").append(d.getNome()).append(" ja existe");
                 return false;
             }
         }
         List<Aluno> alunos = phasesData.getAlunos();
         for (Aluno aluno :alunos){
             if (aluno.getEmail().equals(d.getEmail())){
-                str.append("\nEmail do docente ").append(d.getEmail()).append(" ja existe");
+                str.append("\nEmail do docente ").append(d.getNome()).append(" ja existe");
                 return false;
             }
         }
@@ -61,14 +62,23 @@ public class GestProfState extends PhaseStateAdapter{
     }
     @Override
     public String query() {
-        List<Docente> docente = phasesData.getDocentes();
+        List<Docente> docentes = phasesData.getDocentes();
         StringBuilder str = new StringBuilder();
-        for (Docente doc: docente) {
-            str.append("\nNome: "+doc.getNome()+
-                    "\nEmail: "+doc.getEmail()+
-                    "\n\n");
+        for (Docente docente: docentes) {
+            str.append(docente.toString());
         }
         return str.toString();
+    }
+
+    @Override
+    public String export() {
+        List<Docente> docentes = phasesData.getDocentes();
+        StringBuilder str = new StringBuilder();
+        for (Docente docente: docentes){
+            str.append(docente.exportar());
+        }
+        str.deleteCharAt(str.length()-1);
+        return CsvManager.writeFile("docentes_export.csv", str);
     }
 
     @Override

@@ -33,16 +33,8 @@ public class PhasesData {
 
     public List getAlunos() {return alunos;}
 
-    public void setAlunos(List alunos) {
-        this.alunos = alunos;
-    }
-
     public List getDocentes() {
         return docentes;
-    }
-
-    public void setDocentes(List docentes) {
-        this.docentes = docentes;
     }
 
     public List getPropostas() {

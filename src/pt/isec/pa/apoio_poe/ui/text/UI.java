@@ -62,12 +62,13 @@ public class UI {
             case GEST_PROPOSTA -> System.out.println("Gestao Propostas");
         }
         if(fsm.getFechado()<=0) {
-            switch (PAInput.chooseOption("Opcoes:", "Insercao", "Consulta", "Editar", "Eliminar", "Voltar")) {
+            switch (PAInput.chooseOption("Opcoes:", "Insercao", "Consulta", "Editar", "Eliminar", "Exportar", "Voltar")) {
                 case 1 -> System.out.println(fsm.insert());
                 case 2 -> System.out.println(fsm.query());
                 //case 3 -> ;
                 //case 4 -> ;
-                case 5 -> fsm.voltar();
+                case 5 -> System.out.println(fsm.export());
+                case 6 -> fsm.voltar();
             }
         }else{
             switch (PAInput.chooseOption("Opcoes:","Consulta", "Voltar")) {

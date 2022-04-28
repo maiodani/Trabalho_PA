@@ -5,6 +5,7 @@ public interface IPhaseState {
     PhaseState getState();
     String insert();
     String query();
+    String export();
     String query(int n);
     boolean fecharFase();
     boolean iniciar(int op);

@@ -12,4 +12,11 @@ public enum SiglaCurso {
             default:return null;
         }
     }
+    public static String parseString(SiglaCurso curso){
+        switch (curso){
+            case LEI : return "LEI";
+            case LEI_PL: return "LEI-PL";
+            default: return null;
+        }
+    }
 }

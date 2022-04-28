@@ -23,6 +23,7 @@ public class GestAlunoState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
         List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
+            str.append("ERROS:");
             for(int i=0;i<data.length; i++){
                 Aluno a = new Aluno(
                         Long.parseLong(data[i][0]),
@@ -33,6 +34,7 @@ public class GestAlunoState extends PhaseStateAdapter {
                         Double.parseDouble(data[i][5]),
                         parseBoolean(data[i][6].replaceAll("\\s+",""))
                 );
+
                 if(canBeAdded(a, alunos, str)){
                     alunos.add(a);
                 }
@@ -108,6 +110,16 @@ public class GestAlunoState extends PhaseStateAdapter {
         return true;
     }
 
+    @Override
+    public String export() {
+        List<Aluno> alunos = phasesData.getAlunos();
+        StringBuilder str = new StringBuilder();
+        for (Aluno aluno : alunos){
+            str.append(aluno.exportar());
+        }
+        str.deleteCharAt(str.length()-1);
+        return CsvManager.writeFile("alunos_export.csv", str);
+    }
 
     @Override
     public PhaseState getState() {

@@ -22,59 +22,43 @@ public class Aluno {
     public long getNumEstudante() {
         return numEstudante;
     }
-
-    public void setNumEstudante(long numEstudante) {
-        this.numEstudante = numEstudante;
-    }
-
     public String getNome() {
         return nome;
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getEmail() {
         return email;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public SiglaCurso getSiglaCurso() {
         return siglaCurso;
     }
-
-    public void setSiglaCurso(SiglaCurso siglaCurso) {
-        this.siglaCurso = siglaCurso;
-    }
-
     public SiglaRamo getSiglaRamo() {
         return siglaRamo;
     }
-
-    public void setSiglaRamo(SiglaRamo siglaRamo) {
-        this.siglaRamo = siglaRamo;
-    }
-
     public double getClassificacao() {
         return classificacao;
     }
-
-    public void setClassificacao(double classificacao) {
-        this.classificacao = classificacao;
-    }
-
     public Boolean getPodeAceder() {
         return podeAceder;
     }
 
-    public void setPodeAceder(Boolean podeAceder) {
-        this.podeAceder = podeAceder;
+    public String exportar(){
+        StringBuilder str = new StringBuilder();
+        str.append(numEstudante)
+                .append(",")
+                .append(nome)
+                .append(",")
+                .append(email)
+                .append(",")
+                .append(SiglaCurso.parseString(siglaCurso))
+                .append(",")
+                .append(siglaRamo)
+                .append(",")
+                .append(classificacao)
+                .append(",")
+                .append(podeAceder)
+                .append("\n");
+        return str.toString();
     }
-
     @Override
     public String toString() {
         return "Aluno{" +

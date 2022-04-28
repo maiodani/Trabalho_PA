@@ -9,6 +9,21 @@ public class Docente {
         this.email = email;
     }
 
+    public String exportar(){
+        StringBuilder str = new StringBuilder();
+        str.append(nome)
+                .append(",")
+                .append(email)
+                .append("\n");
+        return str.toString();
+    }
+    @Override
+    public String toString() {
+        return ("\nNome: "+nome+
+                "\nEmail: "+email+
+                "\n");
+    }
+
     public String getNome() {
         return nome;
     }

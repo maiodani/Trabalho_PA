@@ -2,8 +2,8 @@ package pt.isec.pa.apoio_poe.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +20,6 @@ public class CsvManager {
     }
 
     public static String[][] readFile(String fileName) {
-
         List<String> getData = new ArrayList<>();
         List<String> aux = new ArrayList<>();
         List<Integer> num = new ArrayList<>();
@@ -60,7 +59,16 @@ public class CsvManager {
         }catch (NullPointerException e){
             throw new RuntimeException(e);
         }
-
         return null;
+    }
+
+    public static String writeFile(String filename, StringBuilder data){
+        try (PrintWriter writer = new PrintWriter(filename)) {
+            writer.write(data.toString());
+        } catch (FileNotFoundException e) {
+            data.delete(0, data.length()-1);
+            data.append(e.getMessage());
+        }
+        return data.toString();
     }
 }
