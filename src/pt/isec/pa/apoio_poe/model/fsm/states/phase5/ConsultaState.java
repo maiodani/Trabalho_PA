@@ -1,4 +1,4 @@
-package pt.isec.pa.apoio_poe.model.fsm.states;
+package pt.isec.pa.apoio_poe.model.fsm.states.phase5;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
