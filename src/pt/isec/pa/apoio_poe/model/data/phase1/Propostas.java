@@ -8,12 +8,14 @@ public abstract class Propostas {
     protected Aluno aluno;
     protected String titulo;
     protected String codigoId;
+    protected boolean atribuida;
 
 
     public Propostas(Aluno aluno,String titulo, String codigoId) {
         this.aluno=aluno;
         this.titulo = titulo;
         this.codigoId=codigoId;
+        this.atribuida = false;
     }
 
     public String exportar(){
@@ -43,11 +45,23 @@ public abstract class Propostas {
         return aluno;
     }
 
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+
     public String getTitulo() {
         return titulo;
     }
 
     public String getCodigoId() {
         return codigoId;
+    }
+
+    public boolean isAtribuida() {
+        return atribuida;
+    }
+
+    public void setAtribuida(boolean atribuida) {
+        this.atribuida = atribuida;
     }
 }

@@ -1,6 +1,8 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
-public class Aluno {
+import pt.isec.pa.apoio_poe.model.fsm.states.phase3.IClassificacao;
+
+public class Aluno implements IClassificacao {
     private long numEstudante;
     private String nome;
     private String email;
@@ -19,6 +21,21 @@ public class Aluno {
         this.podeAceder = podeAceder;
     }
 
+    @Override
+    public boolean equals(Object al) {
+        if (this == al) return true;
+        if (!(al instanceof Aluno)) return false;
+        Aluno aluno = (Aluno) al;
+
+        return numEstudante == aluno.numEstudante
+                && nome.equals(aluno.nome)
+                && email.equals(aluno.email)
+                && siglaCurso == aluno.siglaCurso
+                && siglaRamo == aluno.siglaRamo
+                && classificacao == aluno.classificacao
+                && podeAceder == aluno.podeAceder;
+    }
+
     public long getNumEstudante() {
         return numEstudante;
     }
@@ -34,6 +51,7 @@ public class Aluno {
     public SiglaRamo getSiglaRamo() {
         return siglaRamo;
     }
+    @Override
     public double getClassificacao() {
         return classificacao;
     }

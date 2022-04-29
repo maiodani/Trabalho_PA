@@ -33,7 +33,7 @@ public class CadidaturaState extends PhaseStateAdapter {
             return true;
         }
 
-        changeState(PhaseState.CANDIDATURA);
+        changeState(PhaseState.PROPOSTAS);
         return false;
     }
 

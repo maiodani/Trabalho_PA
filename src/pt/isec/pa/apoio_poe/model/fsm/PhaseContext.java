@@ -56,4 +56,8 @@ public class PhaseContext {
         return state.insert();
     }
 
+    public String insert(int op) {
+        return state.insert(op);
+    }
+
 }

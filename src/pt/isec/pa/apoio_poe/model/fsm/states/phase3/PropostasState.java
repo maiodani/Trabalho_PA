@@ -42,8 +42,29 @@ public class PropostasState extends PhaseStateAdapter {
 
     @Override
     public boolean fecharFase() {
-        changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
-        return true;
+        //TODO TESTAS QUANDO TIVER TUDO A FUNCIONAR
+        int count=0;
+        List<Aluno> a = new ArrayList<>();
+        List<Candidatura> c = phasesData.getCandidaturas();
+        List<Propostas> p = phasesData.getPropostas();
+        for(Candidatura ca:c){
+            a.add(ca.getAluno());
+        }
+
+        for(Propostas pa:p){
+            if(pa.getAluno()!=null){
+                if(a.contains(pa.getAluno())){
+                    count++;
+                }
+            }
+        }
+        if(count==a.size()){
+            changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
+            return true;
+        }else{
+            return false;
+        }
+        //changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
     }
 
     @Override

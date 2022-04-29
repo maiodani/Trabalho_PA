@@ -1,6 +1,7 @@
 package pt.isec.pa.apoio_poe.ui.text;
 
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
+import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.ui.text.utils.PAInput;
 
 import java.util.ArrayList;
@@ -22,9 +23,42 @@ public class UI {
                 case GEST_ALUNO, GEST_PROFESSOR, GEST_PROPOSTA -> GestUI();
                 case CANDIDATURA -> cadidaturaUI();
                 case PROPOSTAS -> propostaUI();
+                case AUTOMATICO -> propostaAutomaticoUI();
+                case MANUAL -> propostaManualUI();
                 default -> System.out.println("State inválido");
             }
         }
+    }
+
+    private void propostaManualUI() {
+        if(fsm.getFechado()<2){
+            switch (PAInput.chooseOption("Opções: ",
+                    "Atribuição manual",
+                    "Remoção manual",
+                    "Voltar")
+            ){
+                case 1:
+                    fsm.insert();
+                    break;
+                case 2:
+
+                    break;
+                case 3: fsm.voltar();break;
+                default:break;
+            }
+        }else{
+            System.out.println("1.Voltar");
+
+        }
+    }
+
+    private void propostaAutomaticoUI() {
+        System.out.println("Propostas Automaticas");
+        int op = PAInput.chooseOption("Opções: ",
+                "Atribuição automática de propostas com aluno associado",
+                "Atribuição automática de uma proposta disponível aos alunos que não possuem",
+                "Voltar");
+        System.out.println(fsm.insert(op));
     }
 
     private void propostaUI() {
@@ -72,9 +106,6 @@ public class UI {
             default: break;
         }
     }
-
-
-
 
     private void cadidaturaUI() {
         System.out.println("Fase de Candidatura");

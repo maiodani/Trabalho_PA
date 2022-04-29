@@ -24,6 +24,14 @@ public abstract class PhaseStateAdapter implements IPhaseState {
     public String insert() {return null;}
 
     @Override
+    public String insert(int op) {
+        return null;
+    }
+
+    @Override
+    public String export() {return null;}
+
+    @Override
     public String query() {
         return null;
     }

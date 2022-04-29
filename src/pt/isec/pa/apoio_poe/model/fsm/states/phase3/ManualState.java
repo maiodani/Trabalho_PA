@@ -5,17 +5,18 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 
-public class EmpateState extends PhaseStateAdapter {
-
-    public EmpateState(PhasesData phasesData, PhaseContext context) {
+public class ManualState extends PhaseStateAdapter {
+    public ManualState(PhasesData phasesData, PhaseContext context) {
         super(phasesData, context);
     }
+    //META 2s
     @Override
     public PhaseState getState() {
-        return PhaseState.EMPATE;
+        return PhaseState.MANUAL;
     }
-    @Override
-    public String export() {
-        return null;
+
+    public boolean voltar() {
+        changeState(PhaseState.PROPOSTAS);
+        return true;
     }
 }
