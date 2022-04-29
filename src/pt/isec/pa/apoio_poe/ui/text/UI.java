@@ -16,6 +16,8 @@ public class UI {
 
     private boolean finish = false;
 
+    private boolean empate = false;
+
     public void start() {
         while (!finish) {
             switch (fsm.getState()) {
@@ -24,10 +26,17 @@ public class UI {
                 case CANDIDATURA -> cadidaturaUI();
                 case PROPOSTAS -> propostaUI();
                 case AUTOMATICO -> propostaAutomaticoUI();
+                case EMPATE -> propostaAutomaticoEmpateUI();
                 case MANUAL -> propostaManualUI();
                 default -> System.out.println("State inválido");
             }
         }
+    }
+    private void propostaAutomaticoEmpateUI() {
+        System.out.println(fsm.query());
+        int op = PAInput.readInt("Insira o numero do aluno desejado");
+        System.out.println(fsm.insert(op));
+        empate = true;
     }
 
     private void propostaManualUI() {
@@ -54,11 +63,17 @@ public class UI {
 
     private void propostaAutomaticoUI() {
         System.out.println("Propostas Automaticas");
-        int op = PAInput.chooseOption("Opções: ",
-                "Atribuição automática de propostas com aluno associado",
-                "Atribuição automática de uma proposta disponível aos alunos que não possuem",
-                "Voltar");
-        System.out.println(fsm.insert(op));
+        if(empate){
+            System.out.println(fsm.insert(2));
+        }else{
+            int op = PAInput.chooseOption("Opções: ",
+                    "Atribuição automática de propostas com aluno associado",
+                    "Atribuição automática de uma proposta disponível aos alunos que não possuem",
+                    "Voltar");
+            System.out.println(fsm.insert(op));
+        }
+
+        empate = false;
     }
 
     private void propostaUI() {
@@ -109,43 +124,70 @@ public class UI {
 
     private void cadidaturaUI() {
         System.out.println("Fase de Candidatura");
-        switch (PAInput.chooseOption("Opcoes:","Inserção","Consulta","Listas de Alunos","Listas de Propostas","Avançar","Voltar","Fechar Fase", "Quit")) {
-            case 1 :
-                if (fsm.getFechado()<2){
-                    System.out.println(fsm.insert());
-                }
-                break;
-            case 2 :
-                System.out.println(fsm.query());
-                break;
-            case 3:
-                switch (PAInput.chooseOption("Tipo de Consulta","Alunos com Autopropostas","Alunos com Candidaturas","Alunos sem Candidaturas","Voltar")){
-                    case 1:System.out.println(fsm.query(1)); break;
-                    case 2:System.out.println(fsm.query(2));break;
-                    case 3:System.out.println(fsm.query(3));break;
-                    default:break;
-                }
-                break;
-            case 4:
-                System.out.println(listasPropostasUI());
-                break;
-            case 5:
-                fsm.avancar();
-                break;
-            case 6:
-                fsm.voltar();
-                break;
-            case 7 :
-                if (fsm.getFechado()<2){
-                    if(fsm.fecharFase()){
-                        fsm.avancar();
-                    }else{
-                        System.out.println("Fase anterior não esta fechada, não pode avançar");
+        if (fsm.getFechado()<2) {
+            switch (PAInput.chooseOption("Opcoes:", "Inserção", "Consulta", "Listas de Alunos", "Listas de Propostas", "Avançar", "Voltar", "Fechar Fase", "Quit")){
+                case 1 :
+                    if (fsm.getFechado()<2){
+                        System.out.println(fsm.insert());
                     }
-                }
-                break;
-            case 8 : System.exit(1);break;
+                    break;
+                case 2 :
+                    System.out.println(fsm.query());
+                    break;
+                case 3:
+                    switch (PAInput.chooseOption("Tipo de Consulta","Alunos com Autopropostas","Alunos com Candidaturas","Alunos sem Candidaturas","Voltar")){
+                        case 1:System.out.println(fsm.query(1)); break;
+                        case 2:System.out.println(fsm.query(2));break;
+                        case 3:System.out.println(fsm.query(3));break;
+                        default:break;
+                    }
+                    break;
+                case 4:
+                    System.out.println(listasPropostasUI());
+                    break;
+                case 5:
+                    fsm.avancar();
+                    break;
+                case 6:
+                    fsm.voltar();
+                    break;
+                case 7 :
+                    if (fsm.getFechado()<2){
+                        if(fsm.fecharFase()){
+                            fsm.avancar();
+                        }else{
+                            System.out.println("Fase anterior não esta fechada, não pode avançar");
+                        }
+                    }
+                    break;
+                case 8 : System.exit(1);break;
+            }
+        }else{
+            switch (PAInput.chooseOption("Opcoes:", "Consulta", "Listas de Alunos", "Listas de Propostas", "Avançar", "Voltar", "Quit")) {
+                case 1 :
+                    System.out.println(fsm.query());
+                    break;
+                case 2:
+                    switch (PAInput.chooseOption("Tipo de Consulta","Alunos com Autopropostas","Alunos com Candidaturas","Alunos sem Candidaturas","Voltar")){
+                        case 1:System.out.println(fsm.query(1)); break;
+                        case 2:System.out.println(fsm.query(2));break;
+                        case 3:System.out.println(fsm.query(3));break;
+                        default:break;
+                    }
+                    break;
+                case 3:
+                    System.out.println(listasPropostasUI());
+                    break;
+                case 4:
+                    fsm.avancar();
+                    break;
+                case 5:
+                    fsm.voltar();
+                    break;
+                case 8 : System.exit(1);break;
+            }
         }
+
     }
 
     private String listasPropostasUI() {

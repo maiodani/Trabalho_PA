@@ -4,7 +4,9 @@ import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
+import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
 import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
+import pt.isec.pa.apoio_poe.model.data.phase3.Empate;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
@@ -45,7 +47,9 @@ public class AutomaticoState extends PhaseStateAdapter {
 
     private void automaticoNaoAtribuido(StringBuilder str, List<Propostas> propostas){
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
+        List<Candidatura> auxCandidatura = new ArrayList<>();
         List<Propostas> propostasSemAluno = new ArrayList<>();
+        List<Aluno> aux = new ArrayList<>();
         int n = 0;
         for (Propostas p : propostas){
             if (p.getAluno()==null){
@@ -53,11 +57,7 @@ public class AutomaticoState extends PhaseStateAdapter {
             }
         }
         for (Propostas p : propostasSemAluno){
-            System.out.println(p.toString());
-        }
-        for (Propostas p : propostasSemAluno){
             List<Aluno> alunos = new ArrayList<>();
-
             for (Candidatura c : candidaturas){
                 for (String s : c.getCodigos()){
                     if(p.getCodigoId().equals(s)){
@@ -65,11 +65,13 @@ public class AutomaticoState extends PhaseStateAdapter {
                     }
                 }
             }
-
-            for (Aluno al : alunos){
-                if (!al.getPodeAceder()){
-                    alunos.remove(al);
-                    continue;
+            aux.addAll(alunos);
+            for (Aluno al : aux){
+                if(p instanceof Estagio){
+                    if (!al.getPodeAceder()){
+                        alunos.remove(al);
+                        continue;
+                    }
                 }
                 for (SiglaRamo ramo : p.getRamo()){
                     if (ramo == al.getSiglaRamo()){
@@ -81,7 +83,7 @@ public class AutomaticoState extends PhaseStateAdapter {
                 }
                 n=0;
             }
-
+            aux.clear();
             List <IClassificacao> lstTemp = new ArrayList<>();
             for (Aluno al : alunos){
                 if(al instanceof IClassificacao){
@@ -94,9 +96,13 @@ public class AutomaticoState extends PhaseStateAdapter {
                 Aluno al = (Aluno) a;
                 alunos.add(al);
             }
+            System.out.println("Alunos :");
+            for (Aluno aluno : alunos){
+                System.out.println(aluno.toString());
+            }
             if (!alunos.isEmpty()){
                 if(alunos.size()>1){
-                    if(alunos.get(0)==alunos.get(1)){
+                    if(alunos.get(0).getClassificacao()==alunos.get(1).getClassificacao()){
                         str.append("\nEncontrada situação de empate");
                         Empate empate= Empate.getInstance();
                         empate.setAlunosEmpatados(alunos);
@@ -105,11 +111,29 @@ public class AutomaticoState extends PhaseStateAdapter {
                         return;
                         // IR PRA OUTRO ESTADO - MANDAR OS DOIS ALUNOS E A PROPOSTA EM CAUSA - QUANDO ESCOLHER - CORRER A FUNCAO AGAIN
                         //TODO arranjar maneira de iniciar o desempate
+                    }else{
+                        p.setAluno(alunos.get(0));
+                        str.append("\nAluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());
+                        p.setAtribuida(true);
+                        auxCandidatura.addAll(candidaturas);
+                        for (Candidatura c : auxCandidatura){
+                            if(c.getAluno().equals(alunos.get(0))){
+                                candidaturas.remove(c);
+                            }
+                        }
+                        auxCandidatura.clear();
                     }
                 }else{
                     p.setAluno(alunos.get(0));
                     str.append("\nAluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());
                     p.setAtribuida(true);
+                    auxCandidatura.addAll(candidaturas);
+                    for (Candidatura c : auxCandidatura){
+                        if(c.getAluno().equals(alunos.get(0))){
+                            candidaturas.remove(c);
+                        }
+                    }
+                    auxCandidatura.clear();
                 }
 
             }else{

@@ -35,6 +35,11 @@ public class EstProjAutoproposto extends Propostas {
                     "\n  Nome: "+aluno.getNome()+
                     "\n  Email: "+aluno.getEmail());
         }
+        if(atribuida){
+            str.append("\nValidada");
+        }else{
+            str.append("\nNão Validada");
+        }
         str.append("\n");
         return str.toString();
     }

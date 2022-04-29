@@ -23,7 +23,6 @@ public class Aluno implements IClassificacao {
 
     @Override
     public boolean equals(Object al) {
-        if (this == al) return true;
         if (!(al instanceof Aluno)) return false;
         Aluno aluno = (Aluno) al;
 

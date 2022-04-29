@@ -52,6 +52,11 @@ public class Projeto extends Propostas {
         if (ramo != null){
             str.append("\nRamo: "+ramo);
         }
+        if(atribuida){
+            str.append("\nValidada");
+        }else{
+            str.append("\nNão Validada");
+        }
         str.append("\n");
         return str.toString();
     }

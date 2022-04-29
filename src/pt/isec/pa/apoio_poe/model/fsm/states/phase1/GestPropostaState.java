@@ -91,7 +91,7 @@ public class GestPropostaState extends PhaseStateAdapter {
                 str.append("\nRamo inválido na proposta ").append(p.getCodigoId());
                 return false;
             }
-            if (((Projeto) p).getOrientador() == null){
+            if (p.getOrientador() == null){
                 str.append("\nProfessor inválido para a proposta").append(p.getCodigoId());
                 return false;
             }

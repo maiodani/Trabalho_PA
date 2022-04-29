@@ -66,7 +66,6 @@ public class PropostasState extends PhaseStateAdapter {
             System.out.println("N FECHEI");
             return false;
         }
-        //changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
     }
 
     @Override
