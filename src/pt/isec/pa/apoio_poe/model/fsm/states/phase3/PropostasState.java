@@ -20,6 +20,8 @@ public class PropostasState extends PhaseStateAdapter {
         return PhaseState.PROPOSTAS;
     }
 
+
+
     @Override
     public boolean fecharFase() {
         changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
