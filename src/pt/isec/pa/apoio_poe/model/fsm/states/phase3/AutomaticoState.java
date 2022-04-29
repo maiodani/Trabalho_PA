@@ -98,6 +98,12 @@ public class AutomaticoState extends PhaseStateAdapter {
                 if(alunos.size()>1){
                     if(alunos.get(0)==alunos.get(1)){
                         str.append("\nEncontrada situação de empate");
+                        Empate empate= Empate.getInstance();
+                        empate.setAlunosEmpatados(alunos);
+                        empate.setProposta(p);
+                        changeState(PhaseState.EMPATE);
+                        return;
+                        // IR PRA OUTRO ESTADO - MANDAR OS DOIS ALUNOS E A PROPOSTA EM CAUSA - QUANDO ESCOLHER - CORRER A FUNCAO AGAIN
                         //TODO arranjar maneira de iniciar o desempate
                     }
                 }else{

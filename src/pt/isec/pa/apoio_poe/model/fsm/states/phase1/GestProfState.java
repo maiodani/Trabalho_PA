@@ -23,7 +23,7 @@ public class GestProfState extends PhaseStateAdapter{
 
     @Override
     public String insert() {
-        String[][] data = CsvManager.readFile("docentes_v1.csv");
+        String[][] data = CsvManager.readFile("docentes_v2.csv");
         StringBuilder str = new StringBuilder();
         List<Docente> docentes = phasesData.getDocentes();
         if(data!=null){

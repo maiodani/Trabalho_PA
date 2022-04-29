@@ -23,7 +23,7 @@ public class GestPropostaState extends PhaseStateAdapter {
 
     @Override
     public String insert() {
-        String[][] data = CsvManager.readFile("propostas_v1.csv");
+        String[][] data = CsvManager.readFile("propostas_v2.csv");
         List<Propostas> propostas = phasesData.getPropostas();
         StringBuilder str = new StringBuilder();
         Propostas p = null;
