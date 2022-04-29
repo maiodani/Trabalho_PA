@@ -190,7 +190,7 @@ public class CadidaturaState extends PhaseStateAdapter {
 
     @Override
     public String insert() {
-        String [][] data = CsvManager.readFile("candidaturas_v2.csv");
+        String [][] data = CsvManager.readFile("candidaturas.csv");
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         StringBuilder str = new StringBuilder();
 

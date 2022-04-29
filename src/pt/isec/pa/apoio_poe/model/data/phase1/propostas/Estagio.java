@@ -10,7 +10,7 @@ public class Estagio extends Propostas {
 
     private String empresa;
     public Estagio(Aluno aluno, List<SiglaRamo> ramo, String titulo, String codigoId, String empresa) {
-        super(aluno, titulo, codigoId);
+        super(aluno, titulo, codigoId,null);
         this.empresa = empresa;
         this.ramo = ramo;
     }

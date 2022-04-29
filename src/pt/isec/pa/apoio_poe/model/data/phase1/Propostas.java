@@ -9,12 +9,14 @@ public abstract class Propostas {
     protected String titulo;
     protected String codigoId;
     protected boolean atribuida;
+    protected Docente orientador;
 
 
-    public Propostas(Aluno aluno,String titulo, String codigoId) {
+    public Propostas(Aluno aluno,String titulo, String codigoId,Docente docente) {
         this.aluno=aluno;
         this.titulo = titulo;
         this.codigoId=codigoId;
+        this.orientador=docente;
         this.atribuida = false;
     }
 
@@ -63,5 +65,13 @@ public abstract class Propostas {
 
     public void setAtribuida(boolean atribuida) {
         this.atribuida = atribuida;
+    }
+
+    public Docente getOrientador() {
+        return orientador;
+    }
+
+    public void setOrientador(Docente orientador) {
+        this.orientador = orientador;
     }
 }

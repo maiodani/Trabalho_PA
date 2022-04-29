@@ -18,7 +18,7 @@ public class GestAlunoState extends PhaseStateAdapter {
     }
     @Override
     public String insert(){
-        String data[][] = CsvManager.readFile("alunos_v2.csv");
+        String data[][] = CsvManager.readFile("alunos_v1.csv");
         StringBuilder str = new StringBuilder();
         List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){

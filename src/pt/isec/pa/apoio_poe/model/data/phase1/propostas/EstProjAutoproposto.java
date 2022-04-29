@@ -7,7 +7,7 @@ public class EstProjAutoproposto extends Propostas {
 
 
     public EstProjAutoproposto(Aluno aluno, String titulo, String codigoId) {
-        super(aluno,titulo, codigoId);
+        super(aluno,titulo, codigoId,null);
     }
 
     @Override
