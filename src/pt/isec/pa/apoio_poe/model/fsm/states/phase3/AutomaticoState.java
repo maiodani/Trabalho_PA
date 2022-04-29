@@ -69,13 +69,14 @@ public class AutomaticoState extends PhaseStateAdapter {
             for (Aluno al : alunos){
                 if (!al.getPodeAceder()){
                     alunos.remove(al);
+                    continue;
                 }
                 for (SiglaRamo ramo : p.getRamo()){
                     if (ramo == al.getSiglaRamo()){
                         n = 1;
                     }
                 }
-                if (n == 1){
+                if (n != 1){
                     alunos.remove(al);
                 }
                 n=0;
@@ -93,12 +94,21 @@ public class AutomaticoState extends PhaseStateAdapter {
                 Aluno al = (Aluno) a;
                 alunos.add(al);
             }
-            System.out.println("Proposta: " + p.getCodigoId());
-            for (Aluno al : alunos){
-                System.out.println(al.toString());
+            if (!alunos.isEmpty()){
+                if(alunos.size()>1){
+                    if(alunos.get(0)==alunos.get(1)){
+                        str.append("\nEncontrada situação de empate");
+                        //TODO arranjar maneira de iniciar o desempate
+                    }
+                }else{
+                    p.setAluno(alunos.get(0));
+                    str.append("\nAluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());
+                    p.setAtribuida(true);
+                }
+
+            }else{
+                str.append("\nA proposta: ").append(p.getCodigoId()).append(" não possui alunos que cumpram os requesitos");
             }
-            p.setAluno(alunos.get(0));
-            str.append("Aluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());
         }
     }
 
