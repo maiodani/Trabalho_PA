@@ -78,8 +78,8 @@ public class ConfigState extends PhaseStateAdapter {
             }
 
         }
-        System.out.printf("Nº ALUNOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nAlunosDA,nAlunosSI,nAlunosRAS);
-        System.out.printf("Nº PROJETOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nProjetosDA,nProjetosSI,nProjetosRAS);
+        System.out.printf("\nNº ALUNOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nAlunosDA,nAlunosSI,nAlunosRAS);
+        System.out.printf("\nNº PROJETOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nProjetosDA,nProjetosSI,nProjetosRAS);
 
         if(nProjetosDA>=nAlunosDA && nProjetosSI>=nAlunosSI && nProjetosRAS>=nAlunosRAS){
             return true;

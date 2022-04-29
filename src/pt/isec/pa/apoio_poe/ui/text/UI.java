@@ -62,7 +62,6 @@ public class UI {
 
 
     private void cadidaturaUI() {
-        //TODO fechar fase
         System.out.println("Fase de Candidatura");
         switch (PAInput.chooseOption("Opcoes:","Inserção","Consulta","Listas de Alunos","Listas de Propostas","Avançar","Voltar","Fechar Fase", "Quit")) {
             case 1 :
@@ -95,7 +94,7 @@ public class UI {
                     if(fsm.fecharFase()){
                         fsm.avancar();
                     }else{
-                        System.out.println("Fase anterior não pode avançar");
+                        System.out.println("Fase anterior não esta fechada, não pode avançar");
                     }
                 }
                 break;
@@ -163,16 +162,27 @@ public class UI {
 
     private void configUI() {
         System.out.println("Fase de Configuracao");
-        switch (PAInput.chooseOption("Opcoes:", "Gestao Aluno", "Gestao Professor", "Gestao Propostas","Avançar","Fechar Fase", "Quit")) {
+        int op = 0;
+        if(fsm.getFechado()!=0){
+            op = PAInput.chooseOption("Opcoes:", "Gestao Aluno", "Gestao Professor", "Gestao Propostas","Avançar", "Quit");
+        }else{
+            op = PAInput.chooseOption("Opcoes:", "Gestao Aluno", "Gestao Professor", "Gestao Propostas", "Avançar", "Fechar Fase", "Quit");
+        }
+        switch (op) {
             case 1 : fsm.iniciar(1);break;
             case 2 : fsm.iniciar(2);break;
             case 3 : fsm.iniciar(3);break;
             case 4 : fsm.avancar();break;
             case 5 :
-                if(fsm.fecharFase()){
-                    fsm.avancar();
-                }else{
-                    System.out.println("NÃO HÁ PROJETOS SUFICIENTES PARA OS ALUNOS DISPONIVEIS");
+                if(fsm.getFechado()==0){
+                    if(fsm.fecharFase()){
+                        System.out.println("Fase Fechada");
+                        fsm.avancar();
+                    }else{
+                        System.out.println("NÃO HÁ PROJETOS SUFICIENTES PARA OS ALUNOS DISPONIVEIS");
+                    }
+                }else {
+                    System.exit(1);break;
                 }
                 break;
             case 6 : System.exit(1);break;
