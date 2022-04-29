@@ -42,7 +42,7 @@ public class PropostasState extends PhaseStateAdapter {
 
     @Override
     public boolean fecharFase() {
-        //TODO TESTAS QUANDO TIVER TUDO A FUNCIONAR
+        //TODO TESTAR QUANDO TIVER TUDO A FUNCIONAR
         int count=0;
         List<Aluno> a = new ArrayList<>();
         List<Candidatura> c = phasesData.getCandidaturas();

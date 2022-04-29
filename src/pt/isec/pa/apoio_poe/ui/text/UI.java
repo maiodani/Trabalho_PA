@@ -251,7 +251,7 @@ public class UI {
             }
         }else{
             switch (PAInput.chooseOption("Opcoes:","Consulta", "Voltar")) {
-                case 1 -> fsm.query();
+                case 1 -> System.out.println(fsm.query());
                 case 2 -> fsm.voltar();
             }
         }
