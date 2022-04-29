@@ -30,23 +30,23 @@ public class UI {
     private void propostaUI() {
         System.out.println("Fase de Propostas");
         switch (PAInput.chooseOption("Opcoes:",
-                "Atribuição automática autopropostas/propostas de docentes com aluno",
-                "Atribuição automática aos alunos sem atribuições",
-                "Atribuição manual",
-                "Remoção manual",
-                "Lista",
+                "Atribuições automática",
+                "Operações manuais",
+                "Lista de Alunos",
+                "Lista de Propostas",
                 "Voltar",
                 "Quit")) {
             case 1:
-                System.out.println(fsm.insert());//atribuição automatica 1
+                fsm.iniciar(1);//atribuição automatica
                 break;
             case 2:
-                System.out.println(fsm.query());//atribuição automatica 2
+                fsm.iniciar(2);//atribuição manual
                 break;
-            case 3: //atribuição manual
+            case 3:
+                listaAlunosUI();
                 break;
             case 4:
-                System.out.println(listasPropostasUI());
+                listasPropostasUI();
                 break;
             case 5:
                 fsm.voltar();
@@ -55,6 +55,21 @@ public class UI {
                 System.exit(1);
                 break;
 
+        }
+    }
+    private void listaAlunosUI(){
+        switch (PAInput.chooseOption("Listagem de alunos com :",
+                "Autoproposta associada",
+                "Candidatura já registada",
+                "Propostas atribuida",
+                "Sem proposta atribuida")
+        ){
+            case 1:
+                System.out.println(fsm.query(0));break;
+            case 2: System.out.println(fsm.query(1));break;
+            case 3: System.out.println(fsm.query(2));break;
+            case 4: System.out.println(fsm.query(3));break;
+            default: break;
         }
     }
 
@@ -177,7 +192,6 @@ public class UI {
                 if(fsm.getFechado()==0){
                     if(fsm.fecharFase()){
                         System.out.println("Fase Fechada");
-                        fsm.avancar();
                     }else{
                         System.out.println("NÃO HÁ PROJETOS SUFICIENTES PARA OS ALUNOS DISPONIVEIS");
                     }

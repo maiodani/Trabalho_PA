@@ -28,6 +28,7 @@ public class CadidaturaState extends PhaseStateAdapter {
     public boolean fecharFase() {
 
         if(phasesData.getFechado()==1){
+            changeState(PhaseState.PROPOSTAS);
             phasesData.setFechado(2);
             return true;
         }

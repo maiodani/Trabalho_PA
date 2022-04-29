@@ -20,4 +20,6 @@ public class Candidatura {
     public List<String> getCodigos() {
         return codigos;
     }
+
+
 }

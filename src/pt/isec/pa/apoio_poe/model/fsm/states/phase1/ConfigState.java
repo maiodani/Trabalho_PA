@@ -59,11 +59,11 @@ public class ConfigState extends PhaseStateAdapter {
         for(Propostas p: propostas){
             List<SiglaRamo> ramos = new ArrayList<>();
             if(p instanceof Estagio){
-                System.out.println("ESTAGIO");
+                //System.out.println("ESTAGIO");
                 Estagio aux = (Estagio) p;
                 ramos=aux.getRamo();
             }else if (p instanceof Projeto) {
-                    System.out.println("PROJETO");
+                  //  System.out.println("PROJETO");
                     Projeto aux = (Projeto) p;
                     ramos = aux.getRamo();
             }else if(p instanceof EstProjAutoproposto){
@@ -78,8 +78,8 @@ public class ConfigState extends PhaseStateAdapter {
             }
 
         }
-        System.out.printf("\nNº ALUNOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nAlunosDA,nAlunosSI,nAlunosRAS);
-        System.out.printf("\nNº PROJETOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nProjetosDA,nProjetosSI,nProjetosRAS);
+        //System.out.printf("\nNº ALUNOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nAlunosDA,nAlunosSI,nAlunosRAS);
+        //System.out.printf("\nNº PROJETOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nProjetosDA,nProjetosSI,nProjetosRAS);
 
         if(nProjetosDA>=nAlunosDA && nProjetosSI>=nAlunosSI && nProjetosRAS>=nAlunosRAS){
             return true;
