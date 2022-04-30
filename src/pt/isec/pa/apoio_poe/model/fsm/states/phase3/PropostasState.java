@@ -93,11 +93,6 @@ public class PropostasState extends PhaseStateAdapter {
                 }
                 break;
             case 2:
-                p = phasesData.getPropostas();
-                //TODO PENSAR NISTO
-                for(Propostas pa:p){
-                    if(pa.isAtribuida()==true)str.append(pa.toString());
-                }
                 break;
             case 3:
                 p = phasesData.getPropostas();

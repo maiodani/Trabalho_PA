@@ -51,7 +51,7 @@ public class ManualState extends PhaseStateAdapter {
 
         return str.toString();
     }
-
+    @Override
     public boolean voltar() {
         changeState(PhaseState.PROPOSTAS);
         return true;

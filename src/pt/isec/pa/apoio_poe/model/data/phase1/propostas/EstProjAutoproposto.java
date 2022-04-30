@@ -29,6 +29,11 @@ public class EstProjAutoproposto extends Propostas {
         StringBuilder str = new StringBuilder();
         str.append("\nCodigo: "+codigoId+
                 "\nTitulo: "+titulo);
+        if(orientador != null){
+            str.append("\nDocente: ");
+            str.append("\n  Nome: "+orientador.getNome()+
+                    "\n  Email: "+orientador.getEmail());
+        }
         if (aluno != null){
             str.append("\nAluno: ");
             str.append("\n  N: "+aluno.getNumEstudante()+

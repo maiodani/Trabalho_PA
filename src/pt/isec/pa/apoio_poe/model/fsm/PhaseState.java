@@ -13,7 +13,9 @@ import pt.isec.pa.apoio_poe.model.fsm.states.phase3.PropostasState;
 import pt.isec.pa.apoio_poe.model.fsm.states.phase4.AtribuicaoOrientadoresState;
 import pt.isec.pa.apoio_poe.model.fsm.states.phase5.ConsultaState;
 
-public enum PhaseState {
+import java.io.Serializable;
+
+public enum PhaseState implements Serializable {
     CONFIG,
     GEST_ALUNO,
     GEST_PROFESSOR,

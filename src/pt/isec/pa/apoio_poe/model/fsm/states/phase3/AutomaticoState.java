@@ -113,8 +113,6 @@ public class AutomaticoState extends PhaseStateAdapter {
                         empate.setProposta(p);
                         changeState(PhaseState.EMPATE);
                         return;
-                        // IR PRA OUTRO ESTADO - MANDAR OS DOIS ALUNOS E A PROPOSTA EM CAUSA - QUANDO ESCOLHER - CORRER A FUNCAO AGAIN
-                        //TODO arranjar maneira de iniciar o desempate
                     }else{
                         p.setAluno(alunos.get(0));
                         str.append("\nAluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());

@@ -32,8 +32,6 @@ public class CadidaturaState extends PhaseStateAdapter {
             phasesData.setFechado(2);
             return true;
         }
-
-        changeState(PhaseState.PROPOSTAS);
         return false;
     }
 

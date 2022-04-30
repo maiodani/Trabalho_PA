@@ -28,8 +28,39 @@ public class UI {
                 case EMPATE -> propostaAutomaticoEmpateUI();
                 case MANUAL -> propostaManualUI();
                 case ATRIBUICAO_ORIENTADORES -> atribuicaoOrientadoresUI();
+                case CONSULTA -> consultaUI();
                 default -> System.out.println("State inválido");
             }
+        }
+    }
+
+    private void consultaUI() {
+        switch (PAInput.chooseOption("Fase de Consulta",
+                "Lista de alunos com propostas atribuidas",
+                "Lista de alunos sem propostas e com candidatura",
+                "Propostas disponiveis",
+                "Propostas atribuidas",
+                "Estatisticas de orientações por docente",
+                "Quit")
+        ){
+            case 1:
+                System.out.println(fsm.query(1));
+                break;
+            case 2:
+                System.out.println(fsm.query(2));
+                break;
+            case 3:
+                System.out.println(fsm.query(3));
+                break;
+            case 4:
+                System.out.println(fsm.query(4));
+                break;
+            case 5:
+                System.out.println(fsm.query(5));
+                break;
+            case 6:
+                System.exit(1);
+                break;
         }
     }
 
@@ -60,10 +91,30 @@ public class UI {
             case 5:
                 break;
             case 6:
+                dadosDiversosUI();
                 break;
             case 7:
                 break;
             case 8:
+                break;
+        }
+    }
+
+    private void dadosDiversosUI() {
+        switch (PAInput.chooseOption("Dados diversos",
+                "Lista de estudantes com propostas atribuidas e orientador atribuido",
+                "Lista de estudantes com propostas atribuidas mas sem orientador atribuido",
+                "Estatisticas de orientações por docente"
+                )
+        ){
+            case 1:
+                System.out.println(fsm.query(1));
+                break;
+            case 2:
+                System.out.println(fsm.query(2));
+                break;
+            case 3:
+                System.out.println(fsm.query(3));
                 break;
         }
     }

@@ -38,6 +38,11 @@ public class Estagio extends Propostas {
         str.append("\nCodigo: "+codigoId+
                 "\nTitulo: "+titulo);
         str.append("\nEmpresa: "+empresa);
+        if(orientador != null){
+            str.append("\nDocente: ");
+            str.append("\n  Nome: "+orientador.getNome()+
+                    "\n  Email: "+orientador.getEmail());
+        }
         if (aluno != null){
             str.append("\nAluno: ");
             str.append("\n  N: "+aluno.getNumEstudante()+

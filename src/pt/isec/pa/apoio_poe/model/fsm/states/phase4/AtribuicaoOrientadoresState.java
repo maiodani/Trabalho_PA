@@ -37,7 +37,6 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
         List<Propostas> p = phasesData.getPropostas();
         for(Propostas pa:p){
-
             if(pa instanceof Projeto && pa.isAtribuida()){
                 Projeto aux = (Projeto)pa;
                 aux.setDocenteConfirmado(true);
@@ -56,9 +55,15 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
         Docente docente = null;
         boolean aux=true;
         for(Propostas pa:p){
-            System.out.println(pa.getCodigoId()+"|"+options[0]);
-            if(pa.getCodigoId()==options[0]){
-                System.out.println("TESTE");
+            if(pa.getCodigoId().equals(options[0])){
+                if(pa.getOrientador()!=null){
+                    str.append("\nProjeto já com Docente atribuido");
+                    return str.toString();
+                }
+                if(!pa.isAtribuida()){
+                    str.append("\nProjeto sem aluno atribuido");
+                    return str.toString();
+                }
                 propostas=pa;
                 aux=false;
                 break;
@@ -70,7 +75,7 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
         }
         aux=true;
         for(Docente dc:d){
-            if(dc.getEmail()==options[1]){
+            if(dc.getEmail().equals(options[1])){
                 docente=dc;
                 aux=false;
                 break;
@@ -101,6 +106,80 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
                     str.append(pa.toString());
                 }
             }
+        }
+        return str.toString();
+    }
+
+    @Override
+    public String query(int n) {
+        StringBuilder str = new StringBuilder();
+        List<Propostas> p;
+        List<Docente> d;
+        switch (n){
+            case 1:
+                p = phasesData.getPropostas();
+                for(Propostas pa:p){
+                    if(pa instanceof Projeto){
+                        Projeto aux = (Projeto) pa;
+                        if(aux.isAtribuida() && aux.isDocenteConfirmado() && aux.getOrientador()!=null){
+                            str.append(aux.getAluno().toString()+"Codigo do Projeto "+pa.getCodigoId()+"\n");
+                        }
+                    }else{
+                        if(pa.isAtribuida() && pa.getOrientador()!=null){
+                            str.append(pa.getAluno().toString()+"Codigo do Projeto "+pa.getCodigoId()+"\n");
+                        }
+                    }
+                }
+                break;
+            case 2 :
+                p = phasesData.getPropostas();
+                for(Propostas pa:p){
+                    if(pa instanceof Projeto){
+                        Projeto aux = (Projeto) pa;
+                        if(pa.isAtribuida() && !aux.isDocenteConfirmado()){
+                            str.append(pa.getAluno().toString()+"Codigo do Projeto "+pa.getCodigoId()+"\n");
+                        }
+                    }else{
+                        if(pa.isAtribuida() && pa.getOrientador()==null){
+                            str.append(pa.getAluno().toString()+"Codigo do Projeto "+pa.getCodigoId()+"\n");
+                        }
+                    }
+                }
+                break;
+            case 3:
+                double media;
+                int count,aux=0,max=0,min=0,total=0;
+                p = phasesData.getPropostas();
+                d = phasesData.getDocentes();
+
+                for(Propostas pa:p){
+                    if(pa.isAtribuida() && pa.getOrientador()!=null){
+                        total++;
+                    }
+                }
+                for(Docente dc:d){
+                    count=0;
+                    for(Propostas pa:p){
+                        if(pa.getOrientador()!=null)
+                            if(dc.getEmail()==pa.getOrientador().getEmail()){
+                                count++;
+                            }
+                    }
+                    if(count>max){
+                        max=count;
+                    }
+                    if(count<min){
+                        min=count;
+                    }
+                    str.append("\nO docente "+dc.getNome()+" têm "+count+" orientações");
+                }
+                media= (double) total/d.size();
+                str.append("\nCada docente têm em media ").append(media).append(" orientações.");
+                str.append("\nO menor némero de orietações de um docente é "+min);
+                str.append("\nO maior número de orietações de um docente é "+max);
+                break;
+            default:
+                break;
         }
         return str.toString();
     }
