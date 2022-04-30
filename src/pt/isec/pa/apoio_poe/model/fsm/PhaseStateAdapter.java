@@ -2,6 +2,8 @@ package pt.isec.pa.apoio_poe.model.fsm;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 
+import java.util.List;
+
 public abstract class PhaseStateAdapter implements IPhaseState {
     protected PhasesData phasesData;
     protected PhaseContext context;
@@ -54,5 +56,8 @@ public abstract class PhaseStateAdapter implements IPhaseState {
         return false;
     }
 
-
+    @Override
+    public String insert(String ... options) {
+        return null;
+    }
 }

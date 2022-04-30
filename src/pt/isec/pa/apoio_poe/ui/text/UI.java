@@ -9,7 +9,6 @@ import java.util.List;
 
 public class UI {
     private PhaseContext fsm;
-
     public UI(PhaseContext fsm) {
         this.fsm = fsm;
     }
@@ -28,10 +27,47 @@ public class UI {
                 case AUTOMATICO -> propostaAutomaticoUI();
                 case EMPATE -> propostaAutomaticoEmpateUI();
                 case MANUAL -> propostaManualUI();
+                case ATRIBUICAO_ORIENTADORES -> atribuicaoOrientadoresUI();
                 default -> System.out.println("State inválido");
             }
         }
     }
+
+    private void atribuicaoOrientadoresUI() {
+        switch (PAInput.chooseOption("Atribuição de Orientadores",
+                "Associação automatica de docentes a projetos",
+                "Atribuição manual",
+                "Consultar atribuições",
+                "Alterar atribuição",
+                "Eliminar atribuição",
+                "Dados diversos",
+                "Fechar fase",
+                "Voltar")
+        ){
+            case 1:
+                System.out.println(fsm.insert());
+                break;
+            case 2:
+                String pro=PAInput.readString("Projeto que pretende atribuir Orientador -> ",true);
+                String doc=PAInput.readString("Email do docente -> ",true);
+                System.out.println(fsm.insert(pro,doc));
+                break;
+            case 3:
+                System.out.println(fsm.query());
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+        }
+    }
+
     private void propostaAutomaticoEmpateUI() {
         System.out.println(fsm.query());
         int op = PAInput.readInt("Insira o numero do aluno desejado");
@@ -83,6 +119,7 @@ public class UI {
                 "Operações manuais",
                 "Lista de Alunos",
                 "Lista de Propostas",
+                "Fechar Fase",
                 "Voltar",
                 "Quit")) {
             case 1:
@@ -98,9 +135,12 @@ public class UI {
                 listasPropostasUI();
                 break;
             case 5:
-                fsm.voltar();
+                fsm.fecharFase();
                 break;
             case 6:
+                fsm.voltar();
+                break;
+            case 7:
                 System.exit(1);
                 break;
 

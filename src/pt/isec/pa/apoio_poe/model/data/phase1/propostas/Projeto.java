@@ -12,6 +12,7 @@ public class Projeto extends Propostas {
     public Projeto(Aluno aluno, Docente orientador, List<SiglaRamo> ramo, String titulo, String codigoId) {
         super(aluno, titulo, codigoId,orientador);
         this.ramo = ramo;
+        this.docenteConfirmado =false;
     }
 
 

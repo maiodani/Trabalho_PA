@@ -42,7 +42,6 @@ public class PropostasState extends PhaseStateAdapter {
 
     @Override
     public boolean fecharFase() {
-        //TODO TESTAR QUANDO TIVER TUDO A FUNCIONAR E ADICIONAR AO UI A OPCAO DE FECHAR
         int count=0;
         List<Aluno> a = new ArrayList<>();
         List<Candidatura> c = phasesData.getCandidaturas();
@@ -59,11 +58,9 @@ public class PropostasState extends PhaseStateAdapter {
             }
         }
         if(count==a.size()){
-            System.out.println("FECHEI");
             changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
             return true;
         }else{
-            System.out.println("N FECHEI");
             return false;
         }
     }
