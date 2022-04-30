@@ -95,7 +95,7 @@ public class ConfigState extends PhaseStateAdapter {
            return true;
         }
 
-        changeState(PhaseState.CONFIG);
+        changeState(PhaseState.CANDIDATURA);
         return false;
     }
 

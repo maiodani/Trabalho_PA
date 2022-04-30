@@ -70,7 +70,7 @@ public class UI {
 
     private void propostaAutomaticoEmpateUI() {
         System.out.println(fsm.query());
-        int op = PAInput.readInt("Insira o numero do aluno desejado");
+        int op = PAInput.readInt("\nInsira o numero do aluno desejado: ");
         System.out.println(fsm.insert(op));
         empate = true;
     }
@@ -83,7 +83,8 @@ public class UI {
                     "Voltar")
             ){
                 case 1:
-                    fsm.insert();
+                    fsm.query();
+                    fsm.insert(PAInput.readInt(""));
                     break;
                 case 2:
 
@@ -93,7 +94,6 @@ public class UI {
             }
         }else{
             System.out.println("1.Voltar");
-
         }
     }
 
@@ -165,7 +165,7 @@ public class UI {
     private void cadidaturaUI() {
         System.out.println("Fase de Candidatura");
         if (fsm.getFechado()<2) {
-            switch (PAInput.chooseOption("Opcoes:", "Inserção", "Consulta", "Listas de Alunos", "Listas de Propostas", "Avançar", "Voltar", "Fechar Fase", "Quit")){
+            switch (PAInput.chooseOption("Opcoes:", "Inserção", "Consulta", "Listas de Alunos", "Listas de Propostas", "Exportar", "Avançar", "Voltar", "Fechar Fase", "Quit")){
                 case 1 :
                     if (fsm.getFechado()<2){
                         System.out.println(fsm.insert());
@@ -185,13 +185,15 @@ public class UI {
                 case 4:
                     System.out.println(listasPropostasUI());
                     break;
-                case 5:
-                    fsm.avancar();
+                case 5:fsm.export();
                     break;
                 case 6:
+                    fsm.avancar();
+                    break;
+                case 7:
                     fsm.voltar();
                     break;
-                case 7 :
+                case 8 :
                     if (fsm.getFechado()<2){
                         if(fsm.fecharFase()){
                             fsm.avancar();
@@ -200,10 +202,10 @@ public class UI {
                         }
                     }
                     break;
-                case 8 : System.exit(1);break;
+                case 9 : System.exit(1);break;
             }
         }else{
-            switch (PAInput.chooseOption("Opcoes:", "Consulta", "Listas de Alunos", "Listas de Propostas", "Avançar", "Voltar", "Quit")) {
+            switch (PAInput.chooseOption("Opcoes:", "Consulta", "Listas de Alunos", "Listas de Propostas", "Exportar", "Avançar", "Voltar", "Quit")) {
                 case 1 :
                     System.out.println(fsm.query());
                     break;
@@ -218,16 +220,17 @@ public class UI {
                 case 3:
                     System.out.println(listasPropostasUI());
                     break;
-                case 4:
-                    fsm.avancar();
+                case 4: fsm.export();
                     break;
                 case 5:
+                    fsm.avancar();
+                    break;
+                case 6:
                     fsm.voltar();
                     break;
-                case 8 : System.exit(1);break;
+                case 7 : System.exit(1);break;
             }
         }
-
     }
 
     private String listasPropostasUI() {

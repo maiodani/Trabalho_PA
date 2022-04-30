@@ -9,6 +9,8 @@ import java.util.List;
 
 public class Projeto extends Propostas {
 
+    private boolean docenteConfirmado;
+
     public Projeto(Aluno aluno, Docente orientador, List<SiglaRamo> ramo, String titulo, String codigoId) {
         super(aluno, titulo, codigoId,orientador);
         this.ramo = ramo;
@@ -64,5 +66,13 @@ public class Projeto extends Propostas {
 
     public Docente getOrientador() {
         return orientador;
+    }
+
+    public boolean isDocenteConfirmado() {
+        return docenteConfirmado;
+    }
+
+    public void setDocenteConfirmado(boolean docenteConfirmado) {
+        this.docenteConfirmado = docenteConfirmado;
     }
 }

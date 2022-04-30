@@ -46,8 +46,6 @@ public class EmpateState extends PhaseStateAdapter {
     public String insert(int op) {
         Empate empate = Empate.getInstance();
         StringBuilder str = new StringBuilder();
-        List<Candidatura> candidaturas = phasesData.getCandidaturas();
-        List<Candidatura> auxCandidatura = new ArrayList<>();
         List<Aluno> alunos = empate.getAlunosEmpatados();
         List<Propostas> propostas = phasesData.getPropostas();
         int flag = 1;
@@ -59,13 +57,6 @@ public class EmpateState extends PhaseStateAdapter {
                         p.setAluno(al);
                         p.setAtribuida(true);
                         str.append("Aluno: ").append(al.getNumEstudante()).append(" escolhido para a proposta ").append(p.getCodigoId());
-                        auxCandidatura.addAll(candidaturas);
-                        for (Candidatura c : auxCandidatura){
-                            if(c.getAluno().equals(al)){
-                                candidaturas.remove(c);
-                            }
-                        }
-                        auxCandidatura.clear();
                         flag=0;
                     }
                 }
@@ -75,6 +66,8 @@ public class EmpateState extends PhaseStateAdapter {
                 changeState(PhaseState.AUTOMATICO);
             }
         }
+        empate.setProposta(null);
+        empate.getAlunosEmpatados().clear();
         return str.toString();
     }
 

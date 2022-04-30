@@ -212,7 +212,13 @@ public class CadidaturaState extends PhaseStateAdapter {
 
     @Override
     public String export() {
-        return null;
+        List<Candidatura> candidaturas = phasesData.getCandidaturas();
+        StringBuilder str = new StringBuilder();
+        for (Candidatura candidatura : candidaturas){
+            str.append(candidatura.exportar());
+        }
+        str.deleteCharAt(str.length()-1);
+        return CsvManager.writeFile("candidaturas_export.csv", str);
     }
 
     private boolean canAdd(Candidatura c, List<Candidatura> candidaturas, StringBuilder str) {
@@ -253,7 +259,6 @@ public class CadidaturaState extends PhaseStateAdapter {
                 return false;
             }
         }
-        //TODO ACABAR RESTRICOES DE ERRO
         return true;
     }
 

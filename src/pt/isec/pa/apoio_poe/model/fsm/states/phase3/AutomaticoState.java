@@ -47,7 +47,6 @@ public class AutomaticoState extends PhaseStateAdapter {
 
     private void automaticoNaoAtribuido(StringBuilder str, List<Propostas> propostas){
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
-        List<Candidatura> auxCandidatura = new ArrayList<>();
         List<Propostas> propostasSemAluno = new ArrayList<>();
         List<Aluno> aux = new ArrayList<>();
         int n = 0;
@@ -71,6 +70,11 @@ public class AutomaticoState extends PhaseStateAdapter {
                     if (!al.getPodeAceder()){
                         alunos.remove(al);
                         continue;
+                    }
+                }
+                for (Propostas p2 : propostas){
+                    if(al.equals(p2.getAluno())){
+                        alunos.remove(al);
                     }
                 }
                 for (SiglaRamo ramo : p.getRamo()){
@@ -115,25 +119,11 @@ public class AutomaticoState extends PhaseStateAdapter {
                         p.setAluno(alunos.get(0));
                         str.append("\nAluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());
                         p.setAtribuida(true);
-                        auxCandidatura.addAll(candidaturas);
-                        for (Candidatura c : auxCandidatura){
-                            if(c.getAluno().equals(alunos.get(0))){
-                                candidaturas.remove(c);
-                            }
-                        }
-                        auxCandidatura.clear();
                     }
                 }else{
                     p.setAluno(alunos.get(0));
                     str.append("\nAluno: ").append(p.getAluno().getNumEstudante()).append(" adicionado á proposta: ").append(p.getCodigoId());
                     p.setAtribuida(true);
-                    auxCandidatura.addAll(candidaturas);
-                    for (Candidatura c : auxCandidatura){
-                        if(c.getAluno().equals(alunos.get(0))){
-                            candidaturas.remove(c);
-                        }
-                    }
-                    auxCandidatura.clear();
                 }
 
             }else{

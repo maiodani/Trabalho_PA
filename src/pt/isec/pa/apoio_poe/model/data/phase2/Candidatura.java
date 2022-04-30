@@ -1,6 +1,7 @@
 package pt.isec.pa.apoio_poe.model.data.phase2;
 
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
+import pt.isec.pa.apoio_poe.model.data.phase1.SiglaCurso;
 
 import java.util.List;
 
@@ -19,6 +20,16 @@ public class Candidatura {
 
     public List<String> getCodigos() {
         return codigos;
+    }
+
+    public String exportar(){
+        StringBuilder str = new StringBuilder();
+        str.append(aluno.getNumEstudante());
+        for (String s : codigos){
+            str.append(",").append(s);
+        }
+        str.append("\n");
+        return str.toString();
     }
 
 
