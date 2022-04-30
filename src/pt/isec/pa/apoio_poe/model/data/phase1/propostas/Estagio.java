@@ -26,6 +26,9 @@ public class Estagio extends Propostas implements Serializable {
                 .append(titulo)
                 .append(",")
                 .append(empresa);
+        if (orientador!= null){
+            str.append(",").append(orientador.getEmail());
+        }
         if (aluno != null){
             str.append(",").append(aluno.getNumEstudante());
         }

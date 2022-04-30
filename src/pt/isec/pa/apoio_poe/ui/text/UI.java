@@ -48,6 +48,7 @@ public class UI {
                 "Propostas disponiveis",
                 "Propostas atribuidas",
                 "Estatisticas de orientações por docente",
+                "Exportar",
                 "Quit")
         ){
             case 1:
@@ -66,6 +67,10 @@ public class UI {
                 System.out.println(fsm.query(5));
                 break;
             case 6:
+                fsm.export();
+                break;
+            case 7:
+                fsm.saveBin();
                 System.exit(1);
                 break;
         }
@@ -79,8 +84,9 @@ public class UI {
                 "Alterar atribuição",
                 "Eliminar atribuição",
                 "Dados diversos",
-                "Fechar fase",
+                "Exportar",
                 "Voltar",
+                "Fechar fase",
                 "Quit")
         ){
             case 1:
@@ -101,11 +107,13 @@ public class UI {
             case 6:
                 dadosDiversosUI();
                 break;
-            case 7:fsm.fecharFase();
+            case 7:fsm.export();
                 break;
             case 8:fsm.voltar();
                 break;
-            case 9:
+            case 9:fsm.fecharFase();
+                break;
+            case 10:
                 fsm.saveBin();
                 System.exit(1);
                 break;
@@ -147,6 +155,7 @@ public class UI {
             ){
                 case 1:
                     System.out.println(fsm.query());
+                    System.out.println("Insira 0 caso precise de sair");
                     System.out.println(fsm.insert(PAInput.readString("\nInsira o ID da proposta: ", true), PAInput.readString("\nInsira o numero de aluno: ", true)));
                     break;
                 case 2:
@@ -189,6 +198,7 @@ public class UI {
                     "Operações manuais",
                     "Lista de Alunos",
                     "Lista de Propostas",
+                    "Exportar",
                     "Avançar",
                     "Voltar",
                     "Fechar Fase",
@@ -206,15 +216,18 @@ public class UI {
                     listasPropostasUI();
                     break;
                 case 5:
-                    fsm.avancar();
+                    fsm.export();
                     break;
                 case 6:
-                    fsm.voltar();
+                    fsm.avancar();
                     break;
                 case 7:
-                    fsm.fecharFase();
+                    fsm.voltar();
                     break;
                 case 8:
+                    fsm.fecharFase();
+                    break;
+                case 9:
                     fsm.saveBin();
                     System.exit(1);
                     break;
@@ -224,6 +237,7 @@ public class UI {
                     "Atribuições automática",
                     "Lista de Alunos",
                     "Lista de Propostas",
+                    "Exportar",
                     "Avançar",
                     "Voltar",
                     "Quit")) {
@@ -237,12 +251,15 @@ public class UI {
                     listasPropostasUI();
                     break;
                 case 4:
-                    fsm.avancar();
+                    fsm.export();
                     break;
                 case 5:
-                    fsm.voltar();
+                    fsm.avancar();
                     break;
                 case 6:
+                    fsm.voltar();
+                    break;
+                case 7:
                     fsm.saveBin();
                     System.exit(1);
                     break;

@@ -207,8 +207,8 @@ public class CadidaturaState extends PhaseStateAdapter {
     public String export() {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         StringBuilder str = new StringBuilder();
-        for (Candidatura candidatura : candidaturas){
-            str.append(candidatura.exportar());
+        for (Candidatura c : candidaturas){
+            str.append(c.exportar());
         }
         if(str.length()!=0) {
             str.deleteCharAt(str.length() - 1);

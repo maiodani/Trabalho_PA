@@ -1,5 +1,6 @@
 package pt.isec.pa.apoio_poe.model.fsm.states.phase5;
 
+import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
@@ -113,5 +114,46 @@ public class ConsultaState extends PhaseStateAdapter {
                 break;
         }
         return str.toString();
+    }
+
+    @Override
+    public String export() {
+        int i = 1;
+        List<Candidatura> candidaturas = phasesData.getCandidaturas();
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Propostas> propostas = phasesData.getPropostas();
+        StringBuilder str = new StringBuilder();
+        for (Candidatura c : candidaturas){
+            for (Aluno al :alunos){
+                if(c.getAluno().equals(al)){
+                    str.append(al.getNumEstudante());
+                    for (String s : c.getCodigos()){
+                        str.append(",").append(s);
+                    }
+                    for (Propostas p : propostas){
+                        if(p.getAluno()!=null){
+                            if(p.getAluno().equals(al)){
+                                str.append(",").append(p.getCodigoId());
+                                for (String s : c.getCodigos()){
+                                    if (s.equalsIgnoreCase(p.getCodigoId())){
+                                        str.append(",").append(i);
+                                        break;
+                                    }
+                                    i++;
+                                }
+                                if(p.getOrientador()!=null){
+                                    str.append(",").append(p.getOrientador().getEmail());
+                                }
+                            }
+                        }
+                    }
+                    str.append("\n");
+                }
+            }
+        }
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
+        return CsvManager.writeFile("consulta_export.csv", str);
     }
 }

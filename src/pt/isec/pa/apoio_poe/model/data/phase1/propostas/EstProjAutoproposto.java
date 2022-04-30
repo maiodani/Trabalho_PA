@@ -19,6 +19,9 @@ public class EstProjAutoproposto extends Propostas implements Serializable {
                 .append(codigoId)
                 .append(",")
                 .append(titulo);
+        if (orientador!= null){
+            str.append(",").append(orientador.getEmail());
+        }
         if (aluno != null){
             str.append(",").append(aluno.getNumEstudante());
         }
