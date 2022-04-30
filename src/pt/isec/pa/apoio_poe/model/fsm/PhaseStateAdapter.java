@@ -8,13 +8,13 @@ public abstract class PhaseStateAdapter implements IPhaseState {
     protected PhasesData phasesData;
     protected PhaseContext context;
 
-    public PhaseStateAdapter(PhasesData phasesData, PhaseContext context){
+    public PhaseStateAdapter(PhaseContext context){
         this.context= context;
-        this.phasesData=phasesData;
+        this.phasesData=PhasesData.getInstance();
     }
 
     protected void changeState(PhaseState newState) {
-        context.changeState(newState.createState(context, phasesData));
+        context.changeState(newState.createState(context));
     }
 
     @Override

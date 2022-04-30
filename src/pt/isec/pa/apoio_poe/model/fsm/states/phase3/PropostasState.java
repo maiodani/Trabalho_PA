@@ -14,13 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropostasState extends PhaseStateAdapter {
-    public PropostasState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
-    }
-
-    @Override
-    public String export() {
-        return null;
+    public PropostasState(PhaseContext context) {
+        super(context);
     }
 
     @Override
@@ -59,17 +54,13 @@ public class PropostasState extends PhaseStateAdapter {
         }
         if(count==a.size()){
             changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
+            phasesData.setFechado(3);
             return true;
         }else{
             return false;
         }
     }
 
-    @Override
-    public boolean voltar() {
-        changeState(PhaseState.CANDIDATURA);
-        return true;
-    }
     @Override
     public String query(int n) {
         StringBuilder str = new StringBuilder();
@@ -178,5 +169,22 @@ public class PropostasState extends PhaseStateAdapter {
                 break;
         }
         return str.toString();
+    }
+
+    @Override
+    public boolean voltar() {
+        changeState(PhaseState.CANDIDATURA);
+        return true;
+    }
+
+    @Override
+    public boolean avancar() {
+        changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
+        return true;
+    }
+
+    @Override
+    public String export() {
+        return null;
     }
 }

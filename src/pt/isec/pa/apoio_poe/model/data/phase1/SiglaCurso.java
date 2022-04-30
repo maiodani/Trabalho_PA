@@ -1,6 +1,8 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
-public enum SiglaCurso {
+import java.io.Serializable;
+
+public enum SiglaCurso implements Serializable {
     LEI,
     LEI_PL;
 

@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class AutomaticoState extends PhaseStateAdapter {
-    public AutomaticoState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public AutomaticoState(PhaseContext context) {
+        super(context);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class AutomaticoState extends PhaseStateAdapter {
         switch (op){
             case 1 -> automaticoAtribuido(str, propostas);
             case 2 -> {
-                if(phasesData.getFechado()==2) automaticoNaoAtribuido(str, propostas);
+                if(phasesData.getFechado()>=2) automaticoNaoAtribuido(str, propostas);str.append("\nFases anteriores não se encontram fechadas");
             }
             case 3 -> voltar();
         }
@@ -100,10 +100,6 @@ public class AutomaticoState extends PhaseStateAdapter {
                 Aluno al = (Aluno) a;
                 alunos.add(al);
             }
-            System.out.println("Alunos :");
-            for (Aluno aluno : alunos){
-                System.out.println(aluno.toString());
-            }
             if (!alunos.isEmpty()){
                 if(alunos.size()>1){
                     if(alunos.get(0).getClassificacao()==alunos.get(1).getClassificacao()){
@@ -140,6 +136,4 @@ public class AutomaticoState extends PhaseStateAdapter {
         changeState(PhaseState.PROPOSTAS);
         return true;
     }
-
-
 }

@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestPropostaState extends PhaseStateAdapter {
-    public GestPropostaState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public GestPropostaState(PhaseContext context) {
+        super(context);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class GestPropostaState extends PhaseStateAdapter {
 
     @Override
     public String insert() {
-        String[][] data = CsvManager.readFile("propostas_v1.csv");
+        String[][] data = CsvManager.readFile("propostas.csv");
         List<Propostas> propostas = phasesData.getPropostas();
         StringBuilder str = new StringBuilder();
         Propostas p = null;
@@ -157,7 +157,9 @@ public class GestPropostaState extends PhaseStateAdapter {
         for (Propostas proposta : propostas){
             str.append(proposta.exportar());
         }
-        str.deleteCharAt(str.length()-1);
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
         return CsvManager.writeFile("propostas_export.csv", str);
     }
 

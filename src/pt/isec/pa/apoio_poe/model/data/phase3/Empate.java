@@ -3,9 +3,10 @@ package pt.isec.pa.apoio_poe.model.data.phase3;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Empate {
+public class Empate implements Serializable {
     private static Empate instance;
     private List<Aluno> alunosEmpatados;
 

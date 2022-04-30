@@ -3,7 +3,9 @@ package pt.isec.pa.apoio_poe.model.data.phase1.propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 
-public class EstProjAutoproposto extends Propostas {
+import java.io.Serializable;
+
+public class EstProjAutoproposto extends Propostas implements Serializable {
 
 
     public EstProjAutoproposto(Aluno aluno, String titulo, String codigoId) {

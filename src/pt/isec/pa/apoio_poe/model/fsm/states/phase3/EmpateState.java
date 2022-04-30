@@ -14,8 +14,8 @@ import java.util.List;
 
 public class EmpateState extends PhaseStateAdapter {
 
-    public EmpateState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public EmpateState(PhaseContext context) {
+        super(context);
     }
 
     @Override
@@ -74,10 +74,6 @@ public class EmpateState extends PhaseStateAdapter {
     @Override
     public PhaseState getState() {
         return PhaseState.EMPATE;
-    }
-    @Override
-    public String export() {
-        return null;
     }
 
 

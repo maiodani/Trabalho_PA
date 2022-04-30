@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CadidaturaState extends PhaseStateAdapter {
-    public CadidaturaState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public CadidaturaState(PhaseContext context) {
+        super(context);
     }
 
     @Override
@@ -26,7 +26,6 @@ public class CadidaturaState extends PhaseStateAdapter {
 
     @Override
     public boolean fecharFase() {
-
         if(phasesData.getFechado()==1){
             changeState(PhaseState.PROPOSTAS);
             phasesData.setFechado(2);
@@ -180,10 +179,6 @@ public class CadidaturaState extends PhaseStateAdapter {
                     "\n\n");
         }
         return str.toString();
-        /*
-        for(Candidatura c :candidaturas){
-            System.out.println(c.getAluno()+" "+c.getCodigos());
-        }*/
     }
 
     @Override
@@ -215,7 +210,9 @@ public class CadidaturaState extends PhaseStateAdapter {
         for (Candidatura candidatura : candidaturas){
             str.append(candidatura.exportar());
         }
-        str.deleteCharAt(str.length()-1);
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
         return CsvManager.writeFile("candidaturas_export.csv", str);
     }
 

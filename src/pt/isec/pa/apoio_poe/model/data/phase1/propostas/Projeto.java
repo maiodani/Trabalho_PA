@@ -5,9 +5,10 @@ import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Projeto extends Propostas {
+public class Projeto extends Propostas implements Serializable {
 
     private boolean docenteConfirmado;
 

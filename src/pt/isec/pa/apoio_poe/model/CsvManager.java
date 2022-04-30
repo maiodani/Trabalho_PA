@@ -69,6 +69,7 @@ public class CsvManager {
             data.delete(0, data.length()-1);
             data.append(e.getMessage());
         }
+        data.delete(0, data.length());
         return data.toString();
     }
 }

@@ -2,7 +2,9 @@ package pt.isec.pa.apoio_poe.model.data.phase1;
 
 import pt.isec.pa.apoio_poe.model.fsm.states.phase3.IClassificacao;
 
-public class Aluno implements IClassificacao {
+import java.io.Serializable;
+
+public class Aluno implements IClassificacao , Serializable {
     private long numEstudante;
     private String nome;
     private String email;

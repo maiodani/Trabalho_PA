@@ -1,7 +1,6 @@
 package pt.isec.pa.apoio_poe.ui.text;
 
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
-import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.ui.text.utils.PAInput;
 
 import java.util.ArrayList;
@@ -11,6 +10,14 @@ public class UI {
     private PhaseContext fsm;
     public UI(PhaseContext fsm) {
         this.fsm = fsm;
+        checkBin();
+    }
+
+    private void checkBin(){
+        int op = PAInput.chooseOption("Carregar save? ", "Sim", "Não");
+        if (op == 1){
+            System.out.println(fsm.readBin());
+        }
     }
 
     private boolean finish = false;
@@ -73,7 +80,8 @@ public class UI {
                 "Eliminar atribuição",
                 "Dados diversos",
                 "Fechar fase",
-                "Voltar")
+                "Voltar",
+                "Quit")
         ){
             case 1:
                 System.out.println(fsm.insert());
@@ -93,9 +101,13 @@ public class UI {
             case 6:
                 dadosDiversosUI();
                 break;
-            case 7:
+            case 7:fsm.fecharFase();
                 break;
-            case 8:
+            case 8:fsm.voltar();
+                break;
+            case 9:
+                fsm.saveBin();
+                System.exit(1);
                 break;
         }
     }
@@ -127,24 +139,30 @@ public class UI {
     }
 
     private void propostaManualUI() {
-        if(fsm.getFechado()<2){
+        if(fsm.getFechado()>=2){
             switch (PAInput.chooseOption("Opções: ",
                     "Atribuição manual",
                     "Remoção manual",
                     "Voltar")
             ){
                 case 1:
-                    fsm.query();
-                    fsm.insert(PAInput.readInt(""));
+                    System.out.println(fsm.query());
+                    System.out.println(fsm.insert(PAInput.readString("\nInsira o ID da proposta: ", true), PAInput.readString("\nInsira o numero de aluno: ", true)));
                     break;
                 case 2:
-
+                    //META 2
                     break;
                 case 3: fsm.voltar();break;
                 default:break;
             }
         }else{
-            System.out.println("1.Voltar");
+            if(fsm.getFechado()<2){
+                System.out.println("Não é possivel porque fases anteriores estão abertas");
+
+            }else{
+                System.out.println("Fase ja se encontra fechada");
+            }
+            fsm.voltar();
         }
     }
 
@@ -165,36 +183,70 @@ public class UI {
 
     private void propostaUI() {
         System.out.println("Fase de Propostas");
-        switch (PAInput.chooseOption("Opcoes:",
-                "Atribuições automática",
-                "Operações manuais",
-                "Lista de Alunos",
-                "Lista de Propostas",
-                "Fechar Fase",
-                "Voltar",
-                "Quit")) {
-            case 1:
-                fsm.iniciar(1);//atribuição automatica
-                break;
-            case 2:
-                fsm.iniciar(2);//atribuição manual
-                break;
-            case 3:
-                listaAlunosUI();
-                break;
-            case 4:
-                listasPropostasUI();
-                break;
-            case 5:
-                fsm.fecharFase();
-                break;
-            case 6:
-                fsm.voltar();
-                break;
-            case 7:
-                System.exit(1);
-                break;
-
+        if (fsm.getFechado()<3){
+            switch (PAInput.chooseOption("Opcoes:",
+                    "Atribuições automática",
+                    "Operações manuais",
+                    "Lista de Alunos",
+                    "Lista de Propostas",
+                    "Avançar",
+                    "Voltar",
+                    "Fechar Fase",
+                    "Quit")) {
+                case 1:
+                    fsm.iniciar(1);//atribuição automatica
+                    break;
+                case 2:
+                    fsm.iniciar(2);//atribuição manual
+                    break;
+                case 3:
+                    listaAlunosUI();
+                    break;
+                case 4:
+                    listasPropostasUI();
+                    break;
+                case 5:
+                    fsm.avancar();
+                    break;
+                case 6:
+                    fsm.voltar();
+                    break;
+                case 7:
+                    fsm.fecharFase();
+                    break;
+                case 8:
+                    fsm.saveBin();
+                    System.exit(1);
+                    break;
+            }
+        }else{
+            switch (PAInput.chooseOption("Opcoes:",
+                    "Atribuições automática",
+                    "Lista de Alunos",
+                    "Lista de Propostas",
+                    "Avançar",
+                    "Voltar",
+                    "Quit")) {
+                case 1:
+                    fsm.iniciar(1);//atribuição automatica
+                    break;
+                case 2:
+                    listaAlunosUI();
+                    break;
+                case 3:
+                    listasPropostasUI();
+                    break;
+                case 4:
+                    fsm.avancar();
+                    break;
+                case 5:
+                    fsm.voltar();
+                    break;
+                case 6:
+                    fsm.saveBin();
+                    System.exit(1);
+                    break;
+            }
         }
     }
     private void listaAlunosUI(){
@@ -245,15 +297,13 @@ public class UI {
                     fsm.voltar();
                     break;
                 case 8 :
-                    if (fsm.getFechado()<2){
-                        if(fsm.fecharFase()){
-                            fsm.avancar();
-                        }else{
-                            System.out.println("Fase anterior não esta fechada, não pode avançar");
-                        }
+                    if(!fsm.fecharFase()){
+                        System.out.println("Fase anterior não esta fechada, não pode avançar");
                     }
                     break;
-                case 9 : System.exit(1);break;
+                case 9 :
+                    fsm.saveBin();
+                    System.exit(1);break;
             }
         }else{
             switch (PAInput.chooseOption("Opcoes:", "Consulta", "Listas de Alunos", "Listas de Propostas", "Exportar", "Avançar", "Voltar", "Quit")) {
@@ -279,7 +329,9 @@ public class UI {
                 case 6:
                     fsm.voltar();
                     break;
-                case 7 : System.exit(1);break;
+                case 7 :
+                    fsm.saveBin();
+                    System.exit(1);break;
             }
         }
     }
@@ -363,10 +415,13 @@ public class UI {
                         System.out.println("NÃO HÁ PROJETOS SUFICIENTES PARA OS ALUNOS DISPONIVEIS");
                     }
                 }else {
+                    fsm.saveBin();
                     System.exit(1);break;
                 }
                 break;
-            case 6 : System.exit(1);break;
+            case 6 :
+                fsm.saveBin();
+                System.exit(1);break;
         }
     }
 

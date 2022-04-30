@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigState extends PhaseStateAdapter {
-    public ConfigState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public ConfigState(PhaseContext context) {
+        super(context);
     }
 
 
@@ -59,11 +59,9 @@ public class ConfigState extends PhaseStateAdapter {
         for(Propostas p: propostas){
             List<SiglaRamo> ramos = new ArrayList<>();
             if(p instanceof Estagio){
-                //System.out.println("ESTAGIO");
                 Estagio aux = (Estagio) p;
                 ramos=aux.getRamo();
             }else if (p instanceof Projeto) {
-                  //  System.out.println("PROJETO");
                     Projeto aux = (Projeto) p;
                     ramos = aux.getRamo();
             }else if(p instanceof EstProjAutoproposto){
@@ -78,29 +76,19 @@ public class ConfigState extends PhaseStateAdapter {
             }
 
         }
-        //System.out.printf("\nNº ALUNOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nAlunosDA,nAlunosSI,nAlunosRAS);
-        //System.out.printf("\nNº PROJETOS DO RAMO: DA -> %d SI -> %d RAS -> %d",nProjetosDA,nProjetosSI,nProjetosRAS);
-
         if(nProjetosDA>=nAlunosDA && nProjetosSI>=nAlunosSI && nProjetosRAS>=nAlunosRAS){
             return true;
         }
-
-
         return false;
     }
     @Override
     public boolean fecharFase() {
-        if(podeFechar()){
-           phasesData.setFechado(1);
-           return true;
+        if(podeFechar()) {
+            phasesData.setFechado(1);
+            changeState(PhaseState.CANDIDATURA);
+            return true;
         }
-
-        changeState(PhaseState.CANDIDATURA);
         return false;
     }
 
-    @Override
-    public String export() {
-        return null;
-    }
 }

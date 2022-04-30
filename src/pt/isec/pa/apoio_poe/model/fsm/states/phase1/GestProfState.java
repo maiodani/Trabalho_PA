@@ -11,8 +11,8 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 import java.util.List;
 
 public class GestProfState extends PhaseStateAdapter{
-    public GestProfState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public GestProfState(PhaseContext context) {
+        super(context);
     }
 
 
@@ -23,7 +23,7 @@ public class GestProfState extends PhaseStateAdapter{
 
     @Override
     public String insert() {
-        String[][] data = CsvManager.readFile("docentes_v2.csv");
+        String[][] data = CsvManager.readFile("docentes.csv");
         StringBuilder str = new StringBuilder();
         List<Docente> docentes = phasesData.getDocentes();
         if(data!=null){
@@ -76,7 +76,9 @@ public class GestProfState extends PhaseStateAdapter{
         for (Docente docente: docentes){
             str.append(docente.exportar());
         }
-        str.deleteCharAt(str.length()-1);
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
         return CsvManager.writeFile("docentes_export.csv", str);
     }
 

@@ -1,8 +1,9 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Propostas {
+public abstract class Propostas implements Serializable {
     protected List<SiglaRamo> ramo;
 
     protected Aluno aluno;

@@ -3,9 +3,10 @@ package pt.isec.pa.apoio_poe.model.data.phase2;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaCurso;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Candidatura {
+public class Candidatura implements Serializable {
     private Aluno aluno;
     private List<String> codigos;
 

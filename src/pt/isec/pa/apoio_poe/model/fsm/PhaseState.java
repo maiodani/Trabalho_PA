@@ -28,19 +28,19 @@ public enum PhaseState implements Serializable {
     ATRIBUICAO_ORIENTADORES,
     CONSULTA;
 
-    IPhaseState createState(PhaseContext context, PhasesData phasesData){
+    IPhaseState createState(PhaseContext context){
         return switch (this){
-            case CONFIG -> new ConfigState(phasesData, context);
-            case GEST_ALUNO -> new GestAlunoState(phasesData, context);
-            case GEST_PROFESSOR -> new GestProfState(phasesData, context);
-            case GEST_PROPOSTA -> new GestPropostaState(phasesData, context);
-            case CANDIDATURA -> new CadidaturaState(phasesData, context);
-            case PROPOSTAS -> new PropostasState(phasesData, context);
-            case MANUAL -> new ManualState(phasesData, context);
-            case AUTOMATICO -> new AutomaticoState(phasesData, context);
-            case EMPATE -> new EmpateState(phasesData, context);
-            case ATRIBUICAO_ORIENTADORES -> new AtribuicaoOrientadoresState(phasesData, context);
-            case CONSULTA -> new ConsultaState(phasesData, context);
+            case CONFIG -> new ConfigState(context);
+            case GEST_ALUNO -> new GestAlunoState(context);
+            case GEST_PROFESSOR -> new GestProfState(context);
+            case GEST_PROPOSTA -> new GestPropostaState(context);
+            case CANDIDATURA -> new CadidaturaState(context);
+            case PROPOSTAS -> new PropostasState(context);
+            case MANUAL -> new ManualState(context);
+            case AUTOMATICO -> new AutomaticoState(context);
+            case EMPATE -> new EmpateState(context);
+            case ATRIBUICAO_ORIENTADORES -> new AtribuicaoOrientadoresState(context);
+            case CONSULTA -> new ConsultaState(context);
         };
     }
 }

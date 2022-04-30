@@ -1,6 +1,8 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
-public enum SiglaRamo {
+import java.io.Serializable;
+
+public enum SiglaRamo implements Serializable {
     DA,
     RAS,
     SI;

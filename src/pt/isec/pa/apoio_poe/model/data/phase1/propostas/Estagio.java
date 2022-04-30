@@ -4,9 +4,10 @@ import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Estagio extends Propostas {
+public class Estagio extends Propostas implements Serializable {
 
     private String empresa;
     public Estagio(Aluno aluno, List<SiglaRamo> ramo, String titulo, String codigoId, String empresa) {

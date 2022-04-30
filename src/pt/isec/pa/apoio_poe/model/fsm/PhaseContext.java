@@ -2,6 +2,7 @@ package pt.isec.pa.apoio_poe.model.fsm;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 
+import java.io.*;
 import java.util.Scanner;
 
 public class PhaseContext {
@@ -11,9 +12,44 @@ public class PhaseContext {
     private Scanner sc;
 
     public PhaseContext(){
-        phasesData = new PhasesData(0);//INICIA SEM NENHUMA FASE FECHADA
-        state = PhaseState.CONFIG.createState(this,phasesData);
+        phasesData = PhasesData.getInstance();//INICIA SEM NENHUMA FASE FECHADA
+        state = PhaseState.CONFIG.createState(this);
         sc = new Scanner(System.in);
+    }
+
+    public void saveBin(){
+        phasesData.setState(state.getState());
+
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = new FileOutputStream("save.bin");
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(phasesData);
+            oos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String readBin(){
+        StringBuilder str = new StringBuilder();
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream("save.bin");
+            ois = new ObjectInputStream(fis);
+            phasesData.copy((PhasesData) ois.readObject());
+            ois.close();
+            state = phasesData.getState().createState(this);
+        } catch (FileNotFoundException e) {
+            str.append("\nFicheiro não encontrado");
+        } catch (IOException | ClassNotFoundException e) {
+            str.append("\nOcorreu um erro a ler o ficheiro");
+        }
+
+        return str.toString();
     }
 
     public void changeState(IPhaseState newState){

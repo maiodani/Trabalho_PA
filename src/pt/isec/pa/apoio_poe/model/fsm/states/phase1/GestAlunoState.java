@@ -13,12 +13,12 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 import java.util.List;
 
 public class GestAlunoState extends PhaseStateAdapter {
-    public GestAlunoState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public GestAlunoState(PhaseContext context) {
+        super(context);
     }
     @Override
     public String insert(){
-        String data[][] = CsvManager.readFile("alunos_v1.csv");
+        String data[][] = CsvManager.readFile("alunos.csv");
         StringBuilder str = new StringBuilder();
         List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
@@ -110,7 +110,9 @@ public class GestAlunoState extends PhaseStateAdapter {
         for (Aluno aluno : alunos){
             str.append(aluno.exportar());
         }
-        str.deleteCharAt(str.length()-1);
+        if(str.length()!=0){
+            str.deleteCharAt(str.length()-1);
+        }
         return CsvManager.writeFile("alunos_export.csv", str);
     }
 

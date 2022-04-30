@@ -12,18 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
-    public AtribuicaoOrientadoresState(PhasesData phasesData, PhaseContext context) {
-        super(phasesData, context);
+    public AtribuicaoOrientadoresState(PhaseContext context) {
+        super(context);
     }
 
     @Override
     public PhaseState getState() {
         return PhaseState.ATRIBUICAO_ORIENTADORES;
-    }
-
-    @Override
-    public String export() {
-        return null;
     }
 
     @Override
