@@ -11,8 +11,8 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 import java.util.List;
 
 public class GestProfState extends PhaseStateAdapter{
-    public GestProfState(PhaseContext context) {
-        super(context);
+    public GestProfState(PhaseContext context,PhasesData phasesData) {
+        super(context,phasesData);
     }
 
 
@@ -26,6 +26,7 @@ public class GestProfState extends PhaseStateAdapter{
         String[][] data = CsvManager.readFile("docentes.csv");
         StringBuilder str = new StringBuilder();
         List<Docente> docentes = phasesData.getDocentes();
+        List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
             str.append("ERROS:");
             for(int i=0;i<data.length;i++){
@@ -33,7 +34,7 @@ public class GestProfState extends PhaseStateAdapter{
                         data[i][0],
                         data[i][1]
                 );
-                if(canBeAdded(d, docentes, str)){
+                if(Docente.canBeAdded(d, docentes, str,alunos)){
                     docentes.add(d);
                 }
             }
@@ -43,22 +44,7 @@ public class GestProfState extends PhaseStateAdapter{
         str.append("\n");
         return str.toString();
     }
-    private boolean canBeAdded(Docente d, List<Docente> docentes, StringBuilder str) {
-        for(Docente a:docentes){
-            if(a.getEmail().equals(d.getEmail())) {
-                str.append("\nEmail do docente ").append(d.getNome()).append(" ja existe");
-                return false;
-            }
-        }
-        List<Aluno> alunos = phasesData.getAlunos();
-        for (Aluno aluno :alunos){
-            if (aluno.getEmail().equals(d.getEmail())){
-                str.append("\nEmail do docente ").append(d.getNome()).append(" ja existe");
-                return false;
-            }
-        }
-        return true;
-    }
+
     @Override
     public String query() {
         List<Docente> docentes = phasesData.getDocentes();

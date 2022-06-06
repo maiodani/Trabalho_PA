@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhasesData implements Serializable {
-
-    private static PhasesData instance;
     private int fechado; //Nº A IDENTIFICAR ATE QUE FASE ESTÁ FECHADO
     private List<Aluno> alunos;
     private List<Docente> docentes;
@@ -45,14 +43,6 @@ public class PhasesData implements Serializable {
         propostas = new ArrayList();
         candidaturas = new ArrayList();
     }
-
-    public static PhasesData getInstance(){
-        if(instance==null){
-            instance = new PhasesData(0);
-        }
-        return instance;
-    }
-
 
 
     public int getFechado(){

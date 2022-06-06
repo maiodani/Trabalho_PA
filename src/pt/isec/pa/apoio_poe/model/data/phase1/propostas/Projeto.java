@@ -6,6 +6,7 @@ import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Projeto extends Propostas implements Serializable {
@@ -17,8 +18,38 @@ public class Projeto extends Propostas implements Serializable {
         this.ramo = ramo;
         this.docenteConfirmado =false;
     }
+    static public List<SiglaRamo> variosRamos(String ramos){
+        SiglaRamo ramo;
+        List<SiglaRamo> siglas = new ArrayList<>();
+        String[] ramos_divididos = ramos.split("\\|");
+        for(String s : ramos_divididos){
 
-
+            ramo = SiglaRamo.parse(s);
+            if(ramo==null){
+                return null;
+            }
+            siglas.add(ramo);
+        }
+        return siglas;
+    }
+    static public Aluno temAluno(String[] data,List<Aluno> alunos){
+        if (data.length == 6){
+            for(Aluno aluno : alunos){
+                if (Integer.parseInt(data[5]) == (aluno.getNumEstudante())){
+                    return aluno;
+                }
+            }
+        }
+        return null;
+    }
+    static public Docente adicionarProfessor(String email,List<Docente> docentes) {
+        for (Docente docente : docentes){
+            if (docente.getEmail().equals(email)){
+                return docente;
+            }
+        }
+        return null;
+    }
     @Override
     public String exportar(){
         StringBuilder str = new StringBuilder();

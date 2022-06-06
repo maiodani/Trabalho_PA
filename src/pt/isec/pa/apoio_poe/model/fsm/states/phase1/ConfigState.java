@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigState extends PhaseStateAdapter {
-    public ConfigState(PhaseContext context) {
-        super(context);
+    public ConfigState(PhaseContext context,PhasesData phasesData) {
+        super(context,phasesData);
     }
 
 
@@ -44,46 +44,12 @@ public class ConfigState extends PhaseStateAdapter {
         return true;
     }
 
-    private boolean podeFechar(){
-        List<Aluno> alunos = phasesData.getAlunos();
-        List<Propostas> propostas = phasesData.getPropostas();
-        int nAlunosDA=0,nAlunosRAS=0,nAlunosSI=0,nProjetosDA=0,nProjetosRAS=0,nProjetosSI=0;
-        for(Aluno a: alunos){
-            switch(a.getSiglaRamo()){
-                case DA : nAlunosDA++; break;
-                case SI : nAlunosSI++; break;
-                case RAS : nAlunosRAS++; break;
-            }
-        }
-
-        for(Propostas p: propostas){
-            List<SiglaRamo> ramos = new ArrayList<>();
-            if(p instanceof Estagio){
-                Estagio aux = (Estagio) p;
-                ramos=aux.getRamo();
-            }else if (p instanceof Projeto) {
-                    Projeto aux = (Projeto) p;
-                    ramos = aux.getRamo();
-            }else if(p instanceof EstProjAutoproposto){
-                continue;
-            }
-            for(SiglaRamo r:ramos){
-                switch (r){
-                    case RAS -> nProjetosRAS++;
-                    case DA -> nProjetosDA++;
-                    case SI -> nProjetosSI++;
-                }
-            }
-
-        }
-        if(nProjetosDA>=nAlunosDA && nProjetosSI>=nAlunosSI && nProjetosRAS>=nAlunosRAS){
-            return true;
-        }
-        return false;
-    }
     @Override
     public boolean fecharFase() {
-        if(podeFechar()) {
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Propostas> propostas = phasesData.getPropostas();
+
+        if(Aluno.podeFechar(alunos,propostas)) {
             phasesData.setFechado(1);
             changeState(PhaseState.CANDIDATURA);
             return true;

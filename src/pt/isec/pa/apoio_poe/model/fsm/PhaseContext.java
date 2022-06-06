@@ -3,18 +3,16 @@ package pt.isec.pa.apoio_poe.model.fsm;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class PhaseContext {
     private PhasesData phasesData;
     private IPhaseState state;
 
-    private Scanner sc;
+    static private String saveFile = "save.bin";
 
     public PhaseContext(){
-        phasesData = PhasesData.getInstance();//INICIA SEM NENHUMA FASE FECHADA
-        state = PhaseState.CONFIG.createState(this);
-        sc = new Scanner(System.in);
+        phasesData = new PhasesData(0);//INICIA SEM NENHUMA FASE FECHADA
+        state = PhaseState.CONFIG.createState(this,phasesData);
     }
 
     public void saveBin(){
@@ -24,7 +22,7 @@ public class PhaseContext {
         ObjectOutputStream oos = null;
 
         try {
-            fos = new FileOutputStream("save.bin");
+            fos = new FileOutputStream(saveFile);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(phasesData);
             oos.close();
@@ -38,11 +36,11 @@ public class PhaseContext {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
-            fis = new FileInputStream("save.bin");
+            fis = new FileInputStream(saveFile);
             ois = new ObjectInputStream(fis);
             phasesData.copy((PhasesData) ois.readObject());
             ois.close();
-            state = phasesData.getState().createState(this);
+            state = phasesData.getState().createState(this,phasesData);
         } catch (FileNotFoundException e) {
             str.append("\nFicheiro não encontrado");
         } catch (IOException | ClassNotFoundException e) {

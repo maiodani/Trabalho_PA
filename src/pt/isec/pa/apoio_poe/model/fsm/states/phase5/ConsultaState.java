@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaState extends PhaseStateAdapter {
-    public ConsultaState(PhaseContext context) {
-        super(context);
+    public ConsultaState(PhaseContext context,PhasesData phasesData) {
+        super(context,phasesData);
     }
 
     @Override

@@ -4,6 +4,7 @@ import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaRamo;
+import pt.isec.pa.apoio_poe.model.data.phase3.Manual;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManualState extends PhaseStateAdapter {
-    public ManualState(PhaseContext context) {
-        super(context);
+    public ManualState(PhaseContext context,PhasesData phasesData) {
+        super(context,phasesData);
     }
     @Override
     public PhaseState getState() {
@@ -25,8 +26,9 @@ public class ManualState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
         List<Propostas> propostasSemAlunos = new ArrayList<>();
         List<Aluno> alunosSemPropostas = new ArrayList<>();
-
-        obterListas(propostasSemAlunos, alunosSemPropostas);
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Propostas> propostas = phasesData.getPropostas();
+        Manual.obterListas(propostasSemAlunos, alunosSemPropostas,propostas,alunos);
 
         str.append("\nPropostas:");
         for (Propostas p: propostasSemAlunos){
@@ -47,8 +49,9 @@ public class ManualState extends PhaseStateAdapter {
         int pErro = 0, aErro = 0, rErro = 0;
         List<Propostas> propostasSemAlunos = new ArrayList<>();
         List<Aluno> alunosSemPropostas = new ArrayList<>();
-
-        obterListas(propostasSemAlunos, alunosSemPropostas);
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Propostas> propostas = phasesData.getPropostas();
+        Manual.obterListas(propostasSemAlunos, alunosSemPropostas,propostas,alunos);
 
         for (Propostas p : propostasSemAlunos){
             if (p.getCodigoId().equalsIgnoreCase(options[0])){
@@ -79,22 +82,6 @@ public class ManualState extends PhaseStateAdapter {
         return str.toString();
     }
 
-    private void obterListas(List<Propostas> propostasSemAlunos, List<Aluno> alunosSemPropostas){
-        List<Propostas> propostas = phasesData.getPropostas();
-        List<Aluno> alunos = phasesData.getAlunos();
-        alunosSemPropostas.addAll(alunos);
-        for (Propostas p : propostas){
-            if(p.getAluno()==null){
-                propostasSemAlunos.add(p);
-            }else{
-                for (Aluno al : alunos){
-                    if(al.equals(p.getAluno())){
-                        alunosSemPropostas.remove(al);
-                    }
-                }
-            }
-        }
-    }
     @Override
     public boolean voltar() {
         changeState(PhaseState.PROPOSTAS);

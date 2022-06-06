@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CadidaturaState extends PhaseStateAdapter {
-    public CadidaturaState(PhaseContext context) {
-        super(context);
+    public CadidaturaState(PhaseContext context,PhasesData phasesData) {
+        super(context,phasesData);
     }
 
     @Override
@@ -186,16 +186,17 @@ public class CadidaturaState extends PhaseStateAdapter {
         String [][] data = CsvManager.readFile("candidaturas.csv");
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         StringBuilder str = new StringBuilder();
-
+        List<Propostas> propostas = phasesData.getPropostas();
+        List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
             str.append("ERROS:");
             for(int i=0;i<data.length;i++){
                 Candidatura c = new Candidatura(
-                        temAluno(data[i][0]),
-                        getCodigosPropostas(data[i])
+                        Candidatura.temAluno(data[i][0],alunos),
+                        Candidatura.getCodigosPropostas(data[i])
                 );
 
-                if(canAdd(c,candidaturas,str)){
+                if(Candidatura.canAdd(c,candidaturas,str,propostas)){
                     candidaturas.add(c);
                 }
             }
@@ -214,65 +215,5 @@ public class CadidaturaState extends PhaseStateAdapter {
             str.deleteCharAt(str.length() - 1);
         }
         return CsvManager.writeFile("candidaturas_export.csv", str);
-    }
-
-    private boolean canAdd(Candidatura c, List<Candidatura> candidaturas, StringBuilder str) {
-
-        if(c.getAluno()==null) {
-            str.append("\nAluno não foi encontrado.");
-            return false;
-        }
-        if(c.getCodigos()==null){
-            str.append("\nCandidatura do aluno ").append(c.getAluno().getNumEstudante()).append(" não tem propostas");
-            return false;
-        }
-        List<Propostas> propostas = phasesData.getPropostas();
-
-        for(Propostas p:propostas){
-            for(String co:c.getCodigos()){
-                if(p.getCodigoId().equals(co)){
-                    if(p.getAluno()!=null){
-                        str.append("\nCandidatura a Proposta ").append(c.getCodigos()).append(" já tem aluno associado.");
-                        return false;
-                    }
-                }
-            }
-        }
-
-        for(Propostas p:propostas){
-            if(p.getAluno()!=null) {
-                if (c.getAluno().getNumEstudante() == p.getAluno().getNumEstudante()) {
-                    str.append("\nAluno ").append(c.getAluno().getNumEstudante()).append(" já tem autoproposta ou proposta.");
-                    return false;
-                }
-            }
-        }
-
-        for(Candidatura ca :candidaturas){
-            if(ca.getAluno().getNumEstudante()==c.getAluno().getNumEstudante()){
-                str.append("\nAluno ").append(c.getAluno().getNumEstudante()).append(" já tem candidatura");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private List<String> getCodigosPropostas(String[] data) {
-        List<String> aux = new ArrayList<>();
-        if(data.length<=1)return null;
-        for(int i=1;i< data.length;i++){
-            aux.add(data[i]);
-        }
-        return aux;
-    }
-
-    private Aluno temAluno(String n){
-        List<Aluno> alunos = phasesData.getAlunos();
-        for(Aluno aluno : alunos){
-            if (Integer.parseInt(n) == (aluno.getNumEstudante())){
-                return aluno;
-            }
-        }
-        return null;
     }
 }
