@@ -24,46 +24,25 @@ public class GestAlunoState extends PhaseStateAdapter {
         List<Docente> docentes = phasesData.getDocentes();
         if(data!=null){
             str.append("ERROS:");
-            Aluno a = Aluno.createAluno(data);
-            if(Aluno.canBeAdded(a, alunos, str,docentes)){
-                alunos.add(a);
-            }
+            str=Aluno.createAlunos(data,alunos,str,docentes);
+
         }else{
             str.append("\nFicheiro não possui informação");
         }
         str.append("\n");
         return str.toString();
     }
-    private Boolean parseBoolean(String s){
-        s = s.toLowerCase();
-        switch (s){
-            case "true": return Boolean.TRUE;
-            case "false":return Boolean.FALSE;
-            default: return null;
-        }
-    }
     @Override
     public String query() {
         List<Aluno> alunos = phasesData.getAlunos();
-        StringBuilder str = new StringBuilder();
-        for (Aluno al : alunos) {
-            str.append(al.toString());
-        }
-        return str.toString();
+        return Aluno.query(alunos);
     }
 
 
     @Override
     public String export() {
         List<Aluno> alunos = phasesData.getAlunos();
-        StringBuilder str = new StringBuilder();
-        for (Aluno aluno : alunos){
-            str.append(aluno.exportar());
-        }
-        if(str.length()!=0){
-            str.deleteCharAt(str.length()-1);
-        }
-        return CsvManager.writeFile("alunos_export.csv", str);
+        return CsvManager.writeFile("alunos_export.csv", Aluno.export(alunos));
     }
 
     @Override

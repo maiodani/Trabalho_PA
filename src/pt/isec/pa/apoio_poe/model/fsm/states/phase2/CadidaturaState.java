@@ -171,14 +171,7 @@ public class CadidaturaState extends PhaseStateAdapter {
     @Override
     public String query() {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
-
-        StringBuilder str = new StringBuilder();
-        for (Candidatura c : candidaturas) {
-            str.append("N: "+c.getAluno().getNumEstudante()+
-                    "\nCodigos: "+c.getCodigos()+
-                    "\n\n");
-        }
-        return str.toString();
+        return Candidatura.query(candidaturas);
     }
 
     @Override
@@ -190,16 +183,7 @@ public class CadidaturaState extends PhaseStateAdapter {
         List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
             str.append("ERROS:");
-            for(int i=0;i<data.length;i++){
-                Candidatura c = new Candidatura(
-                        Candidatura.temAluno(data[i][0],alunos),
-                        Candidatura.getCodigosPropostas(data[i])
-                );
-
-                if(Candidatura.canAdd(c,candidaturas,str,propostas)){
-                    candidaturas.add(c);
-                }
-            }
+            str = Candidatura.createCandidaturas(data,alunos,candidaturas,str,propostas);
         }
         return str.toString();
     }
@@ -207,13 +191,6 @@ public class CadidaturaState extends PhaseStateAdapter {
     @Override
     public String export() {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
-        StringBuilder str = new StringBuilder();
-        for (Candidatura c : candidaturas){
-            str.append(c.exportar());
-        }
-        if(str.length()!=0) {
-            str.deleteCharAt(str.length() - 1);
-        }
-        return CsvManager.writeFile("candidaturas_export.csv", str);
+        return CsvManager.writeFile("candidaturas_export.csv", Candidatura.export(candidaturas));
     }
 }

@@ -24,61 +24,18 @@ public class ManualState extends PhaseStateAdapter {
     @Override
     public String query() {
         StringBuilder str = new StringBuilder();
-        List<Propostas> propostasSemAlunos = new ArrayList<>();
-        List<Aluno> alunosSemPropostas = new ArrayList<>();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
-        Manual.obterListas(propostasSemAlunos, alunosSemPropostas,propostas,alunos);
-
-        str.append("\nPropostas:");
-        for (Propostas p: propostasSemAlunos){
-            str.append(p.toString());
-        }
-
-        str.append("\nAlunos:");
-        for (Aluno al: alunosSemPropostas){
-            str.append(al.toString());
-        }
-
+        str= Manual.query(alunos,propostas,str);
         return str.toString();
     }
 
     @Override
     public String insert(String... options) {
         StringBuilder str = new StringBuilder();
-        int pErro = 0, aErro = 0, rErro = 0;
-        List<Propostas> propostasSemAlunos = new ArrayList<>();
-        List<Aluno> alunosSemPropostas = new ArrayList<>();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
-        Manual.obterListas(propostasSemAlunos, alunosSemPropostas,propostas,alunos);
-
-        for (Propostas p : propostasSemAlunos){
-            if (p.getCodigoId().equalsIgnoreCase(options[0])){
-                for (Aluno al : alunosSemPropostas){
-                    if (al.getNumEstudante() == Integer.parseInt(options[1])){
-                        for (SiglaRamo ramo : p.getRamo()){
-                            if(ramo == al.getSiglaRamo()){
-                                p.setAluno(al);
-                                p.setAtribuida(true);
-                                rErro = 1;
-                            }
-                        }
-                        aErro = 1;
-                    }
-                }
-                pErro = 1;
-            }
-        }
-        if (pErro != 1){
-            str.append("\nProposta inválida");
-        }
-        if (aErro != 1){
-            str.append("\nAluno inválido");
-        }
-        if (rErro != 1){
-            str.append("\nRamo incompativel");
-        }
+        str=Manual.insert(alunos,propostas,str,options);
         return str.toString();
     }
 

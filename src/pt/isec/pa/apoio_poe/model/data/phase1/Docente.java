@@ -36,6 +36,38 @@ public class Docente implements Serializable {
         }
         return true;
     }
+
+    static public StringBuilder createDocentes(String[][] data,List<Docente> docentes,StringBuilder str,List<Aluno> alunos){
+        for(int i=0;i<data.length;i++){
+            Docente d = new Docente(
+                    data[i][0],
+                    data[i][1]
+            );
+            if(canBeAdded(d, docentes, str,alunos)){
+                docentes.add(d);
+            }
+        }
+        return str;
+    }
+
+    static public String query(List<Docente> docentes) {
+        StringBuilder str = new StringBuilder();
+        for (Docente docente: docentes) {
+            str.append(docente.toString());
+        }
+        return str.toString();
+    }
+
+    static public StringBuilder export(List<Docente> docentes) {
+        StringBuilder str = new StringBuilder();
+        for (Docente docente: docentes){
+            str.append(docente.exportar());
+        }
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
+        return str;
+    }
     @Override
     public String toString() {
         return ("\nNome: "+nome+

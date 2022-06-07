@@ -1,5 +1,6 @@
 package pt.isec.pa.apoio_poe.model.data.phase2;
 
+import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.SiglaCurso;
@@ -91,5 +92,40 @@ public class Candidatura implements Serializable {
             }
         }
         return null;
+    }
+
+    static public StringBuilder createCandidaturas(String [][]data,List<Aluno> alunos,List<Candidatura> candidaturas,StringBuilder str,List<Propostas> propostas){
+        for(int i=0;i<data.length;i++){
+            Candidatura c = new Candidatura(
+                    Candidatura.temAluno(data[i][0],alunos),
+                    Candidatura.getCodigosPropostas(data[i])
+            );
+
+            if(canAdd(c,candidaturas,str,propostas)){
+                candidaturas.add(c);
+            }
+        }
+        return str;
+    }
+
+    static public String query(List<Candidatura> candidaturas) {
+        StringBuilder str = new StringBuilder();
+        for (Candidatura c : candidaturas) {
+            str.append("N: "+c.getAluno().getNumEstudante()+
+                    "\nCodigos: "+c.getCodigos()+
+                    "\n\n");
+        }
+        return str.toString();
+    }
+
+    static public StringBuilder export(List<Candidatura> candidaturas) {
+        StringBuilder str = new StringBuilder();
+        for (Candidatura c : candidaturas){
+            str.append(c.exportar());
+        }
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
+        return str;
     }
 }

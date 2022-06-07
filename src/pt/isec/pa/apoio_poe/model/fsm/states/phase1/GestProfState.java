@@ -29,15 +29,7 @@ public class GestProfState extends PhaseStateAdapter{
         List<Aluno> alunos = phasesData.getAlunos();
         if(data!=null){
             str.append("ERROS:");
-            for(int i=0;i<data.length;i++){
-                Docente d = new Docente(
-                        data[i][0],
-                        data[i][1]
-                );
-                if(Docente.canBeAdded(d, docentes, str,alunos)){
-                    docentes.add(d);
-                }
-            }
+            str = Docente.createDocentes(data,docentes,str,alunos);
         }else{
             str.append("\nFicheiro não possui informação");
         }
@@ -48,24 +40,13 @@ public class GestProfState extends PhaseStateAdapter{
     @Override
     public String query() {
         List<Docente> docentes = phasesData.getDocentes();
-        StringBuilder str = new StringBuilder();
-        for (Docente docente: docentes) {
-            str.append(docente.toString());
-        }
-        return str.toString();
+        return Docente.query(docentes);
     }
 
     @Override
     public String export() {
         List<Docente> docentes = phasesData.getDocentes();
-        StringBuilder str = new StringBuilder();
-        for (Docente docente: docentes){
-            str.append(docente.exportar());
-        }
-        if(str.length()!=0) {
-            str.deleteCharAt(str.length() - 1);
-        }
-        return CsvManager.writeFile("docentes_export.csv", str);
+        return CsvManager.writeFile("docentes_export.csv", Docente.export(docentes));
     }
 
     @Override

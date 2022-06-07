@@ -1,5 +1,6 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
+import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
@@ -75,6 +76,43 @@ public abstract class Propostas implements Serializable {
     public Docente getOrientador() {
         return orientador;
     }
+
+    static public StringBuilder createPropostas(String [][] data,List<Aluno> alunos,List<Docente> docentes,List<Propostas> propostas,StringBuilder str){
+        Propostas p = null;
+        for(int i=0; i<data.length; i++) {
+            if (data[i][0].equals("T1")) {
+                p = new Estagio(
+                        Estagio.temAluno(data[i],alunos),
+                        Estagio.variosRamos(data[i][2]),
+                        data[i][3],
+                        data[i][1],
+                        data[i][4]
+                );
+            } else if (data[i][0].equals("T2")) {
+                p = new Projeto(
+                        Projeto.temAluno(data[i],alunos),
+                        Projeto.adicionarProfessor(data[i][4],docentes),
+                        Projeto.variosRamos(data[i][2]),
+                        data[i][3],
+                        data[i][1]
+                );
+            } else if (data[i][0].equals("T3")) {
+                Aluno al = null;
+                for(Aluno aluno : alunos){
+                    if (Integer.parseInt(data[i][3]) == (aluno.getNumEstudante())) al = aluno;
+                }
+                p = new EstProjAutoproposto(
+                        al,
+                        data[i][2],
+                        data[i][1]
+                );
+            }
+            if (Propostas.canBeAdded(p, propostas, str)){
+                propostas.add(p);
+            }
+        }
+        return str;
+    }
     static public boolean canBeAdded(Propostas p, List<Propostas> propostas, StringBuilder str) {
         for (Propostas proposta : propostas){
             if (p.getCodigoId().equals(proposta.getCodigoId())) {
@@ -111,6 +149,24 @@ public abstract class Propostas implements Serializable {
         return true;
     }
 
+    static public String query(List<Propostas> propostas) {
+        StringBuilder str = new StringBuilder();
+        for (Propostas proposta : propostas) {
+            str.append(proposta.toString());
+        }
+        return str.toString();
+    }
+
+    static public StringBuilder export(List<Propostas> propostas) {
+        StringBuilder str = new StringBuilder();
+        for (Propostas proposta : propostas){
+            str.append(proposta.exportar());
+        }
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
+        return str;
+    }
 
     public void setOrientador(Docente orientador) {
         this.orientador = orientador;

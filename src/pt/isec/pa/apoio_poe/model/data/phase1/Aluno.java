@@ -1,5 +1,6 @@
 package pt.isec.pa.apoio_poe.model.data.phase1;
 
+import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
@@ -160,10 +161,9 @@ public class Aluno implements IClassificacao , Serializable {
         }
         return false;
     }
-    static public Aluno createAluno(String data[][]){
-        Aluno a = null;
+    static public StringBuilder createAlunos(String data[][],List<Aluno> alunos,StringBuilder str,List<Docente> docentes){
         for(int i=0;i<data.length; i++){
-             a = new Aluno(
+            Aluno a = new Aluno(
                     Long.parseLong(data[i][0]),
                     data[i][1],
                     data[i][2],
@@ -172,8 +172,11 @@ public class Aluno implements IClassificacao , Serializable {
                     Double.parseDouble(data[i][5]),
                     parseBoolean(data[i][6].replaceAll("\\s+",""))
             );
+            if(canBeAdded(a, alunos, str,docentes)){
+                alunos.add(a);
+            }
         }
-        return a;
+        return str;
     }
 
     static private Boolean parseBoolean(String s){
@@ -183,6 +186,25 @@ public class Aluno implements IClassificacao , Serializable {
             case "false":return Boolean.FALSE;
             default: return null;
         }
+    }
+
+    static public String query(List<Aluno> alunos) {
+        StringBuilder str = new StringBuilder();
+        for (Aluno al : alunos) {
+            str.append(al.toString());
+        }
+        return str.toString();
+    }
+
+    static public StringBuilder export(List<Aluno> alunos) {
+        StringBuilder str = new StringBuilder();
+        for (Aluno aluno : alunos){
+            str.append(aluno.exportar());
+        }
+        if(str.length()!=0){
+            str.deleteCharAt(str.length()-1);
+        }
+        return str;
     }
     @Override
     public String toString() {

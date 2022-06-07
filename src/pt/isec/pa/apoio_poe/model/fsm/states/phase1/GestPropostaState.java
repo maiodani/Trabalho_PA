@@ -25,71 +25,25 @@ public class GestPropostaState extends PhaseStateAdapter {
     public String insert() {
         String[][] data = CsvManager.readFile("propostas.csv");
         List<Propostas> propostas = phasesData.getPropostas();
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Docente> docentes = phasesData.getDocentes();
         StringBuilder str = new StringBuilder();
-        Propostas p = null;
         if(data!=null){
             str.append("ERROS:");
-            for(int i=0; i<data.length; i++) {
-                if (data[i][0].equals("T1")) {
-                    List<Aluno> alunos = phasesData.getAlunos();
-                    p = new Estagio(
-                            Estagio.temAluno(data[i],alunos),
-                            Estagio.variosRamos(data[i][2]),
-                            data[i][3],
-                            data[i][1],
-                            data[i][4]
-                    );
-                } else if (data[i][0].equals("T2")) {
-                    List<Docente> docentes = phasesData.getDocentes();
-                    List<Aluno> alunos = phasesData.getAlunos();
-                    p = new Projeto(
-                            Projeto.temAluno(data[i],alunos),
-                            Projeto.adicionarProfessor(data[i][4],docentes),
-                            Projeto.variosRamos(data[i][2]),
-                            data[i][3],
-                            data[i][1]
-                    );
-                } else if (data[i][0].equals("T3")) {
-                    Aluno al = null;
-                    List<Aluno> alunos = phasesData.getAlunos();
-                    for(Aluno aluno : alunos){
-                        if (Integer.parseInt(data[i][3]) == (aluno.getNumEstudante())) al = aluno;
-                    }
-                    p = new EstProjAutoproposto(
-                            al,
-                            data[i][2],
-                            data[i][1]
-                    );
-                }
-                if (Propostas.canBeAdded(p, propostas, str)){
-                    propostas.add(p);
-                }
-
-            }
+            str = Propostas.createPropostas(data,alunos,docentes,propostas,str);
         }
         str.append("\n");
         return str.toString();
     }
     public String query() {
         List<Propostas> propostas = phasesData.getPropostas();
-        StringBuilder str = new StringBuilder();
-        for (Propostas proposta : propostas) {
-            str.append(proposta.toString());
-        }
-        return str.toString();
+        return Propostas.query(propostas);
     }
 
     @Override
     public String export() {
         List<Propostas> propostas = phasesData.getPropostas();
-        StringBuilder str = new StringBuilder();
-        for (Propostas proposta : propostas){
-            str.append(proposta.exportar());
-        }
-        if(str.length()!=0) {
-            str.deleteCharAt(str.length() - 1);
-        }
-        return CsvManager.writeFile("propostas_export.csv", str);
+        return CsvManager.writeFile("propostas_export.csv", Propostas.export(propostas));
     }
 
     @Override
