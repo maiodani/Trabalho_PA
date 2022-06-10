@@ -10,6 +10,7 @@ import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
+import pt.isec.pa.apoio_poe.model.data.Queries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,27 +48,29 @@ public class CadidaturaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String query(int n) {
+    public String query(Queries n) {
         StringBuilder str = new StringBuilder();
         List<Candidatura> c;
         List<Propostas> propostas;
         List<Propostas> pa;
+
         switch (n){
-            case 1:
+            case ALUNOS_COM_AUTOPROPOSTA:
                 propostas = phasesData.getPropostas();
+
                 for(Propostas p:propostas){
                     if(p instanceof EstProjAutoproposto){
                         str.append(p.getAluno().toString());
                     }
                 }
                 break;
-            case 2:
-                 c = phasesData.getCandidaturas();
+            case ALUNOS_COM_CANDIDATURA_REGISTADA:
+                c = phasesData.getCandidaturas();
                 for(Candidatura ca:c){
                     str.append(ca.getAluno().toString());
                 }
                 break;
-            case 3:
+            case ALUNOS_SEM_CANDIDATURA:
                 c = phasesData.getCandidaturas();
                 List<Aluno> alTodos = phasesData.getAlunos();
                 List<Aluno> al = new ArrayList<>();
@@ -97,7 +100,7 @@ public class CadidaturaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 4:
+            case AUTOPROPOSTAS_DE_ALUNOS:
                 propostas = phasesData.getPropostas();
                 for(Propostas p:propostas){
                     if(p instanceof EstProjAutoproposto){
@@ -105,7 +108,7 @@ public class CadidaturaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 5:
+            case PROPOSTAS_DOCENTES:
                 propostas = phasesData.getPropostas();
                 for(Propostas p:propostas){
                     if(p instanceof Projeto){
@@ -113,7 +116,7 @@ public class CadidaturaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 6:
+            case PROPOSTAS_COM_CANDIDATURAS:
                 c = phasesData.getCandidaturas();
                 propostas = phasesData.getPropostas();
                 pa= new ArrayList<>();
@@ -133,7 +136,7 @@ public class CadidaturaState extends PhaseStateAdapter {
                     str.append(aux);
                 }
                 break;
-            case 7:
+            case PROPOSTAS_SEM_CANDIDATURAS:
                 c = phasesData.getCandidaturas();
                 propostas = phasesData.getPropostas();
                 pa= new ArrayList<>();
@@ -155,7 +158,7 @@ public class CadidaturaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 8:
+            case PROPOSTAS:
                 propostas = phasesData.getPropostas();
                 for(Propostas p:propostas){
                     str.append(p.toString());
@@ -175,8 +178,8 @@ public class CadidaturaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String insert() {
-        String [][] data = CsvManager.readFile("candidaturas.csv");
+    public String insert(String nomeFicheiro) {
+        String [][] data = CsvManager.readFile(nomeFicheiro);
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         StringBuilder str = new StringBuilder();
         List<Propostas> propostas = phasesData.getPropostas();
@@ -189,8 +192,8 @@ public class CadidaturaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String export() {
+    public String export(String nomeFicheiro) {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
-        return CsvManager.writeFile("candidaturas_export.csv", Candidatura.export(candidaturas));
+        return CsvManager.writeFile(nomeFicheiro, Candidatura.export(candidaturas));
     }
 }

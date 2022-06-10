@@ -19,6 +19,7 @@ public class PhasesData implements Serializable {
     private List<Propostas> propostas;
     private List<Candidatura> candidaturas;
 
+    private Empate empate;
     private PhaseState state;
 
     public PhasesData(int n){
@@ -42,9 +43,15 @@ public class PhasesData implements Serializable {
         docentes = new ArrayList();
         propostas = new ArrayList();
         candidaturas = new ArrayList();
+        empate = new Empate();
     }
 
-
+    public Empate getEmpate(){
+        return empate;
+    }
+    public void setEmpate(Empate e){
+        empate=e;
+    }
     public int getFechado(){
         return fechado;
     }

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Automatico {
 
-    static public boolean automaticoNaoAtribuido(StringBuilder str, List<Propostas> propostas,List<Candidatura> candidaturas){
+    static public boolean automaticoNaoAtribuido(StringBuilder str, List<Propostas> propostas,List<Candidatura> candidaturas,Empate empate){
         List<Propostas> propostasSemAluno = new ArrayList<>();
         List<Aluno> aux = new ArrayList<>();
         int n = 0;
@@ -73,10 +73,8 @@ public class Automatico {
                 if(alunos.size()>1){
                     if(alunos.get(0).getClassificacao()==alunos.get(1).getClassificacao()){
                         str.append("\nEncontrada situação de empate");
-                        Empate empate= Empate.getInstance();
                         empate.setAlunosEmpatados(alunos);
                         empate.setProposta(p);
-
                         return true;
                     }else{
                         p.setAluno(alunos.get(0));

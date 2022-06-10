@@ -1,6 +1,7 @@
 package pt.isec.pa.apoio_poe.model.fsm;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
+import pt.isec.pa.apoio_poe.model.data.Queries;
 
 import java.io.*;
 
@@ -13,6 +14,10 @@ public class PhaseContext {
     public PhaseContext(){
         phasesData = new PhasesData(0);//INICIA SEM NENHUMA FASE FECHADA
         state = PhaseState.CONFIG.createState(this,phasesData);
+    }
+
+    public PhasesData getPhasesData() {
+        return phasesData;
     }
 
     public void saveBin(){
@@ -72,7 +77,9 @@ public class PhaseContext {
     public boolean iniciar(int op){
         return state.iniciar(op);
     }
-
+    public String insert(String nomeFicheiro){
+        return state.insert(nomeFicheiro);
+    }
     public int getFechado(){
         return phasesData.getFechado();
     }
@@ -83,8 +90,11 @@ public class PhaseContext {
     public String export(){
         return state.export();
     }
-    public String query(int n){
-        return state.query(n);
+    public String export(String nomeFicheiro){
+        return state.export(nomeFicheiro);
+    }
+    public String query(Queries q){
+        return state.query(q);
     };
     public String insert() {
         return state.insert();
@@ -97,5 +107,7 @@ public class PhaseContext {
     public String insert(int op) {
         return state.insert(op);
     }
+
+
 
 }

@@ -26,14 +26,16 @@ public class AutomaticoState extends PhaseStateAdapter {
         StringBuilder str = new StringBuilder();
         List<Propostas> propostas = phasesData.getPropostas();
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
+        Empate empate = new Empate();
         switch (op){
             case 1 -> Automatico.automaticoAtribuido(str, propostas);
             case 2 -> {
                 if(phasesData.getFechado()>=2){
-                    if(Automatico.automaticoNaoAtribuido(str, propostas,candidaturas)){
+                    if(Automatico.automaticoNaoAtribuido(str, propostas,candidaturas,empate)){
+                        phasesData.setEmpate(empate);
                         changeState(PhaseState.EMPATE);
                     }
-                }str.append("\nFases anteriores não se encontram fechadas");
+                }
             }
             case 3 -> voltar();
         }

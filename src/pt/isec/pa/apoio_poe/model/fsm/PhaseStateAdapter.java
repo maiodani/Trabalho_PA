@@ -1,8 +1,7 @@
 package pt.isec.pa.apoio_poe.model.fsm;
 
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
-
-import java.util.List;
+import pt.isec.pa.apoio_poe.model.data.Queries;
 
 public abstract class PhaseStateAdapter implements IPhaseState {
     protected PhasesData phasesData;
@@ -32,13 +31,14 @@ public abstract class PhaseStateAdapter implements IPhaseState {
 
     @Override
     public String export() {return null;}
-
+    @Override
+    public String export(String nomeFicheiro) {return null;}
     @Override
     public String query() {
         return null;
     }
     @Override
-    public String query(int n) {
+    public String query(Queries n) {
         return null;
     }
     @Override
@@ -58,6 +58,10 @@ public abstract class PhaseStateAdapter implements IPhaseState {
 
     @Override
     public String insert(String ... options) {
+        return null;
+    }
+    @Override
+    public String insert(String nomeFicheiro) {
         return null;
     }
 }

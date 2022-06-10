@@ -5,8 +5,9 @@ import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
-import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
 import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
+import pt.isec.pa.apoio_poe.model.data.Queries;
+import pt.isec.pa.apoio_poe.model.data.phase5.Consulta;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
@@ -25,14 +26,14 @@ public class ConsultaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String query(int n) {
+    public String query(Queries n) {
         StringBuilder str = new StringBuilder();
         List<Propostas> p;
         List<Candidatura> c;
         List<Aluno> a;
         List<Docente> d;
         switch (n){
-            case 1:
+            case ALUNOS_COM_PROPOSTA_ATRIBUIDA:
                 p = phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(pa.isAtribuida()){
@@ -40,7 +41,7 @@ public class ConsultaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 2:
+            case ALUNOS_SEM_PROPOSTA_ATRIBUIDA_COM_CANDIDATURA:
                 c=phasesData.getCandidaturas();
                 p = phasesData.getPropostas();
                 a = phasesData.getAlunos();
@@ -64,7 +65,7 @@ public class ConsultaState extends PhaseStateAdapter {
                     str.append(aa.toString());
                 }
                 break;
-            case 3:
+            case PROPOSTAS_DISPONIVEIS:
                 p=phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(!pa.isAtribuida()){
@@ -72,7 +73,7 @@ public class ConsultaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 4:
+            case PROPOSTAS_ATRIBUIDAS:
                 p=phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(pa.isAtribuida()){
@@ -80,7 +81,7 @@ public class ConsultaState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 5:
+            case ESTATISTICAS_POR_DOCENTE:
                 double media;
                 int count,aux=0,max=0,min=0,total=0;
                 p = phasesData.getPropostas();
@@ -117,43 +118,10 @@ public class ConsultaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String export() {
-        int i = 1;
+    public String export(String nomeFicheiro) {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
-        StringBuilder str = new StringBuilder();
-        for (Candidatura c : candidaturas){
-            for (Aluno al :alunos){
-                if(c.getAluno().equals(al)){
-                    str.append(al.getNumEstudante());
-                    for (String s : c.getCodigos()){
-                        str.append(",").append(s);
-                    }
-                    for (Propostas p : propostas){
-                        if(p.getAluno()!=null){
-                            if(p.getAluno().equals(al)){
-                                str.append(",").append(p.getCodigoId());
-                                for (String s : c.getCodigos()){
-                                    if (s.equalsIgnoreCase(p.getCodigoId())){
-                                        str.append(",").append(i);
-                                        break;
-                                    }
-                                    i++;
-                                }
-                                if(p.getOrientador()!=null){
-                                    str.append(",").append(p.getOrientador().getEmail());
-                                }
-                            }
-                        }
-                    }
-                    str.append("\n");
-                }
-            }
-        }
-        if(str.length()!=0) {
-            str.deleteCharAt(str.length() - 1);
-        }
-        return CsvManager.writeFile("consulta_export.csv", str);
+        return CsvManager.writeFile(nomeFicheiro, Consulta.export(candidaturas,alunos,propostas));
     }
 }

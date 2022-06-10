@@ -1,5 +1,8 @@
 package pt.isec.pa.apoio_poe.model;
 
+import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
+
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -8,6 +11,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CsvManager {
+
+
     public static Scanner getScanner(String fileName) {
 
         Scanner sc = null;

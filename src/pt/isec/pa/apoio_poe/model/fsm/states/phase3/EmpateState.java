@@ -20,7 +20,7 @@ public class EmpateState extends PhaseStateAdapter {
 
     @Override
     public String query() {
-        Empate empate = Empate.getInstance();
+        Empate empate = phasesData.getEmpate();
         StringBuilder str = new StringBuilder();
         List<Aluno> alunos = empate.getAlunosEmpatados();
         List<Aluno> aux = new ArrayList<>();
@@ -44,7 +44,7 @@ public class EmpateState extends PhaseStateAdapter {
 
     @Override
     public String insert(int op) {
-        Empate empate = Empate.getInstance();
+        Empate empate = phasesData.getEmpate();
         StringBuilder str = new StringBuilder();
         List<Aluno> alunos = empate.getAlunosEmpatados();
         List<Propostas> propostas = phasesData.getPropostas();

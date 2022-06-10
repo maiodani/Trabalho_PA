@@ -4,8 +4,10 @@ import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Estagio;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
+import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Propostas implements Serializable {
@@ -167,7 +169,61 @@ public abstract class Propostas implements Serializable {
         }
         return str;
     }
+    static public boolean podeFecharFase3(List<Candidatura> c, List<Propostas> p){
+        int count=0;
+        List<Aluno> a = new ArrayList<>();
+        for(Candidatura ca:c){
+            a.add(ca.getAluno());
+        }
 
+        for(Propostas pa:p){
+            if(pa.getAluno()!=null){
+                if(a.contains(pa.getAluno())){
+                    count++;
+                }
+            }
+        }
+        if(count==a.size()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    static public StringBuilder exportFase3(List<Candidatura> candidaturas,List<Aluno> alunos,List<Propostas> propostas){
+        StringBuilder str = new StringBuilder();
+        int i = 1;
+        for (Candidatura c : candidaturas){
+            for (Aluno al :alunos){
+                if(c.getAluno().equals(al)){
+                    str.append(al.getNumEstudante());
+                    for (String s : c.getCodigos()){
+                        str.append(",").append(s);
+                    }
+                    for (Propostas p : propostas){
+                        if(p.getAluno()!=null){
+                            if(p.getAluno().equals(al)){
+                                str.append(",").append(p.getCodigoId());
+                                for (String s : c.getCodigos()){
+                                    if (s.equalsIgnoreCase(p.getCodigoId())){
+                                        str.append(",").append(i);
+                                        break;
+                                    }
+                                    i++;
+                                }
+
+                            }
+                        }
+                    }
+                    str.append("\n");
+                }
+            }
+        }
+        if(str.length()!=0) {
+            str.deleteCharAt(str.length() - 1);
+        }
+        return str;
+    }
     public void setOrientador(Docente orientador) {
         this.orientador = orientador;
     }

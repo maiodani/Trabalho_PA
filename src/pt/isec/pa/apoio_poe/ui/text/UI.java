@@ -2,7 +2,7 @@ package pt.isec.pa.apoio_poe.ui.text;
 
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.ui.text.utils.PAInput;
-
+import pt.isec.pa.apoio_poe.model.data.Queries;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,19 +52,19 @@ public class UI {
                 "Quit")
         ){
             case 1:
-                System.out.println(fsm.query(1));
+                System.out.println(fsm.query(Queries.ALUNOS_COM_PROPOSTA_ATRIBUIDA));
                 break;
             case 2:
-                System.out.println(fsm.query(2));
+                System.out.println(fsm.query(Queries.ALUNOS_SEM_PROPOSTA_ATRIBUIDA_COM_CANDIDATURA));
                 break;
             case 3:
-                System.out.println(fsm.query(3));
+                System.out.println(fsm.query(Queries.PROPOSTAS_DISPONIVEIS));
                 break;
             case 4:
-                System.out.println(fsm.query(4));
+                System.out.println(fsm.query(Queries.PROPOSTAS_ATRIBUIDAS));
                 break;
             case 5:
-                System.out.println(fsm.query(5));
+                System.out.println(fsm.query(Queries.ESTATISTICAS_POR_DOCENTE));
                 break;
             case 6:
                 fsm.export();
@@ -128,13 +128,13 @@ public class UI {
                 )
         ){
             case 1:
-                System.out.println(fsm.query(1));
+                System.out.println(fsm.query(Queries.ALUNOS_COM_PROPOSTAS_COM_DOCENTE));
                 break;
             case 2:
-                System.out.println(fsm.query(2));
+                System.out.println(fsm.query(Queries.ALUNOS_COM_PROPOSTAS_SEM_DOCENTE));
                 break;
             case 3:
-                System.out.println(fsm.query(3));
+                System.out.println(fsm.query(Queries.ESTATISTICAS_POR_DOCENTE));
                 break;
         }
     }
@@ -274,10 +274,10 @@ public class UI {
                 "Sem proposta atribuida")
         ){
             case 1:
-                System.out.println(fsm.query(0));break;
-            case 2: System.out.println(fsm.query(1));break;
-            case 3: System.out.println(fsm.query(2));break;
-            case 4: System.out.println(fsm.query(3));break;
+                System.out.println(fsm.query(Queries.ALUNOS_COM_AUTOPROPOSTA));break;
+            case 2: System.out.println(fsm.query(Queries.ALUNOS_COM_CANDIDATURA_REGISTADA));break;
+            case 3: System.out.println(fsm.query(Queries.ALUNOS_COM_PROPOSTA_ATRIBUIDA));break;
+            case 4: System.out.println(fsm.query(Queries.ALUNOS_SEM_PROPOSTA_ATRIBUIDA));break;
             default: break;
         }
     }
@@ -288,7 +288,8 @@ public class UI {
             switch (PAInput.chooseOption("Opcoes:", "Inserção", "Consulta", "Listas de Alunos", "Listas de Propostas", "Exportar", "Avançar", "Voltar", "Fechar Fase", "Quit")){
                 case 1 :
                     if (fsm.getFechado()<2){
-                        System.out.println(fsm.insert());
+                        String nomeFicheiro=PAInput.readString("Nome do Ficheiro:",true);
+                        System.out.println(fsm.insert(nomeFicheiro));
                     }
                     break;
                 case 2 :
@@ -296,9 +297,9 @@ public class UI {
                     break;
                 case 3:
                     switch (PAInput.chooseOption("Tipo de Consulta","Alunos com Autopropostas","Alunos com Candidaturas","Alunos sem Candidaturas","Voltar")){
-                        case 1:System.out.println(fsm.query(1)); break;
-                        case 2:System.out.println(fsm.query(2));break;
-                        case 3:System.out.println(fsm.query(3));break;
+                        case 1:System.out.println(fsm.query(Queries.ALUNOS_COM_AUTOPROPOSTA)); break;
+                        case 2:System.out.println(fsm.query(Queries.ALUNOS_COM_CANDIDATURA_REGISTADA));break;
+                        case 3:System.out.println(fsm.query(Queries.ALUNOS_SEM_CANDIDATURA));break;
                         default:break;
                     }
                     break;
@@ -329,9 +330,9 @@ public class UI {
                     break;
                 case 2:
                     switch (PAInput.chooseOption("Tipo de Consulta","Alunos com Autopropostas","Alunos com Candidaturas","Alunos sem Candidaturas","Voltar")){
-                        case 1:System.out.println(fsm.query(1)); break;
-                        case 2:System.out.println(fsm.query(2));break;
-                        case 3:System.out.println(fsm.query(3));break;
+                        case 1:System.out.println(fsm.query(Queries.ALUNOS_COM_AUTOPROPOSTA)); break;
+                        case 2:System.out.println(fsm.query(Queries.ALUNOS_COM_CANDIDATURA_REGISTADA));break;
+                        case 3:System.out.println(fsm.query(Queries.ALUNOS_SEM_CANDIDATURA));break;
                         default:break;
                     }
                     break;
@@ -369,7 +370,7 @@ public class UI {
                     if(escolhidas.contains(1)){
                         System.out.println("Filtro "+filtros.get(1)+" já escolhido");
                     }else{
-                        listagem+=fsm.query(4);
+                        listagem+=fsm.query(Queries.AUTOPROPOSTAS_DE_ALUNOS);
                         escolhidas.add(1);
                     }
                     break;
@@ -377,7 +378,7 @@ public class UI {
                     if(escolhidas.contains(2)){
                         System.out.println("Filtro "+filtros.get(2)+" já escolhido");
                     }else{
-                        listagem+=fsm.query(5);
+                        listagem+=fsm.query(Queries.PROPOSTAS_DOCENTES);
                         escolhidas.add(2);
                     }
                     break;
@@ -385,7 +386,7 @@ public class UI {
                     if(escolhidas.contains(3)){
                         System.out.println("Filtro "+filtros.get(3)+" já escolhido");
                     }else{
-                        listagem+=fsm.query(6);
+                        listagem+=fsm.query(Queries.PROPOSTAS_COM_CANDIDATURAS);
                         escolhidas.add(3);
                     }
                     break;
@@ -393,14 +394,14 @@ public class UI {
                     if(escolhidas.contains(4)){
                         System.out.println("Filtro "+filtros.get(4)+" já escolhido");
                     }else{
-                        listagem+=fsm.query(7);
+                        listagem+=fsm.query(Queries.PROPOSTAS_SEM_CANDIDATURAS);
                         escolhidas.add(4);
                     }
                     break;
                 case 5:
                     if(listagem.equals("")){
                         System.out.println("SEM FILTROS");
-                        listagem+=fsm.query(8);
+                        listagem+=fsm.query(Queries.PROPOSTAS);
                         return listagem;
                     }else {
                         return listagem;
@@ -450,12 +451,16 @@ public class UI {
         }
         if(fsm.getFechado()<=0) {
             switch (PAInput.chooseOption("Opcoes:", "Insercao", "Consulta", "Editar", "Eliminar", "Exportar", "Voltar")) {
-                case 1 -> System.out.println(fsm.insert());
-                case 2 -> System.out.println(fsm.query());
+                case 1 :
+                    String nomeFicheiro=PAInput.readString("Nome do Ficheiro:",true);
+                    System.out.println(fsm.insert(nomeFicheiro));
+                    break;
+
+                case 2 : System.out.println(fsm.query());break;
                 //case 3 -> ;
                 //case 4 -> ;
-                case 5 -> System.out.println(fsm.export());
-                case 6 -> fsm.voltar();
+                case 5 : System.out.println(fsm.export());break;
+                case 6 : fsm.voltar();break;
             }
         }else{
             switch (PAInput.chooseOption("Opcoes:","Consulta", "Voltar")) {

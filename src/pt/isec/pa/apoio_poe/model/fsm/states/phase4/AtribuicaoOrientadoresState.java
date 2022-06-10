@@ -2,11 +2,13 @@ package pt.isec.pa.apoio_poe.model.fsm.states.phase4;
 
 import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
+import pt.isec.pa.apoio_poe.model.data.Queries;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
 import pt.isec.pa.apoio_poe.model.data.phase2.Candidatura;
+import pt.isec.pa.apoio_poe.model.data.phase4.AtribuiçãoOrientadores;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
@@ -32,61 +34,15 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
 
     @Override
     public String insert() {
-        StringBuilder str = new StringBuilder();
         List<Propostas> p = phasesData.getPropostas();
-        for(Propostas pa:p){
-            if(pa instanceof Projeto && pa.isAtribuida()){
-                Projeto aux = (Projeto)pa;
-                aux.setDocenteConfirmado(true);
-                str.append("\nDocente "+pa.getOrientador().getNome()+" confirmado no projeto "+pa.getTitulo()+" como orientador");
-            }
-        }
-        return str.toString();
+        return AtribuiçãoOrientadores.insert(p).toString();
     }
 
     @Override
     public String insert(String ... options) {
-        StringBuilder str = new StringBuilder();
         List<Propostas> p = phasesData.getPropostas();
-        Propostas propostas = null;
         List<Docente> d = phasesData.getDocentes();
-        Docente docente = null;
-        boolean aux=true;
-        for(Propostas pa:p){
-            if(pa.getCodigoId().equals(options[0])){
-                if(pa.getOrientador()!=null){
-                    str.append("\nProjeto já com Docente atribuido");
-                    return str.toString();
-                }
-                if(!pa.isAtribuida()){
-                    str.append("\nProjeto sem aluno atribuido");
-                    return str.toString();
-                }
-                propostas=pa;
-                aux=false;
-                break;
-            }
-        }
-        if(aux){
-            str.append("\nProjeto com o codigo "+options[0]+" não encontrado");
-            return str.toString();
-        }
-        aux=true;
-        for(Docente dc:d){
-            if(dc.getEmail().equals(options[1])){
-                docente=dc;
-                aux=false;
-                break;
-            }
-        }
-        if(aux){
-            str.append("\nDocente com o email "+options[1]+" não encontrado");
-            return str.toString();
-        }
-
-        propostas.setOrientador(docente);
-        str.append("Docente "+docente.getNome()+" atribuido ao projeto "+propostas.getCodigoId());
-        return str.toString();
+        return AtribuiçãoOrientadores.insert(p,d,options).toString();
     }
 
     @Override
@@ -109,12 +65,12 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
     }
 
     @Override
-    public String query(int n) {
+    public String query(Queries n) {
         StringBuilder str = new StringBuilder();
         List<Propostas> p;
         List<Docente> d;
         switch (n){
-            case 1:
+            case ALUNOS_COM_PROPOSTAS_COM_DOCENTE:
                 p = phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(pa instanceof Projeto){
@@ -129,7 +85,7 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 2 :
+            case ALUNOS_COM_PROPOSTAS_SEM_DOCENTE :
                 p = phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(pa instanceof Projeto){
@@ -144,7 +100,7 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 3:
+            case ESTATISTICAS_POR_DOCENTE:
                 double media;
                 int count,aux=0,max=0,min=0,total=0;
                 p = phasesData.getPropostas();
@@ -183,44 +139,11 @@ public class AtribuicaoOrientadoresState extends PhaseStateAdapter {
     }
 
     @Override
-    public String export() {
-        int i = 1;
+    public String export(String nomeFicheiro) {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
-        StringBuilder str = new StringBuilder();
-        for (Candidatura c : candidaturas){
-            for (Aluno al :alunos){
-                if(c.getAluno().equals(al)){
-                    str.append(al.getNumEstudante());
-                    for (String s : c.getCodigos()){
-                        str.append(",").append(s);
-                    }
-                    for (Propostas p : propostas){
-                        if(p.getAluno()!=null){
-                            if(p.getAluno().equals(al)){
-                                str.append(",").append(p.getCodigoId());
-                                for (String s : c.getCodigos()){
-                                    if (s.equalsIgnoreCase(p.getCodigoId())){
-                                        str.append(",").append(i);
-                                        break;
-                                    }
-                                    i++;
-                                }
-                                if(p.getOrientador()!=null){
-                                    str.append(",").append(p.getOrientador().getEmail());
-                                }
-                            }
-                        }
-                    }
-                    str.append("\n");
-                }
-            }
-        }
-        if(str.length()!=0) {
-            str.deleteCharAt(str.length() - 1);
-        }
-        return CsvManager.writeFile("atribuicaoOrientadores_export.csv", str);
+        return CsvManager.writeFile(nomeFicheiro, AtribuiçãoOrientadores.export(candidaturas,alunos,propostas));
     }
 
     @Override

@@ -2,6 +2,7 @@ package pt.isec.pa.apoio_poe.model.fsm.states.phase3;
 
 import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
+import pt.isec.pa.apoio_poe.model.data.Queries;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
@@ -38,22 +39,9 @@ public class PropostasState extends PhaseStateAdapter {
 
     @Override
     public boolean fecharFase() {
-        int count=0;
-        List<Aluno> a = new ArrayList<>();
         List<Candidatura> c = phasesData.getCandidaturas();
         List<Propostas> p = phasesData.getPropostas();
-        for(Candidatura ca:c){
-            a.add(ca.getAluno());
-        }
-
-        for(Propostas pa:p){
-            if(pa.getAluno()!=null){
-                if(a.contains(pa.getAluno())){
-                    count++;
-                }
-            }
-        }
-        if(count==a.size()){
+        if(Propostas.podeFecharFase3(c,p)){
             changeState(PhaseState.ATRIBUICAO_ORIENTADORES);
             phasesData.setFechado(3);
             return true;
@@ -63,14 +51,16 @@ public class PropostasState extends PhaseStateAdapter {
     }
 
     @Override
-    public String query(int n) {
+    public String query(Queries n) {
         StringBuilder str = new StringBuilder();
         List<Aluno> a;
         List<Propostas> p;
         List<Candidatura> c;
         List<Propostas> paux;
+        System.out.println("TESTESTESTES");
+        System.out.println(n);
         switch (n){
-            case 0:
+            case ALUNOS_COM_AUTOPROPOSTA:
                 p = phasesData.getPropostas();
                 for (Propostas pr:p){
                     if(pr instanceof EstProjAutoproposto){
@@ -78,15 +68,21 @@ public class PropostasState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 1:
+            case ALUNOS_COM_CANDIDATURA_REGISTADA:
                 c = phasesData.getCandidaturas();
                 for(Candidatura ca:c){
                     str.append(ca.getAluno().toString());
                 }
                 break;
-            case 2:
+            case ALUNOS_COM_PROPOSTA_ATRIBUIDA:
+                p = phasesData.getPropostas();
+                for(Propostas pa:p){
+                    if(pa.isAtribuida()){
+                        str.append(pa.getAluno());
+                    }
+                }
                 break;
-            case 3:
+            case ALUNOS_SEM_PROPOSTA_ATRIBUIDA:
                 p = phasesData.getPropostas();
                 a = phasesData.getAlunos();
                 List<Aluno> al = new ArrayList<>();
@@ -102,7 +98,7 @@ public class PropostasState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 4:
+            case AUTOPROPOSTAS_DE_ALUNOS:
                 p = phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(pa instanceof EstProjAutoproposto){
@@ -110,7 +106,7 @@ public class PropostasState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 5:
+            case PROPOSTAS_DOCENTES:
                 p = phasesData.getPropostas();
                 for(Propostas pa:p){
                     if(pa instanceof Projeto){
@@ -118,7 +114,7 @@ public class PropostasState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 6:
+            case PROPOSTAS_COM_CANDIDATURAS:
                 c = phasesData.getCandidaturas();
                 p = phasesData.getPropostas();
                 paux= new ArrayList<>();
@@ -138,7 +134,7 @@ public class PropostasState extends PhaseStateAdapter {
                     str.append(aux);
                 }
                 break;
-            case 7:
+            case PROPOSTAS_SEM_CANDIDATURAS:
                 c = phasesData.getCandidaturas();
                 p = phasesData.getPropostas();
                 paux= new ArrayList<>();
@@ -160,7 +156,7 @@ public class PropostasState extends PhaseStateAdapter {
                     }
                 }
                 break;
-            case 8:
+            case PROPOSTAS:
                 p = phasesData.getPropostas();
                 for(Propostas pa:p){
                     str.append(pa.toString());
@@ -186,41 +182,12 @@ public class PropostasState extends PhaseStateAdapter {
     }
 
     @Override
-    public String export() {
-        int i = 1;
+    public String export(String nomeFicheiro) {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
-        StringBuilder str = new StringBuilder();
-        for (Candidatura c : candidaturas){
-            for (Aluno al :alunos){
-                if(c.getAluno().equals(al)){
-                    str.append(al.getNumEstudante());
-                    for (String s : c.getCodigos()){
-                        str.append(",").append(s);
-                    }
-                    for (Propostas p : propostas){
-                        if(p.getAluno()!=null){
-                            if(p.getAluno().equals(al)){
-                                str.append(",").append(p.getCodigoId());
-                                for (String s : c.getCodigos()){
-                                    if (s.equalsIgnoreCase(p.getCodigoId())){
-                                        str.append(",").append(i);
-                                        break;
-                                    }
-                                    i++;
-                                }
 
-                            }
-                        }
-                    }
-                    str.append("\n");
-                }
-            }
-        }
-        if(str.length()!=0) {
-            str.deleteCharAt(str.length() - 1);
-        }
-        return CsvManager.writeFile("propostas_export.csv", str);
+
+        return CsvManager.writeFile(nomeFicheiro, Propostas.exportFase3(candidaturas,alunos,propostas));
     }
 }

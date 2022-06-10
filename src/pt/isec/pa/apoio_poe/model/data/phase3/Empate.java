@@ -7,17 +7,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Empate implements Serializable {
-    private static Empate instance;
     private List<Aluno> alunosEmpatados;
-
     private Propostas proposta;
-
-    public static Empate getInstance(){
-        if(instance==null){
-            instance = new Empate();
-        }
-        return instance;
-    }
 
     public List<Aluno> getAlunosEmpatados() {
         return alunosEmpatados;
@@ -33,5 +24,13 @@ public class Empate implements Serializable {
 
     public void setProposta(Propostas proposta) {
         this.proposta = proposta;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(alunosEmpatados.toString());
+        str.append(proposta.toString());
+        return str.toString();
     }
 }

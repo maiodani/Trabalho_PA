@@ -1,5 +1,6 @@
 package pt.isec.pa.apoio_poe.model.fsm.states.phase1;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
@@ -27,6 +28,7 @@ public class ConfigState extends PhaseStateAdapter {
 
     @Override
     public boolean iniciar(int op) {
+        System.out.println("TESTE1212121");
         switch (op){
             case 1 -> changeState(PhaseState.GEST_ALUNO);
             case 2 -> changeState(PhaseState.GEST_PROFESSOR);

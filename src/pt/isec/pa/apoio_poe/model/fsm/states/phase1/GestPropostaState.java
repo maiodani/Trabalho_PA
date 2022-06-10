@@ -22,8 +22,8 @@ public class GestPropostaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String insert() {
-        String[][] data = CsvManager.readFile("propostas.csv");
+    public String insert(String nomeFicheiro) {
+        String[][] data = CsvManager.readFile(nomeFicheiro);
         List<Propostas> propostas = phasesData.getPropostas();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Docente> docentes = phasesData.getDocentes();
@@ -41,9 +41,9 @@ public class GestPropostaState extends PhaseStateAdapter {
     }
 
     @Override
-    public String export() {
+    public String export(String nomeFicheiro) {
         List<Propostas> propostas = phasesData.getPropostas();
-        return CsvManager.writeFile("propostas_export.csv", Propostas.export(propostas));
+        return CsvManager.writeFile(nomeFicheiro, Propostas.export(propostas));
     }
 
     @Override
