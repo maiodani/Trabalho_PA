@@ -10,6 +10,7 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GestAlunoState extends PhaseStateAdapter {
@@ -32,12 +33,59 @@ public class GestAlunoState extends PhaseStateAdapter {
         str.append("\n");
         return str.toString();
     }
+
+    @Override
+    public String insertAluno(Aluno a) {
+        List<Aluno> al = phasesData.getAlunos();
+        StringBuilder str=new StringBuilder();
+        List<Docente> d = new ArrayList<>();
+        if(Aluno.canBeAdded(a,al,str,d)){
+            al.add(a);
+        }
+        return str.toString();
+    }
+
+    @Override
+    public String editAluno(Aluno a) {
+        List<Aluno> al = phasesData.getAlunos();
+        int i=0;
+        for(Aluno aluno:al){
+            if(aluno.getNumEstudante()==a.getNumEstudante()){
+                al.set(i,a);
+                return "";
+            }
+            i++;
+        }
+        return "";
+    }
+
+    @Override
+    public String deleteAluno(Long numEstudante) {
+        List<Aluno> al = phasesData.getAlunos();
+        for(Aluno aluno:al){
+            if(aluno.getNumEstudante()==numEstudante){
+                al.remove(aluno);
+                return "";
+            }
+        }
+        return "";
+    }
+
     @Override
     public String query() {
         List<Aluno> alunos = phasesData.getAlunos();
         return Aluno.query(alunos);
     }
 
+    @Override
+    public List<Aluno> queryAluno() {
+        List<Aluno> a = phasesData.getAlunos();
+        if(a.isEmpty()){
+            return null;
+        }else{
+            return a;
+        }
+    }
 
     @Override
     public String export(String nomeFicheiro) {
@@ -50,11 +98,6 @@ public class GestAlunoState extends PhaseStateAdapter {
         return PhaseState.GEST_ALUNO;
     }
 
-    @Override
-    public boolean fecharFase() {
-        changeState(PhaseState.CANDIDATURA);
-        return true;
-    }
 
     @Override
     public boolean voltar() {

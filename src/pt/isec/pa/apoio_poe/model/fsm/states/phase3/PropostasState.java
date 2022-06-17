@@ -36,7 +36,63 @@ public class PropostasState extends PhaseStateAdapter {
         }
         return true;
     }
+    @Override
+    public List<Aluno> queryAluno(Queries q) {
+        List<Candidatura> c;
+        List<Propostas> propostas;
+        List<Propostas> pa;
+        List<Aluno> alunos = new ArrayList<>();
+        switch (q){
+            case ALUNOS_COM_AUTOPROPOSTA:
+                propostas = phasesData.getPropostas();
 
+                for(Propostas p:propostas){
+                    if(p instanceof EstProjAutoproposto){
+                        alunos.add(p.getAluno());
+                    }
+                }
+                break;
+            case ALUNOS_COM_CANDIDATURA_REGISTADA:
+                c = phasesData.getCandidaturas();
+                for(Candidatura ca:c){
+                    alunos.add(ca.getAluno());
+                }
+                break;
+            case ALUNOS_SEM_CANDIDATURA:
+                c = phasesData.getCandidaturas();
+                List<Aluno> alTodos = phasesData.getAlunos();
+                List<Aluno> al = new ArrayList<>();
+
+                for(Candidatura ca:c){//TODOS OS ALUNOS QUE JÁ TEM CANDIDATURA
+                    al.add(ca.getAluno());
+                }
+
+                propostas = phasesData.getPropostas();
+                for(Propostas p:propostas){//TODOS OS ALUNOS QUE JA TEM AUTO PROPOSTAS (SUPONDO QUE ESTE TAMBEM SAO CONSIDERADOS QUE JÁ "TEM" CANDIDATURA
+                    if(p instanceof EstProjAutoproposto){
+                        al.add(p.getAluno());
+                    }
+                }
+
+                boolean canAdd = true;
+                for(Aluno a:alTodos){
+                    for(Aluno b:al){
+                        if(a.getNumEstudante()==b.getNumEstudante()){
+                            canAdd=false;
+                        }
+                    }
+                    if(canAdd){
+                        alunos.add(a);
+                    }else{
+                        canAdd=true;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return alunos;
+    }
     @Override
     public boolean fecharFase() {
         List<Candidatura> c = phasesData.getCandidaturas();
@@ -57,8 +113,6 @@ public class PropostasState extends PhaseStateAdapter {
         List<Propostas> p;
         List<Candidatura> c;
         List<Propostas> paux;
-        System.out.println("TESTESTESTES");
-        System.out.println(n);
         switch (n){
             case ALUNOS_COM_AUTOPROPOSTA:
                 p = phasesData.getPropostas();
@@ -186,8 +240,6 @@ public class PropostasState extends PhaseStateAdapter {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
-
-
         return CsvManager.writeFile(nomeFicheiro, Propostas.exportFase3(candidaturas,alunos,propostas));
     }
 }

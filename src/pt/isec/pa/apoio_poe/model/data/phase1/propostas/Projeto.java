@@ -42,6 +42,15 @@ public class Projeto extends Propostas implements Serializable {
         }
         return null;
     }
+
+    static public Aluno getAluno(long num,List<Aluno> alunos){
+        for(Aluno aluno : alunos){
+            if (num == (aluno.getNumEstudante())){
+                return aluno;
+            }
+        }
+        return null;
+    }
     static public Docente adicionarProfessor(String email,List<Docente> docentes) {
         for (Docente docente : docentes){
             if (docente.getEmail().equals(email)){

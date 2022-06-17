@@ -1,18 +1,16 @@
-package pt.isec.pa.apoio_poe.ui.gui;
+package pt.isec.pa.apoio_poe.ui.gui.Phase1UI;
 
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import pt.isec.pa.apoio_poe.model.PhaseManager;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 
 public class Phase1Menu extends BorderPane {
     PhaseManager phaseManager;
     Button btnGestAluno,btnGestProfessor,btnGestPropostas,btnAvancar,btnQuit,btnFecharFase;
-    MensagemSave mensagemSave = new MensagemSave();
+
     int aux=0;
     HBox butoes;
     public Phase1Menu(PhaseManager phaseManager){
@@ -30,23 +28,20 @@ public class Phase1Menu extends BorderPane {
     }
 
     private void update() {
-        if(aux==0){
-            this.setCenter(mensagemSave);
-            changeButtonsDisable(true);
-        }else{
-
+        if(phaseManager.getFechado()!=0){
+            btnFecharFase.setDisable(true);
         }
         if (phaseManager.getState() != PhaseState.CONFIG) {
             this.setVisible(false);
             return;
         }
+
         this.setVisible(true);
     }
 
     private void registerHandlers() {
         phaseManager.addPropertyChangeListener(evt -> {update();});
         btnGestAluno.setOnAction(actionEvent -> {
-            System.out.println("TESTE1");
             phaseManager.iniciar(1);
         });
         btnGestProfessor.setOnAction(actionEvent -> {
@@ -61,29 +56,20 @@ public class Phase1Menu extends BorderPane {
         btnFecharFase.setOnAction(actionEvent -> {
             if(phaseManager.getFechado()==0){
                 if(phaseManager.fecharFase()){
-                    System.out.println("Fase Fechada");
+                    btnFecharFase.setDisable(true);
+                    //System.out.println("Fase Fechada");
                 }else{
-                    System.out.println("NÃO HÁ PROJETOS SUFICIENTES PARA OS ALUNOS DISPONIVEIS");
                 }
             }else {
-                phaseManager.saveBin();
-                Platform.exit();
+               // phaseManager.saveBin();
+                //Platform.exit();
             }
         });
         btnQuit.setOnAction(actionEvent -> {
             phaseManager.saveBin();
             Platform.exit();
         });
-        mensagemSave.btnNao.setOnAction(actionEvent -> {
-            this.getChildren().remove(mensagemSave);
-            changeButtonsDisable(false);
-            aux=1;
-        });
-        mensagemSave.btnSim.setOnAction(actionEvent -> {
-            this.getChildren().remove(mensagemSave);
-            changeButtonsDisable(false);
-            aux=1;
-        });
+
     }
 
     private void createViews() {
@@ -120,7 +106,9 @@ public class Phase1Menu extends BorderPane {
         btnFecharFase.setMinWidth(200);
         btnFecharFase.setMaxWidth(200);
         btnFecharFase.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;-fx-border-radius: 15px;-fx-border-width: 2px;-fx-border-color: grey;-fx-background-radius: 15px;");
-
+        if(phaseManager.getFechado()!=0){
+            btnFecharFase.setDisable(true);
+        }
         /*this.setAlignment(Pos.CENTER);
         this.setSpacing(15);
         */

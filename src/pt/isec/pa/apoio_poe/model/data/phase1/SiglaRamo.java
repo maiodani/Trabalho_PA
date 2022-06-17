@@ -16,4 +16,12 @@ public enum SiglaRamo implements Serializable {
             default:return null;
         }
     }
+    public static String parseString(SiglaRamo ramo){
+        switch (ramo){
+            case DA: return "DA";
+            case SI: return "SI";
+            case RAS: return "RAS";
+            default: return null;
+        }
+    }
 }

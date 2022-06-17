@@ -43,6 +43,15 @@ public class EmpateState extends PhaseStateAdapter {
     }
 
     @Override
+    public Propostas getEmpateProposta() {
+        return phasesData.getEmpate().getProposta();
+    }
+    @Override
+    public List<Aluno> getEmpateAlunos(){
+        return phasesData.getEmpate().getAlunosEmpatados();
+    }
+
+    @Override
     public String insert(int op) {
         Empate empate = phasesData.getEmpate();
         StringBuilder str = new StringBuilder();

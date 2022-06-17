@@ -3,6 +3,7 @@ package pt.isec.pa.apoio_poe.model.fsm.states.phase2;
 import pt.isec.pa.apoio_poe.model.CsvManager;
 import pt.isec.pa.apoio_poe.model.data.PhasesData;
 import pt.isec.pa.apoio_poe.model.data.phase1.Aluno;
+import pt.isec.pa.apoio_poe.model.data.phase1.Docente;
 import pt.isec.pa.apoio_poe.model.data.phase1.Propostas;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.EstProjAutoproposto;
 import pt.isec.pa.apoio_poe.model.data.phase1.propostas.Projeto;
@@ -172,9 +173,87 @@ public class CadidaturaState extends PhaseStateAdapter {
     }
 
     @Override
+    public List<Aluno> queryAluno(Queries q) {
+        List<Candidatura> c;
+        List<Propostas> propostas;
+        List<Propostas> pa;
+        List<Aluno> alunos = new ArrayList<>();
+        switch (q){
+            case ALUNOS_COM_AUTOPROPOSTA:
+                propostas = phasesData.getPropostas();
+
+                for(Propostas p:propostas){
+                    if(p instanceof EstProjAutoproposto){
+                        alunos.add(p.getAluno());
+                    }
+                }
+                break;
+            case ALUNOS_COM_CANDIDATURA_REGISTADA:
+                c = phasesData.getCandidaturas();
+                for(Candidatura ca:c){
+                    alunos.add(ca.getAluno());
+                }
+                break;
+            case ALUNOS_SEM_CANDIDATURA:
+                c = phasesData.getCandidaturas();
+                List<Aluno> alTodos = phasesData.getAlunos();
+                List<Aluno> al = new ArrayList<>();
+
+                for(Candidatura ca:c){//TODOS OS ALUNOS QUE JÁ TEM CANDIDATURA
+                    al.add(ca.getAluno());
+                }
+
+                propostas = phasesData.getPropostas();
+                for(Propostas p:propostas){//TODOS OS ALUNOS QUE JA TEM AUTO PROPOSTAS (SUPONDO QUE ESTE TAMBEM SAO CONSIDERADOS QUE JÁ "TEM" CANDIDATURA
+                    if(p instanceof EstProjAutoproposto){
+                        al.add(p.getAluno());
+                    }
+                }
+
+                boolean canAdd = true;
+                for(Aluno a:alTodos){
+                    for(Aluno b:al){
+                        if(a.getNumEstudante()==b.getNumEstudante()){
+                            canAdd=false;
+                        }
+                    }
+                    if(canAdd){
+                        alunos.add(a);
+                    }else{
+                        canAdd=true;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return alunos;
+    }
+
+    @Override
+    public List<Propostas> queryProposta() {
+        return phasesData.getPropostas();
+    }
+
+    @Override
+    public List<Aluno> queryAluno() {
+        List<Aluno> a = phasesData.getAlunos();
+        if(a.isEmpty()){
+            return null;
+        }else{
+            return a;
+        }
+    }
+    @Override
     public String query() {
         List<Candidatura> candidaturas = phasesData.getCandidaturas();
         return Candidatura.query(candidaturas);
+    }
+
+    @Override
+    public List<Candidatura> queryCandidatura() {
+        List<Candidatura> candidaturas = phasesData.getCandidaturas();
+        return candidaturas;
     }
 
     @Override
@@ -189,6 +268,45 @@ public class CadidaturaState extends PhaseStateAdapter {
             str = Candidatura.createCandidaturas(data,alunos,candidaturas,str,propostas);
         }
         return str.toString();
+    }
+
+    @Override
+    public String insertCandidatura(Candidatura c) {
+        List<Candidatura> candidaturas = phasesData.getCandidaturas();
+        StringBuilder str = new StringBuilder();
+        List<Propostas> propostas = phasesData.getPropostas();
+        List<Aluno> alunos = phasesData.getAlunos();
+        if(c!=null){
+            str.append("ERROS:");
+            str = Candidatura.createCandidatura(c,alunos,candidaturas,str,propostas);
+        }
+        return str.toString();
+    }
+
+    @Override
+    public String editCandidatura(Candidatura c) {
+        List<Candidatura> ca = phasesData.getCandidaturas();
+        int i=0;
+        for(Candidatura candidatura:ca){
+            if(candidatura.getAluno().getNumEstudante()==c.getAluno().getNumEstudante()){
+                ca.set(i,c);
+                return "";
+            }
+            i++;
+        }
+        return "";
+    }
+
+    @Override
+    public String deleteCandidatura(String numEstudante) {
+        List<Candidatura> c = phasesData.getCandidaturas();
+        for(Candidatura candidatura:c){
+            if(candidatura.getAluno().getNumEstudante()==Long.parseLong(numEstudante)){
+                c.remove(candidatura);
+                return "";
+            }
+        }
+        return "";
     }
 
     @Override

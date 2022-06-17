@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class Propostas implements Serializable {
     protected List<SiglaRamo> ramo;
-
     protected Aluno aluno;
     protected String titulo;
     protected String codigoId;
@@ -115,6 +114,41 @@ public abstract class Propostas implements Serializable {
         }
         return str;
     }
+    static public StringBuilder createProposta(String [] data,List<Aluno> alunos,List<Docente> docentes,List<Propostas> propostas,StringBuilder str){
+        Propostas p = null;
+        if (data[0].equals("T1")) {
+            p = new Estagio(
+                    Estagio.getAluno(Long.parseLong(data[5]),alunos),
+                    Estagio.variosRamos(data[2]),
+                    data[3],
+                    data[1],
+                    data[4]
+            );
+        } else if (data[0].equals("T2")) {
+            p = new Projeto(
+                    Projeto.getAluno(Long.parseLong(data[5]),alunos),
+                    Projeto.adicionarProfessor(data[4],docentes),
+                    Projeto.variosRamos(data[2]),
+                    data[3],
+                    data[1]
+            );
+        } else if (data[0].equals("T3")) {
+            Aluno al = null;
+            for(Aluno aluno : alunos){
+                if (Long.parseLong(data[3]) == (aluno.getNumEstudante())) al = aluno;
+            }
+            p = new EstProjAutoproposto(
+                    al,
+                    data[2],
+                    data[1]
+            );
+        }
+        if (Propostas.canBeAdded(p, propostas, str)){
+            propostas.add(p);
+        }
+        return str;
+    }
+
     static public boolean canBeAdded(Propostas p, List<Propostas> propostas, StringBuilder str) {
         for (Propostas proposta : propostas){
             if (p.getCodigoId().equals(proposta.getCodigoId())) {

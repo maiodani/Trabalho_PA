@@ -28,7 +28,7 @@ public enum PhaseState implements Serializable {
     ATRIBUICAO_ORIENTADORES,
     CONSULTA;
 
-    IPhaseState createState(PhaseContext context,PhasesData phasesData){
+    public IPhaseState createState(PhaseContext context, PhasesData phasesData){
         return switch (this){
             case CONFIG -> new ConfigState(context,phasesData);
             case GEST_ALUNO -> new GestAlunoState(context,phasesData);

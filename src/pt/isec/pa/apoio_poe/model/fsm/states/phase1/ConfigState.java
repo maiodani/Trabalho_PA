@@ -28,7 +28,6 @@ public class ConfigState extends PhaseStateAdapter {
 
     @Override
     public boolean iniciar(int op) {
-        System.out.println("TESTE1212121");
         switch (op){
             case 1 -> changeState(PhaseState.GEST_ALUNO);
             case 2 -> changeState(PhaseState.GEST_PROFESSOR);

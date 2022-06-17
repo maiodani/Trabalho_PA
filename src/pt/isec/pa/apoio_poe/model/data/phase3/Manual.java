@@ -50,7 +50,7 @@ public class Manual {
         for (Propostas p : propostasSemAlunos){
             if (p.getCodigoId().equalsIgnoreCase(options[0])){
                 for (Aluno al : alunosSemPropostas){
-                    if (al.getNumEstudante() == Integer.parseInt(options[1])){
+                    if (al.getNumEstudante() == Long.parseLong(options[1])){
                         for (SiglaRamo ramo : p.getRamo()){
                             if(ramo == al.getSiglaRamo()){
                                 p.setAluno(al);

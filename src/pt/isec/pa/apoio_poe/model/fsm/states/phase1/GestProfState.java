@@ -8,6 +8,7 @@ import pt.isec.pa.apoio_poe.model.fsm.PhaseContext;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseState;
 import pt.isec.pa.apoio_poe.model.fsm.PhaseStateAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GestProfState extends PhaseStateAdapter{
@@ -38,6 +39,49 @@ public class GestProfState extends PhaseStateAdapter{
     }
 
     @Override
+    public String insertDocente(Docente d) {
+        List<Docente> doc = phasesData.getDocentes();
+        StringBuilder str=new StringBuilder();
+        List<Aluno> alunos = phasesData.getAlunos();
+        if(Docente.canBeAdded(d,doc,str,alunos)){
+            doc.add(d);
+        }
+        return str.toString();
+    }
+
+    @Override
+    public String editDocente(Docente d) {
+        List<Docente> doc = phasesData.getDocentes();
+        int i=0;
+        for(Docente docente:doc){
+            if(docente.getEmail()==d.getEmail()){
+                doc.set(i,d);
+                return "";
+            }
+            i++;
+        }
+        return "";
+    }
+
+    @Override
+    public String deleteDocente(String email) {
+        List<Docente> doc = phasesData.getDocentes();
+        for(Docente docente:doc){
+            if(docente.getEmail()==email){
+                doc.remove(docente);
+                return "";
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public List<Docente> queryDocente() {
+        List<Docente> docentes = phasesData.getDocentes();
+        return docentes;
+    }
+
+    @Override
     public String query() {
         List<Docente> docentes = phasesData.getDocentes();
         return Docente.query(docentes);
@@ -47,12 +91,6 @@ public class GestProfState extends PhaseStateAdapter{
     public String export(String nomeFicheiro) {
         List<Docente> docentes = phasesData.getDocentes();
         return CsvManager.writeFile(nomeFicheiro, Docente.export(docentes));
-    }
-
-    @Override
-    public boolean fecharFase() {
-        changeState(PhaseState.CANDIDATURA);
-        return true;
     }
 
     @Override

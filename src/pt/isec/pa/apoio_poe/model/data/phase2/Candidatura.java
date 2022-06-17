@@ -107,6 +107,12 @@ public class Candidatura implements Serializable {
         }
         return str;
     }
+    static public StringBuilder createCandidatura(Candidatura c,List<Aluno> alunos,List<Candidatura> candidaturas,StringBuilder str,List<Propostas> propostas){
+        if(canAdd(c,candidaturas,str,propostas)){
+            candidaturas.add(c);
+        }
+        return str;
+    }
 
     static public String query(List<Candidatura> candidaturas) {
         StringBuilder str = new StringBuilder();

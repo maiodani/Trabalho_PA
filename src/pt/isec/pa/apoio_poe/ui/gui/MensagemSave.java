@@ -49,7 +49,6 @@ public class MensagemSave extends BorderPane {
         butoes.setAlignment(Pos.CENTER);
         butoes.getChildren().addAll(btnNao,btnSim);
         all.getChildren().addAll(mensagem,butoes);
-        System.out.println(this.getHeight()+" "+this.getWidth());
         all.setAlignment(Pos.CENTER);
         all.setPadding(new Insets(0,0,0,0));
         this.setCenter(all);

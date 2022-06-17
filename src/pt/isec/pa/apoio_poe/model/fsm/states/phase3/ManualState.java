@@ -31,12 +31,64 @@ public class ManualState extends PhaseStateAdapter {
     }
 
     @Override
+    public List<Aluno> queryAlunoManual() {
+        return phasesData.getAlunos();
+    }
+    @Override
+    public String deleteAtribuicao(String codigo){
+        List<Propostas> propostas=phasesData.getPropostas();
+        for(Propostas p:propostas){
+            if(p.getCodigoId()==codigo){
+                p.setAluno(null);
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public List<Propostas> queryPropostaManual() {
+        List<Propostas> propostas = phasesData.getPropostas();
+        List<Propostas> pro = new ArrayList<>();
+        for(Propostas p:propostas){
+            if(p.getAluno()!=null){
+                pro.add(p);
+            }
+        }
+        return pro;
+    }
+
+    @Override
+    public List<Propostas> queryProposta() {
+        List<Propostas> propostasSemAlunos = new ArrayList<>();
+        List<Aluno> alunosSemPropostas = new ArrayList<>();
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Propostas> propostas = phasesData.getPropostas();
+        Manual.obterListas(propostasSemAlunos, alunosSemPropostas,propostas,alunos);
+        return propostasSemAlunos;
+    }
+
+    @Override
+    public List<Aluno> queryAluno() {
+        List<Propostas> propostasSemAlunos = new ArrayList<>();
+        List<Aluno> alunosSemPropostas = new ArrayList<>();
+        List<Aluno> alunos = phasesData.getAlunos();
+        List<Propostas> propostas = phasesData.getPropostas();
+        Manual.obterListas(propostasSemAlunos, alunosSemPropostas,propostas,alunos);
+        return alunosSemPropostas;
+    }
+
+    @Override
     public String insert(String... options) {
         StringBuilder str = new StringBuilder();
         List<Aluno> alunos = phasesData.getAlunos();
         List<Propostas> propostas = phasesData.getPropostas();
         str=Manual.insert(alunos,propostas,str,options);
         return str.toString();
+    }
+
+    @Override
+    public String insertProposta(String[] a) {
+        return super.insertProposta(a);
     }
 
     @Override

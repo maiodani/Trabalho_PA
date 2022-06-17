@@ -36,6 +36,14 @@ public class Estagio extends Propostas implements Serializable {
         str.append("\n");
         return str.toString();
     }
+    static public Aluno getAluno(long num,List<Aluno> alunos){
+        for(Aluno aluno : alunos){
+            if (num == (aluno.getNumEstudante())){
+                return aluno;
+            }
+        }
+        return null;
+    }
     static public Aluno temAluno(String[] data,List<Aluno> alunos){
         if (data.length == 6){
             for(Aluno aluno : alunos){
@@ -46,6 +54,7 @@ public class Estagio extends Propostas implements Serializable {
         }
         return null;
     }
+
     static public List<SiglaRamo> variosRamos(String ramos){
         SiglaRamo ramo;
         List<SiglaRamo> siglas = new ArrayList<>();
